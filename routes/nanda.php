@@ -515,5 +515,6 @@ Route::middleware('auth')->group(function () {
         ->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/get_data', 'get_data')->name('get_data');
+            Route::get('/print_nota', 'print_nota')->name('print_nota');
         });
 });

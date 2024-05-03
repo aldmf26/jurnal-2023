@@ -34,8 +34,15 @@
                         <td>{{ round($b->gr_beli, 0) }}</td>
                         <td>{{ number_format($b->harga, 0) }}</td>
                         <td>{{ number_format($b->harga * $b->gr_beli, 0) }}</td>
-                        <td><a target="_blank"
-                                href="{{ route('printnota.index', ['id_bkin' => $b->id_bkin]) }}">print</a></td>
+                        <td>
+                            <a target="_blank"
+                                href="{{ route('printnota.index', ['id_bkin' => $b->id_bkin]) }}">print</a>
+
+
+                            <a target="_blank"
+                                href="{{ route('printnota.index', ['id_bkin' => $b->id_bkin]) }}">print2</a>
+
+                        </td>
                     </tr>
                 @endforeach
             </tbody>
