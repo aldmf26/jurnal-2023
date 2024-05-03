@@ -40,7 +40,7 @@
 
 
                             <a target="_blank"
-                                href="{{ route('printnota.index', ['id_bkin' => $b->id_bkin]) }}">print2</a>
+                                href="{{ route('printnota.print_nota', ['id_bkin' => $b->id_bkin]) }}">print2</a>
 
                         </td>
                     </tr>
