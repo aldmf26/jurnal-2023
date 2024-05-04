@@ -56,7 +56,7 @@
                     <td style="padding: 4px;" align="center">BK-IN-MIX</td>
                     <td style="padding: 4px;" align="right">{{ number_format($bk1->gr_beli, 0) }}</td>
                     <td style="padding: 4px;" align="right">{{ number_format($bk1->harga, 0) }}</td>
-                    <td style="padding: 4px;" align="right">{{ number_format($bk1->gr_beli * $bk1->harga, 0) }}</td>
+                    <td style="padding: 4px;" align="right">{{ number_format($bk1->total, 0) }}</td>
                 </tr>
                 <tr>
                     <td style="height: 80px;"></td>
@@ -70,7 +70,7 @@
                     <th align="center" style="padding: 4px;">Jumlah</th>
                     <th align="right" style="padding: 4px;">{{ number_format($bk1->gr_beli, 0) }}</th>
                     <th align="right" style="padding: 4px;"></th>
-                    <th align="right" style="padding: 4px;">{{ number_format($bk1->gr_beli * $bk1->harga, 0) }}</th>
+                    <th align="right" style="padding: 4px;">{{ number_format($bk1->total, 0) }}</th>
                 </tr>
             </tfoot>
         </table>
@@ -119,7 +119,7 @@
                     <td style="padding: 4px;" align="center">BK-IN-MIX</td>
                     <td style="padding: 4px;" align="right">{{ number_format($bk2->gr_beli, 0) }}</td>
                     <td style="padding: 4px;" align="right">{{ number_format($bk2->harga, 0) }}</td>
-                    <td style="padding: 4px;" align="right">{{ number_format($bk2->gr_beli * $bk2->harga, 0) }}</td>
+                    <td style="padding: 4px;" align="right">{{ number_format($bk2->total, 0) }}</td>
                 </tr>
                 <tr>
                     <td style="height: 80px;"></td>
@@ -133,7 +133,7 @@
                     <th align="center" style="padding: 4px;">Jumlah</th>
                     <th align="right" style="padding: 4px;">{{ number_format($bk2->gr_beli, 0) }}</th>
                     <th align="right" style="padding: 4px;"></th>
-                    <th align="right" style="padding: 4px;">{{ number_format($bk2->gr_beli * $bk2->harga, 0) }}</th>
+                    <th align="right" style="padding: 4px;">{{ number_format($bk2->total, 0) }}</th>
                 </tr>
             </tfoot>
         </table>
