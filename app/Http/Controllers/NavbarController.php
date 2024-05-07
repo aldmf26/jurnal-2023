@@ -352,8 +352,14 @@ class NavbarController extends Controller
                 'deskripsi' => 'Mencatat berbagai transaksi keuangan dengan menetapkan langsung rekening di sisi debit dan kredit.',
             ],
             [
-                'judul' => 'Gudang Cetak Ulang',
-                'route' => 'gudangnew.laporan_produksi',
+                'judul' => 'Gudang Bj',
+                'route' => 'gudangBj.index',
+                'img' => 'warehouse3.png',
+                'deskripsi' => 'Mencatat berbagai transaksi keuangan dengan menetapkan langsung rekening di sisi debit dan kredit.',
+            ],
+            [
+                'judul' => 'Gudang Box Sortir Pengawas',
+                'route' => 'gudangBj.bk_sortir',
                 'img' => 'warehouse3.png',
                 'deskripsi' => 'Mencatat berbagai transaksi keuangan dengan menetapkan langsung rekening di sisi debit dan kredit.',
             ],
@@ -380,6 +386,12 @@ class NavbarController extends Controller
             [
                 'judul' => 'Laporan Box Produksi Cabut',
                 'route' => 'gudangnew.laporan_boxproduksi',
+                'img' => 'web.png',
+                'deskripsi' => 'Mencatat berbagai transaksi keuangan dengan menetapkan langsung rekening di sisi debit dan kredit.',
+            ],
+            [
+                'judul' => 'Laporan Box Produksi Cetak',
+                'route' => 'gudangcetak.lap_box_cetak',
                 'img' => 'web.png',
                 'deskripsi' => 'Mencatat berbagai transaksi keuangan dengan menetapkan langsung rekening di sisi debit dan kredit.',
             ],

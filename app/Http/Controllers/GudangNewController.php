@@ -602,7 +602,7 @@ class GudangNewController extends Controller
 
         $sheet1->setCellValue('A1', 'no');
         $sheet1->setCellValue('B1', 'ket / nama partai');
-        $sheet1->setCellValue('C1', 'no nox');
+        $sheet1->setCellValue('C1', 'no box');
         $sheet1->setCellValue('D1', 'tipe');
         $sheet1->setCellValue('E1', 'pengawas');
         $sheet1->setCellValue('F1', 'pcs bk');

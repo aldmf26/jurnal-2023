@@ -27,4 +27,13 @@ class PrintNotaPajakController extends Controller
         ];
         return view('printnota.getdata', $data);
     }
+
+    public function print_nota(Request $r)
+    {
+        $data = [
+            'title' => 'Print Nota',
+            'bk1' => DB::table('bkinpajak')->where('id_bkin', $r->id_bkin)->first(),
+        ];
+        return view('printnota.print_nota', $data);
+    }
 }

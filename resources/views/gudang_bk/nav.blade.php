@@ -14,11 +14,11 @@
             href="{{ route('gudangBk.gudangProduksiGabung', ['nm_gudang' => 'summary_produksi']) }}" type="button"
             role="tab" aria-controls="pills-home" aria-selected="true">Gudang Gabung</a>
     </li>
-    <li class="nav-item" role="presentation">
+    {{-- <li class="nav-item" role="presentation">
         <a class="nav-link {{ $nm_gudang == 'reject' ? 'active' : '' }}"
             href="{{ route('gudangBk.index', ['nm_gudang' => 'reject']) }}" type="button" role="tab"
             aria-controls="pills-home" aria-selected="true">Gudang Reject</a>
-    </li>
+    </li> --}}
     <li class="nav-item" role="presentation">
         <a class="nav-link {{ $nm_gudang == 'wip' ? 'active' : '' }}"
             href="{{ route('halawal.index', ['nm_gudang' => 'wip']) }}" type="button" role="tab"

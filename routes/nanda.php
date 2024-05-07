@@ -9,6 +9,7 @@ use App\Http\Controllers\ConganController;
 use App\Http\Controllers\ControlflowController;
 use App\Http\Controllers\CrudPermissionController;
 use App\Http\Controllers\FakturPenjualanController;
+use App\Http\Controllers\GudangBjController;
 use App\Http\Controllers\GudangBkController;
 use App\Http\Controllers\GudangCetakController;
 use App\Http\Controllers\GudangController;
@@ -498,6 +499,15 @@ Route::middleware('auth')->group(function () {
             Route::post('/save_cetak', 'save_cetak')->name('save_cetak');
             Route::get('/g_ctk_pgws', 'g_ctk_pgws')->name('g_ctk_pgws');
             Route::get('/g_ctk_in_progres', 'g_ctk_in_progres')->name('g_ctk_in_progres');
+            Route::get('/lap_box_cetak', 'lap_box_cetak')->name('lap_box_cetak');
+            Route::get('/export_laporan_boxproduksicetak', 'export_laporan_boxproduksicetak')->name('export_laporan_boxproduksicetak');
+        });
+    Route::controller(GudangBjController::class)
+        ->prefix('gudangBj')
+        ->name('gudangBj.')
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/bk_sortir', 'bk_sortir')->name('bk_sortir');
         });
     Route::controller(PrintNotaPajakController::class)
         ->prefix('printnota')
@@ -505,5 +515,6 @@ Route::middleware('auth')->group(function () {
         ->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/get_data', 'get_data')->name('get_data');
+            Route::get('/print_nota', 'print_nota')->name('print_nota');
         });
 });

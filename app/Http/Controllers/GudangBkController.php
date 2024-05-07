@@ -243,10 +243,54 @@ class GudangBkController extends Controller
 
         $sheet3->getStyle('A2:M' . $kolom - 1)->applyFromArray($style);
 
+        // $spreadsheet->createSheet();
+        // $spreadsheet->setActiveSheetIndex(2);
+        // $sheet4 = $spreadsheet->getActiveSheet();
+        // $sheet4->setTitle('Reject');
+
+        // $sheet4->getStyle("A1:M1")->applyFromArray($style_atas);
+        // $sheet4->setCellValue('A1', 'ID');
+        // $sheet4->setCellValue('B1', 'Buku');
+        // $sheet4->setCellValue('C1', 'Suplier Awal');
+        // $sheet4->setCellValue('D1', 'Date');
+        // $sheet4->setCellValue('E1', 'Grade');
+        // $sheet4->setCellValue('F1', 'Pcs');
+        // $sheet4->setCellValue('G1', 'Gram');
+        // $sheet4->setCellValue('H1', 'Rp/Gr');
+        // $sheet4->setCellValue('I1', 'Lot');
+        // $sheet4->setCellValue('J1', 'Keterangan/Nama Partai Herry');
+        // $sheet4->setCellValue('K1', 'Keterangan/Nama Partai Sinta');
+        // $sheet4->setCellValue('L1', 'Ttl Rp');
+        // $sheet4->setCellValue('M1', 'Lok');
+
+        // $sheet4->setCellValue('O2', 'kl mau import barang baru id kosongkan');
+        // $kolom = 2;
+        // $pembelian = GudangBkModel::export_getPembelianBk('reject');
+        // foreach ($pembelian as $d) {
+        //     $sheet4->setCellValue('A' . $kolom, $d->id_buku_campur);
+        //     $sheet4->setCellValue('B' . $kolom, $d->buku);
+        //     $sheet4->setCellValue('C' . $kolom, $d->suplier_awal);
+        //     $sheet4->setCellValue('D' . $kolom, $d->tgl);
+        //     $sheet4->setCellValue('E' . $kolom, $d->nm_grade);
+        //     $sheet4->setCellValue('F' . $kolom, $d->pcs);
+        //     $sheet4->setCellValue('G' . $kolom, $d->gr);
+        //     $sheet4->setCellValue('H' . $kolom, $d->rupiah);
+        //     $sheet4->setCellValue('I' . $kolom, $d->no_lot);
+        //     $sheet4->setCellValue('J' . $kolom, $d->ket);
+        //     $sheet4->setCellValue('K' . $kolom, $d->ket2);
+        //     $sheet4->setCellValue('L' . $kolom, $d->rupiah * $d->gr);
+        //     $sheet4->setCellValue('M' . $kolom, $d->lok_tgl);
+
+
+        //     $kolom++;
+        // }
+
+        // $sheet4->getStyle('A2:L' . $kolom - 1)->applyFromArray($style);
+
         $spreadsheet->createSheet();
         $spreadsheet->setActiveSheetIndex(2);
         $sheet4 = $spreadsheet->getActiveSheet();
-        $sheet4->setTitle('Reject');
+        $sheet4->setTitle('campur produksi');
 
         $sheet4->getStyle("A1:M1")->applyFromArray($style_atas);
         $sheet4->setCellValue('A1', 'ID');
@@ -265,7 +309,7 @@ class GudangBkController extends Controller
 
         $sheet4->setCellValue('O2', 'kl mau import barang baru id kosongkan');
         $kolom = 2;
-        $pembelian = GudangBkModel::export_getPembelianBk('reject');
+        $pembelian = GudangBkModel::export_getPembelianBk('wip');
         foreach ($pembelian as $d) {
             $sheet4->setCellValue('A' . $kolom, $d->id_buku_campur);
             $sheet4->setCellValue('B' . $kolom, $d->buku);
@@ -281,54 +325,10 @@ class GudangBkController extends Controller
             $sheet4->setCellValue('L' . $kolom, $d->rupiah * $d->gr);
             $sheet4->setCellValue('M' . $kolom, $d->lok_tgl);
 
-
             $kolom++;
         }
 
-        $sheet4->getStyle('A2:L' . $kolom - 1)->applyFromArray($style);
-
-        $spreadsheet->createSheet();
-        $spreadsheet->setActiveSheetIndex(3);
-        $sheet5 = $spreadsheet->getActiveSheet();
-        $sheet5->setTitle('campur produksi');
-
-        $sheet5->getStyle("A1:M1")->applyFromArray($style_atas);
-        $sheet5->setCellValue('A1', 'ID');
-        $sheet5->setCellValue('B1', 'Buku');
-        $sheet5->setCellValue('C1', 'Suplier Awal');
-        $sheet5->setCellValue('D1', 'Date');
-        $sheet5->setCellValue('E1', 'Grade');
-        $sheet5->setCellValue('F1', 'Pcs');
-        $sheet5->setCellValue('G1', 'Gram');
-        $sheet5->setCellValue('H1', 'Rp/Gr');
-        $sheet5->setCellValue('I1', 'Lot');
-        $sheet5->setCellValue('J1', 'Keterangan/Nama Partai Herry');
-        $sheet5->setCellValue('K1', 'Keterangan/Nama Partai Sinta');
-        $sheet5->setCellValue('L1', 'Ttl Rp');
-        $sheet5->setCellValue('M1', 'Lok');
-
-        $sheet5->setCellValue('O2', 'kl mau import barang baru id kosongkan');
-        $kolom = 2;
-        $pembelian = GudangBkModel::export_getPembelianBk('wip');
-        foreach ($pembelian as $d) {
-            $sheet5->setCellValue('A' . $kolom, $d->id_buku_campur);
-            $sheet5->setCellValue('B' . $kolom, $d->buku);
-            $sheet5->setCellValue('C' . $kolom, $d->suplier_awal);
-            $sheet5->setCellValue('D' . $kolom, $d->tgl);
-            $sheet5->setCellValue('E' . $kolom, $d->nm_grade);
-            $sheet5->setCellValue('F' . $kolom, $d->pcs);
-            $sheet5->setCellValue('G' . $kolom, $d->gr);
-            $sheet5->setCellValue('H' . $kolom, $d->rupiah);
-            $sheet5->setCellValue('I' . $kolom, $d->no_lot);
-            $sheet5->setCellValue('J' . $kolom, $d->ket);
-            $sheet5->setCellValue('K' . $kolom, $d->ket2);
-            $sheet5->setCellValue('L' . $kolom, $d->rupiah * $d->gr);
-            $sheet5->setCellValue('M' . $kolom, $d->lok_tgl);
-
-            $kolom++;
-        }
-
-        $sheet5->getStyle('A2:M' . $kolom - 1)->applyFromArray($style);
+        $sheet4->getStyle('A2:M' . $kolom - 1)->applyFromArray($style);
 
         // $spreadsheet->createSheet();
         // $spreadsheet->setActiveSheetIndex(5);

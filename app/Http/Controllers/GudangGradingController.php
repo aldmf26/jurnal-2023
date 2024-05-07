@@ -9,7 +9,7 @@ use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 
 class GudangGradingController extends Controller
 {
-    protected $link = "http://127.0.0.1:8000";
+    protected $link = "https://sarang.ptagafood.com";
     public function getApi()
     {
         return Http::get("$this->link/api/gudang_grading")->object();
@@ -17,7 +17,7 @@ class GudangGradingController extends Controller
 
     public function index()
     {
-        
+
         $data = [
             'title' => 'Gudang Siap Grading',
             'datas' => $this->getApi()
@@ -73,11 +73,11 @@ class GudangGradingController extends Controller
             'G' => 'cost ctk',
         ];
         foreach ($koloms as $kolom => $k) {
-            $sheet1->setCellValue("$kolom".'1', $k);
+            $sheet1->setCellValue("$kolom" . '1', $k);
         }
 
         $row = 2;
-        foreach($get->cetak as $d){
+        foreach ($get->cetak as $d) {
             $sheet1->setCellValue("A$row", $d->tipe);
             $sheet1->setCellValue("B$row", $d->no_box);
             $sheet1->setCellValue("C$row", $d->pcs_akhir);
@@ -87,7 +87,7 @@ class GudangGradingController extends Controller
             $sheet1->setCellValue("G$row", $d->cost_cetak);
             $row++;
         }
-        foreach($get->cabut_selesai as $d){
+        foreach ($get->cabut_selesai as $d) {
             $sheet1->setCellValue("A$row", $d->tipe);
             $sheet1->setCellValue("B$row", $d->no_box);
             $sheet1->setCellValue("C$row", $d->pcs_akhir);
@@ -97,7 +97,7 @@ class GudangGradingController extends Controller
             $sheet1->setCellValue("G$row", $d->cost_cetak);
             $row++;
         }
-        foreach($get->suntikan as $d){
+        foreach ($get->suntikan as $d) {
             $sheet1->setCellValue("A$row", $d->tipe);
             $sheet1->setCellValue("B$row", $d->no_box);
             $sheet1->setCellValue("C$row", $d->pcs_akhir);
@@ -126,10 +126,10 @@ class GudangGradingController extends Controller
             'G' => 'cost ctk',
         ];
         foreach ($koloms as $kolom => $k) {
-            $sheet2->setCellValue("$kolom".'1', $k);
+            $sheet2->setCellValue("$kolom" . '1', $k);
         }
         $row = 2;
-        foreach($get->grading_selesai as $d){
+        foreach ($get->grading_selesai as $d) {
             $sheet2->setCellValue("A$row", $d->tipe);
             $sheet2->setCellValue("B$row", $d->no_box);
             $sheet2->setCellValue("C$row", $d->pcs_awal);
@@ -156,10 +156,10 @@ class GudangGradingController extends Controller
             'E' => 'ttl rp',
         ];
         foreach ($koloms as $kolom => $k) {
-            $sheet3->setCellValue("$kolom".'1', $k);
+            $sheet3->setCellValue("$kolom" . '1', $k);
         }
         $row = 2;
-        foreach($get->gudangBj as $g){
+        foreach ($get->gudangBj as $g) {
             $sheet3->setCellValue("A$row", $g->grade);
             $sheet3->setCellValue("B$row", $g->pcs - $g->pcs_kredit);
             $sheet3->setCellValue("C$row", $g->gr - $g->gr_kredit);
@@ -183,10 +183,10 @@ class GudangGradingController extends Controller
             'E' => 'ttl rp',
         ];
         foreach ($koloms as $kolom => $k) {
-            $sheet4->setCellValue("$kolom".'1', $k);
+            $sheet4->setCellValue("$kolom" . '1', $k);
         }
         $row = 2;
-        foreach($get->historyBoxKecil as $g){
+        foreach ($get->historyBoxKecil as $g) {
             $sheet4->setCellValue("A$row", $g->grade);
             $sheet4->setCellValue("B$row", $g->pcs);
             $sheet4->setCellValue("C$row", $g->gr);
@@ -206,7 +206,9 @@ class GudangGradingController extends Controller
         $writer->save('php://output');
         exit();
     }
-    
+
+
+
     public function selesai()
     {
         $data = [
@@ -219,16 +221,6 @@ class GudangGradingController extends Controller
 
     public function create_suntikan(Request $r)
     {
-        $datas[] = [
-            'tipe' => $r->tipe,
-            'no_box' => $r->no_box,
-            'pcs' => $r->pcs,
-            'gr' => $r->gr,
-            'ttl_rp' => $r->ttl_rp,
-            'cost_cabut' => $r->cost_cbt,
-            'cost_cetak' => $r->cost_ctk,
-        ];
-        dd($r->except('_token'));
-        // $response = Http::post('http://127.0.0.1:8000/api/saveSuntikanGrading', $r->all());
+        $response = Http::post('https://sarang.ptagafood.com/api/saveSuntikanGrading', $r->all());
     }
 }
