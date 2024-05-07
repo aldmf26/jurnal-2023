@@ -448,11 +448,23 @@ class GudangNewController extends Controller
 
     public function save_susut(Request $r)
     {
-        $data = [
-            'pcs' => $r->pcs_susut,
-            'gr' => $r->gr_susut
-        ];
-        DB::table('table_susut')->where('ket', $r->partai)->where('gudang', 'wip')->update($data);
+        if (!empty($r->partai_kosong)) {
+            $data = [
+                'pcs' => $r->pcs_susut,
+                'gr' => $r->gr_susut,
+                'ket' => $r->partai_kosong,
+                'gudang' => 'wip'
+            ];
+            DB::table('table_susut')->insert($data);
+        } else {
+            $data = [
+                'pcs' => $r->pcs_susut,
+                'gr' => $r->gr_susut
+            ];
+            DB::table('table_susut')->where('ket', $r->partai)->where('gudang', 'wip')->update($data);
+        }
+
+
         return redirect()->route('gudangnew.gudang_p_kerja')->with('sukses', 'Data susut ditambhkan');
     }
     public function export_g_cabut(Request $r)
