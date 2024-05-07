@@ -98,20 +98,26 @@
                             @endforeach
                             @foreach ($datas->suntikan as $i => $d)
                             @php
-                                $ttlPcs += $d->pcs_akhir;
-                                $ttlGr += $d->gr_akhir;
-                                $ttlRp += $d->total_rp;
-                                $ttlCostCbt += $d->cost_cabut;
-                                $ttlCostCtk += $d->cost_cetak;
+                                $pcs_akhir = $d->pcs_akhir ?? 0;
+                                $gr_akhir = $d->gr_akhir ?? 0;
+                                $total_rp = $d->total_rp ?? 0;
+                                $cost_cabut = $d->cost_cabut ?? 0;
+                                $cost_cetak = $d->cost_cetak ?? 0;
+
+                                $ttlPcs += $pcs_akhir;
+                                $ttlGr += $gr_akhir;
+                                $ttlRp += $total_rp;
+                                $ttlCostCbt += $cost_cabut;
+                                $ttlCostCtk += $cost_cetak;
                             @endphp
                                 <tr>
                                     <td>{{ $d->tipe }}</td>
                                     <td>{{ $d->no_box }}</td>
-                                    <td align="right">{{ number_format($d->pcs_akhir, 0) }}</td>
-                                    <td align="right">{{ number_format($d->gr_akhir, 0) }}</td>
-                                    <td align="right">{{ number_format($d->total_rp, 0) }}</td>
-                                    <td align="right">{{ number_format($d->cost_cabut, 0) }}</td>
-                                    <td align="right">{{ number_format($d->cost_cetak, 0) }}</td>
+                                    <td align="right">{{ number_format($pcs_akhir, 0) }}</td>
+                                    <td align="right">{{ number_format($gr_akhir, 0) }}</td>
+                                    <td align="right">{{ number_format($total_rp, 0) }}</td>
+                                    <td align="right">{{ number_format($cost_cabut, 0) }}</td>
+                                    <td align="right">{{ number_format($cost_cetak, 0) }}</td>
                                 </tr>
                             @endforeach
                         </tbody>

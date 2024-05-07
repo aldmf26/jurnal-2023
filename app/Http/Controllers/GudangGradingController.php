@@ -206,8 +206,6 @@ class GudangGradingController extends Controller
         $writer->save('php://output');
         exit();
     }
-
-    
     
     public function selesai()
     {
@@ -221,6 +219,16 @@ class GudangGradingController extends Controller
 
     public function create_suntikan(Request $r)
     {
-        $response = Http::post('http://127.0.0.1:8000/api/saveSuntikanGrading', $r->all());
+        $datas[] = [
+            'tipe' => $r->tipe,
+            'no_box' => $r->no_box,
+            'pcs' => $r->pcs,
+            'gr' => $r->gr,
+            'ttl_rp' => $r->ttl_rp,
+            'cost_cabut' => $r->cost_cbt,
+            'cost_cetak' => $r->cost_ctk,
+        ];
+        dd($r->except('_token'));
+        // $response = Http::post('http://127.0.0.1:8000/api/saveSuntikanGrading', $r->all());
     }
 }
