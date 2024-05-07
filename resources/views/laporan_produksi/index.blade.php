@@ -204,7 +204,9 @@
                                     $ttlbksisapgwspcs += $pcs_awal_bk - $pcs_awal_cbt;
                                     $ttlbksisapgwsgr += $gr_awal_bk - ($gr_awal_cbt + $gr_awal_eo);
                                     $ttlrpcost += $ttl_rp_cbt + $ttl_rp_eo;
-                                    $ttlrpbk += (($gr_awal_cbt + $gr_awal_eo) / $bkGr) * ($bkGr * $hrga_modal_satuan);
+                                    $ttlrpbk += empty($gr_awal_cbt)
+                                        ? 0
+                                        : (($gr_awal_cbt + $gr_awal_eo) / $bkGr) * ($bkGr * $hrga_modal_satuan);
                                 @endphp
 
                                 @php
