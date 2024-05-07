@@ -107,11 +107,11 @@
                                 <tr>
                                     <td>{{ $d->tipe }}</td>
                                     <td>{{ $d->no_box }}</td>
-                                    <td align="right">{{ number_format($d->pcs_akhir, 0) }}</td>
-                                    <td align="right">{{ number_format($d->gr_akhir, 0) }}</td>
-                                    <td align="right">{{ number_format($d->total_rp, 0) }}</td>
-                                    <td align="right">{{ number_format($d->cost_cabut, 0) }}</td>
-                                    <td align="right">{{ number_format($d->cost_cetak, 0) }}</td>
+                                    <td align="right">{{ number_format($pcs_akhir, 0) }}</td>
+                                    <td align="right">{{ number_format($gr_akhir, 0) }}</td>
+                                    <td align="right">{{ number_format($total_rp, 0) }}</td>
+                                    <td align="right">{{ number_format($cost_cabut, 0) }}</td>
+                                    <td align="right">{{ number_format($cost_cetak, 0) }}</td>
                                 </tr>
                             @endforeach
                         </tbody>
