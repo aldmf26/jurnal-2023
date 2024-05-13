@@ -439,9 +439,22 @@ class GudangNewController extends Controller
     {
         $partai = $r->partai;
         $get = DB::table('table_susut')->where('ket', $partai)->where('gudang', 'wip')->first();
+        $linkApi = $this->linkApi;
+        $response = Http::get("$linkApi/datacabutsum2", ['nm_partai' => $partai]);
+        $resSum = $response->object();
+        $c = $resSum;
+
+        $bk = DB::selectOne("SELECT sum(a.gr * a.rupiah) as ttl_rp
+        FROM buku_campur_approve as a 
+        left join buku_campur as b on b.id_buku_campur = a.id_buku_campur
+        where a.gudang = 'wip' and b.gabung = 'T' and a.selesai_2 = 'T' and a.ket2 = 'bjm 1033';
+        ");
+
+
         $data = [
             'partai' => $partai,
-            'get_partai' => $get
+            'get_partai' => $get,
+            'rp_satuan' => $bk->ttl_rp / $c->gr_awal_bk
         ];
         return view('gudangnew.get_susut', $data);
     }
@@ -456,13 +469,20 @@ class GudangNewController extends Controller
                 'gudang' => 'wip'
             ];
             DB::table('table_susut')->insert($data);
+            $response =  Http::post("https://sarang.ptagafood.com/api/apibk/edit_bk?partai=$r->partai_kosong&harga=$r->rp_satuan");
         } else {
             $data = [
                 'pcs' => $r->pcs_susut,
                 'gr' => $r->gr_susut
             ];
             DB::table('table_susut')->where('ket', $r->partai)->where('gudang', 'wip')->update($data);
+            $response =  Http::post("https://sarang.ptagafood.com/api/apibk/edit_bk?partai=$r->partai&harga=$r->rp_satuan");
         }
+
+
+
+
+
 
 
         return redirect()->route('gudangnew.gudang_p_kerja')->with('sukses', 'Data susut ditambhkan');

@@ -42,6 +42,7 @@
                             <th>Grade</th>
                             <th class="text-end">Pcs bk</th>
                             <th class="text-end">Gr bk</th>
+                            <th class="text-end">Cost bk</th>
                             <th class="text-end">Pcs timbang ulang</th>
                             <th class="text-end">Gr timbang ulang</th>
                             <th class="text-end">Pcs Susut</th>
@@ -84,6 +85,7 @@
                                 <td>{{ $g->nm_grade }}</td>
                                 <td class="text-end">{{ number_format($g->pcs, 0) }}</td>
                                 <td class="text-end">{{ number_format($g->gr, 0) }}</td>
+                                <td class="text-end">{{ number_format($g->total_rp, 0) }}</td>
                                 <td class="text-end">{{ number_format($bkPcs, 0) }}</td>
                                 <td class="text-end">{{ number_format($bkGr, 0) }}</td>
                                 <td class="text-end">

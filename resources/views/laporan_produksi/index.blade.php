@@ -287,7 +287,7 @@
                                     <td class="text-end ">{{ number_format($c->gr_flx ?? 0, 0) }}</td>
 
                                     <td class="text-end ">
-                                        {{ number_format((($gr_awal_cbt + $gr_awal_eo) / $bkGr) * ($bkGr * $hrga_modal_satuan), 0) }}
+                                        {{ empty($gr_awal_cbt) ? 0 : number_format((($gr_awal_cbt + $gr_awal_eo) / $bkGr) * ($bkGr * $hrga_modal_satuan), 0) }}
                                     </td>
                                     <td class="text-end ">{{ number_format($ttl_rp_cbt + $ttl_rp_eo, 0) }}</td>
 
@@ -311,16 +311,19 @@
                                         $gr_cu = $d->gr_cu ?? 0;
                                         $gr_akhir_ctk = $d->gr_akhir_ctk ?? 0;
 
-                                        $susut =
-                                            $gr_akhir_ctk == 0
-                                                ? 0
-                                                : (1 - ($gr_akhir_ctk + $gr_cu) / $gr_awal_ctk) * 100;
+                                        // $susut =
+                                        //     $gr_akhir_ctk == 0
+                                        //         ? 0
+                                        //         : (1 - ($gr_akhir_ctk + $gr_cu) / $gr_awal_ctk) * 100;
 
-                                        $cost_bk_bts_cbt =
-                                            (($gr_awal_cbt + $gr_awal_eo) / $bkGr) * ($bkGr * $hrga_modal_satuan);
+                                        $cost_bk_bts_cbt = empty($gr_awal_cbt)
+                                            ? 0
+                                            : (($gr_awal_cbt + $gr_awal_eo) / $bkGr) * ($bkGr * $hrga_modal_satuan);
                                     @endphp
 
-                                    <td class="text-end ">{{ number_format($susut, 0) }}%</td>
+                                    <td class="text-end ">
+                                        {{-- {{ number_format($susut, 0) }}% --}}
+                                    </td>
                                     <td class="text-end ">
                                         {{-- {{ number_format(($gr_awal_ctk / ($gr_akhir_cbt + $gr_akhir_eo)) * $cost_bk_bts_cbt, 0) }}
                                         / --}}

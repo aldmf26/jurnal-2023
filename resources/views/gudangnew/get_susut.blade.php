@@ -1,4 +1,6 @@
 <div class="row">
+    <input type="hidden" name="rp_satuan" value="{{ $rp_satuan }}">
+
     @if (empty($get_partai->ket))
         <div class="col-lg-4">
             <label for="">Partai</label>
