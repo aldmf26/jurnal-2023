@@ -75,8 +75,7 @@ class GudangNewController extends Controller
     public function tbh_baris(Request $r)
     {
         $data = [
-            'count' => $r->count
-
+            'count' => $r->count,
         ];
         return view('gudangnew.tbh_baris', $data);
     }
