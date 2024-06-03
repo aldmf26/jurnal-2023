@@ -315,54 +315,7 @@ class NavbarController extends Controller
                 'img' => 'warehouse3.png',
                 'deskripsi' => 'Mencatat berbagai transaksi keuangan dengan menetapkan langsung rekening di sisi debit dan kredit.',
             ],
-            [
-                'judul' => 'Gudang Cabut Pengawas',
-                'route' => 'gudangnew.gudang_c_pgws',
-                'img' => 'warehouse3.png',
-                'deskripsi' => 'Mencatat berbagai transaksi keuangan dengan menetapkan langsung rekening di sisi debit dan kredit.',
-            ],
-            [
-                'judul' => 'Gudang Cabut In Progress',
-                'route' => 'gudangnew.gudang_cabut',
-                'img' => 'warehouse3.png',
-                'deskripsi' => 'Mencatat berbagai transaksi keuangan dengan menetapkan langsung rekening di sisi debit dan kredit.',
-            ],
-            [
-                'judul' => 'Gudang Box kerja ctk',
-                'route' => 'gudangcetak.index',
-                'img' => 'warehouse3.png',
-                'deskripsi' => 'Mencatat berbagai transaksi keuangan dengan menetapkan langsung rekening di sisi debit dan kredit.',
-            ],
-            [
-                'judul' => 'Gudang Cetak Pengawas',
-                'route' => 'gudangcetak.g_ctk_pgws',
-                'img' => 'warehouse3.png',
-                'deskripsi' => 'Mencatat berbagai transaksi keuangan dengan menetapkan langsung rekening di sisi debit dan kredit.',
-            ],
-            [
-                'judul' => 'Gudang Cetak In Progress',
-                'route' => 'gudangcetak.g_ctk_in_progres',
-                'img' => 'warehouse3.png',
-                'deskripsi' => 'Mencatat berbagai transaksi keuangan dengan menetapkan langsung rekening di sisi debit dan kredit.',
-            ],
-            [
-                'judul' => 'Gudang Grading',
-                'route' => 'gudang_grading.index',
-                'img' => 'warehouse3.png',
-                'deskripsi' => 'Mencatat berbagai transaksi keuangan dengan menetapkan langsung rekening di sisi debit dan kredit.',
-            ],
-            [
-                'judul' => 'Gudang Bj',
-                'route' => 'gudangBj.index',
-                'img' => 'warehouse3.png',
-                'deskripsi' => 'Mencatat berbagai transaksi keuangan dengan menetapkan langsung rekening di sisi debit dan kredit.',
-            ],
-            [
-                'judul' => 'Gudang Box Sortir Pengawas',
-                'route' => 'gudangBj.bk_sortir',
-                'img' => 'warehouse3.png',
-                'deskripsi' => 'Mencatat berbagai transaksi keuangan dengan menetapkan langsung rekening di sisi debit dan kredit.',
-            ],
+
         ];
         $title = 'Gudang';
         return view('navbar.data_master', compact(['data', 'title']));
