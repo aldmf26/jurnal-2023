@@ -50,9 +50,8 @@ class PembayaranBkController extends Controller
         $tgl2 =  $this->tgl2;
         $tipe = $r->tipe;
         if ($tipe == 'D') {
-            $pembelian = DB::select("SELECT a.tgl,a.admin, a.no_nota,b.nm_suplier, a.suplier_akhir, a.total_harga, a.lunas, c.kredit, c.debit
+            $pembelian = DB::select("SELECT a.tgl,a.admin, a.no_nota, a.suplier_akhir, a.total_harga, a.lunas, c.kredit, c.debit
             FROM invoice_bk as a 
-            left join tb_suplier as b on b.id_suplier = a.id_suplier
             left join (
             SELECT c.no_nota , sum(c.debit) as debit, sum(c.kredit) as kredit  FROM bayar_bk as c
             group by c.no_nota
@@ -61,9 +60,8 @@ class PembayaranBkController extends Controller
             order by a.id_invoice_bk ASC
             ");
         } elseif (empty($tipe)) {
-            $pembelian = DB::select("SELECT a.tgl,a.admin, a.no_nota,b.nm_suplier, a.suplier_akhir, a.total_harga, a.lunas, c.kredit, c.debit
+            $pembelian = DB::select("SELECT a.tgl,a.admin, a.no_nota, a.suplier_akhir, a.total_harga, a.lunas, c.kredit, c.debit
             FROM invoice_bk as a 
-            left join tb_suplier as b on b.id_suplier = a.id_suplier
             left join (
             SELECT c.no_nota , sum(c.debit) as debit, sum(c.kredit) as kredit  FROM bayar_bk as c
             group by c.no_nota
@@ -72,9 +70,8 @@ class PembayaranBkController extends Controller
             order by a.id_invoice_bk ASC
             ");
         } elseif ($tipe == 'Y') {
-            $pembelian = DB::select("SELECT a.tgl,a.admin, a.no_nota,b.nm_suplier, a.suplier_akhir, a.total_harga, a.lunas, c.kredit, c.debit
+            $pembelian = DB::select("SELECT a.tgl,a.admin, a.no_nota, a.suplier_akhir, a.total_harga, a.lunas, c.kredit, c.debit
             FROM invoice_bk as a 
-            left join tb_suplier as b on b.id_suplier = a.id_suplier
             left join (
             SELECT c.no_nota , sum(c.debit) as debit, sum(c.kredit) as kredit  FROM bayar_bk as c
             group by c.no_nota
@@ -83,9 +80,8 @@ class PembayaranBkController extends Controller
             order by a.id_invoice_bk ASC
             ");
         } elseif ($tipe == 'T') {
-            $pembelian = DB::select("SELECT a.tgl,a.admin, a.no_nota,b.nm_suplier, a.suplier_akhir, a.total_harga, a.lunas, c.kredit, c.debit
+            $pembelian = DB::select("SELECT a.tgl,a.admin, a.no_nota, a.suplier_akhir, a.total_harga, a.lunas, c.kredit, c.debit
             FROM invoice_bk as a 
-            left join tb_suplier as b on b.id_suplier = a.id_suplier
             left join (
             SELECT c.no_nota , sum(c.debit) as debit, sum(c.kredit) as kredit  FROM bayar_bk as c
             group by c.no_nota
@@ -96,9 +92,9 @@ class PembayaranBkController extends Controller
         }
 
 
-        $draft = DB::select("SELECT a.tgl, a.no_nota,b.nm_suplier, a.suplier_akhir, a.total_harga, a.lunas, c.kredit, c.debit
+        $draft = DB::select("SELECT a.tgl, a.no_nota, a.suplier_akhir, a.total_harga, a.lunas, c.kredit, c.debit
         FROM invoice_bk as a 
-        left join tb_suplier as b on b.id_suplier = a.id_suplier
+        
         left join (
         SELECT c.no_nota , sum(c.debit) as debit, sum(c.kredit) as kredit  FROM bayar_bk as c
         group by c.no_nota
@@ -107,9 +103,9 @@ class PembayaranBkController extends Controller
         order by a.id_invoice_bk ASC
         ");
 
-        $paid =  DB::select("SELECT a.tgl, a.no_nota,b.nm_suplier, a.suplier_akhir, a.total_harga, a.lunas, c.kredit, c.debit
+        $paid =  DB::select("SELECT a.tgl, a.no_nota, a.suplier_akhir, a.total_harga, a.lunas, c.kredit, c.debit
         FROM invoice_bk as a 
-        left join tb_suplier as b on b.id_suplier = a.id_suplier
+        
         left join (
         SELECT c.no_nota , sum(c.debit) as debit, sum(c.kredit) as kredit  FROM bayar_bk as c
         group by c.no_nota
@@ -118,9 +114,9 @@ class PembayaranBkController extends Controller
         order by a.id_invoice_bk ASC
         ");
 
-        $unpaid = DB::select("SELECT a.tgl, a.no_nota,b.nm_suplier, a.suplier_akhir, a.total_harga, a.lunas, if(c.kredit is null , 0 ,c.kredit) as kredit, if(c.debit is null , 0,c.debit) as debit
+        $unpaid = DB::select("SELECT a.tgl, a.no_nota, a.suplier_akhir, a.total_harga, a.lunas, if(c.kredit is null , 0 ,c.kredit) as kredit, if(c.debit is null , 0,c.debit) as debit
         FROM invoice_bk as a 
-        left join tb_suplier as b on b.id_suplier = a.id_suplier
+        
         left join (
         SELECT c.no_nota , sum(if(c.debit is null , 0, c.debit)) as debit, sum(c.kredit) as kredit  FROM bayar_bk as c
         group by c.no_nota
