@@ -5,7 +5,7 @@
             <th width="110px">Tanggal</th>
             <th width="102px">Nota BK</th>
             <th width="102px">Nota Lot</th>
-            <th width="184px">Suplier Akhir</th>
+            <th width="184px">Suplier</th>
             <th width="151px">Keterangan</th>
             <th width="125px">Gr Beli</th>
             <th width="125px">Harga rata2</th>
