@@ -100,7 +100,7 @@ class GudangNewController extends Controller
             DB::table('buku_campur_approve')->insert([
                 'id_buku_campur' => $idBukuCampur,
                 'buku' => '',
-                'suplier_awal' => $r->suplier_awal[$x],
+                'suplier_awal' => ' ',
                 'tgl' => $r->tgl[$x],
                 'nm_grade' => $r->grade[$x],
                 'pcs' => $r->pcs[$x],

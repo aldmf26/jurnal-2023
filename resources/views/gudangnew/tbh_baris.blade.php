@@ -2,10 +2,10 @@
     <div class="col-lg-12">
         <hr>
     </div>
-    <div class="col-lg-2">
+    {{-- <div class="col-lg-2">
         <label for="">Suplier Awal</label>
         <input type="text" class="form-control" name="suplier_awal[]">
-    </div>
+    </div> --}}
     <div class="col-lg-2">
         <label for="">Date</label>
         <input type="date" class="form-control" name="tgl[]">

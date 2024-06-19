@@ -577,11 +577,11 @@ class GudangBkController extends Controller
         exit();
     }
 
-    public function import_buku_campur_bk(Request $r)
-    {
-        $this->import_buku_bk($r);
-        return redirect()->route('gudangnew.index')->with('sukses', 'Data berhasil import');
-    }
+    // public function import_buku_campur_bk(Request $r)
+    // {
+    //     $this->import_buku_bk($r);
+    //     return redirect()->route('gudangnew.index')->with('sukses', 'Data berhasil import');
+    // }
 
 
     private function import_gudang_produksi(Request $r)
@@ -850,7 +850,7 @@ class GudangBkController extends Controller
         }
     }
 
-    private function import_buku_bk(Request $r)
+    public function import_buku_campur_bk(Request $r)
     {
 
         $hasError = false; // Variabel flag untuk melacak apakah ada kesalahan
@@ -1008,9 +1008,10 @@ class GudangBkController extends Controller
 
             // Jika ada kesalahan, batalkan semua pembaruan
             if ($hasError) {
-                echo 'Pembaruan dibatalkan karena terjadi kesalahan.';
+                return redirect()->back()->with('error', 'Nama sheet yg di import tidak sesuai');
             }
         }
+        return redirect()->route('gudangnew.index')->with('sukses', 'Data berhasil import');
     }
 
 

@@ -66,7 +66,9 @@
                             <td>{{ number_format($c->gr, 0) }}</td>
                             @foreach ($grade as $g)
                                 @php
-                                    $persen = DB::selectOne("SELECT a.gr  FROM tb_cong as a where a.no_nota = '$c->no_nota' and a.id_grade = '$g->id_grade_cong' and a.ket = '$c->ket'");
+                                    $persen = DB::selectOne(
+                                        "SELECT a.gr  FROM tb_cong as a where a.no_nota = '$c->no_nota' and a.id_grade = '$g->id_grade_cong' and a.ket = '$c->ket'",
+                                    );
                                 @endphp
                                 <td>{{ empty($persen->gr) ? '0' : number_format(($persen->gr / $c->gr) * 100, 2) }}
                                 </td>

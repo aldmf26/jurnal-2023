@@ -395,7 +395,6 @@ Route::middleware('auth')->group(function () {
             Route::post('/import_wip_cetak', 'import_wip_cetak')->name('import_wip_cetak');
             Route::post('/save_bj_baru', 'save_bj_baru')->name('save_bj_baru');
             Route::post('/pindah_gudang', 'pindah_gudang')->name('pindah_gudang');
-
             Route::post('/export_gudang_produksi', 'export_gudang_produksi')->name('export_gudang_produksi');
         });
     Route::controller(SummaryController::class)

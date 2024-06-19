@@ -3,7 +3,6 @@
         <tr>
             <th width="39px">#</th>
             <th width="110px">Tanggal</th>
-            <th width="177px">Suplier Awal</th>
             <th width="102px">Nota BK</th>
             <th width="102px">Nota Lot</th>
             <th width="184px">Suplier Akhir</th>
@@ -48,7 +47,7 @@
             <tr>
                 <td>{{ $p->id_invoice_bk }}</td>
                 <td>{{ $p->tgl }}</td>
-                <td>{{ strtoupper($p->nm_suplier) }}</td>
+                {{-- <td>{{ strtoupper($p->nm_suplier) }}</td> --}}
                 <td>{{ $p->no_nota }}</td>
                 <td>{{ $p->no_lot }}</td>
                 <td>{{ strtoupper($p->suplier_akhir) }}</td>
