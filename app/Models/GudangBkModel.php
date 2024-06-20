@@ -19,7 +19,7 @@ class GudangBkModel extends Model
         a.no_lot,  a.gudang, a.gabung,
         if(a.approve = 'T',b.nm_grade,d.nm_grade) as nm_grade, 
         if(a.approve = 'T',c.no_campur,d.buku) as buku, 
-        if(a.approve = 'T',f.nm_suplier,d.suplier_awal) as suplier_awal, 
+        
         if(a.approve = 'T',a.pcs,d.pcs) as pcs, 
         if(a.approve = 'T',a.gr,d.gr) as gr, 
         if(a.approve = 'T',a.rupiah,if(d.rupiah is null , a.rupiah,d.rupiah)) as rupiah,

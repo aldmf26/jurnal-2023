@@ -120,43 +120,43 @@ class GudangBkController extends Controller
         $sheet1 = $spreadsheet->getActiveSheet();
         $sheet1->setTitle('baku dari bahan sdh grade');
 
-        $sheet1->getStyle("A1:M1")->applyFromArray($style_atas);
+        $sheet1->getStyle("A1:L1")->applyFromArray($style_atas);
         $sheet1->setCellValue('A1', 'ID');
         $sheet1->setCellValue('B1', 'Buku');
-        $sheet1->setCellValue('C1', 'Suplier Awal');
-        $sheet1->setCellValue('D1', 'Date');
-        $sheet1->setCellValue('E1', 'Grade');
-        $sheet1->setCellValue('F1', 'Pcs');
-        $sheet1->setCellValue('G1', 'Gram');
-        $sheet1->setCellValue('H1', 'Rp/Gr');
-        $sheet1->setCellValue('I1', 'Lot');
-        $sheet1->setCellValue('J1', 'Keterangan/Nama Partai Herry');
-        $sheet1->setCellValue('K1', 'Keterangan/Nama Partai Sinta');
-        $sheet1->setCellValue('L1', 'Ttl Rp');
-        $sheet1->setCellValue('M1', 'Lok');
-        $sheet1->setCellValue('O2', 'kl mau import barang baru id kosongkan');
+        // $sheet1->setCellValue('C1', 'Suplier Awal');
+        $sheet1->setCellValue('C1', 'Date');
+        $sheet1->setCellValue('D1', 'Grade');
+        $sheet1->setCellValue('E1', 'Pcs');
+        $sheet1->setCellValue('F1', 'Gram');
+        $sheet1->setCellValue('G1', 'Rp/Gr');
+        $sheet1->setCellValue('H1', 'Lot');
+        $sheet1->setCellValue('I1', 'Keterangan/Nama Partai Herry');
+        $sheet1->setCellValue('J1', 'Keterangan/Nama Partai Sinta');
+        $sheet1->setCellValue('K1', 'Ttl Rp');
+        $sheet1->setCellValue('L1', 'Lok');
+        $sheet1->setCellValue('N2', 'kl mau import barang baru id kosongkan');
         $kolom = 2;
         $pembelian = GudangBkModel::export_getPembelianBk('bk');
         foreach ($pembelian as $d) {
             $sheet1->setCellValue('A' . $kolom, $d->id_buku_campur);
             $sheet1->setCellValue('B' . $kolom, $d->buku);
-            $sheet1->setCellValue('C' . $kolom, $d->suplier_awal);
-            $sheet1->setCellValue('D' . $kolom, $d->tgl);
-            $sheet1->setCellValue('E' . $kolom, $d->nm_grade);
-            $sheet1->setCellValue('F' . $kolom, $d->pcs);
-            $sheet1->setCellValue('G' . $kolom, $d->gr);
-            $sheet1->setCellValue('H' . $kolom, $d->rupiah);
-            $sheet1->setCellValue('I' . $kolom, $d->no_lot);
-            $sheet1->setCellValue('J' . $kolom, $d->ket);
-            $sheet1->setCellValue('K' . $kolom, $d->ket2);
-            $sheet1->setCellValue('L' . $kolom, $d->rupiah * $d->gr);
-            $sheet1->setCellValue('M' . $kolom, $d->lok_tgl);
+            // $sheet1->setCellValue('C' . $kolom, $d->suplier_awal);
+            $sheet1->setCellValue('C' . $kolom, $d->tgl);
+            $sheet1->setCellValue('D' . $kolom, $d->nm_grade);
+            $sheet1->setCellValue('E' . $kolom, $d->pcs);
+            $sheet1->setCellValue('F' . $kolom, $d->gr);
+            $sheet1->setCellValue('G' . $kolom, $d->rupiah);
+            $sheet1->setCellValue('H' . $kolom, $d->no_lot);
+            $sheet1->setCellValue('I' . $kolom, $d->ket);
+            $sheet1->setCellValue('J' . $kolom, $d->ket2);
+            $sheet1->setCellValue('K' . $kolom, $d->rupiah * $d->gr);
+            $sheet1->setCellValue('L' . $kolom, $d->lok_tgl);
 
 
             $kolom++;
         }
 
-        $sheet1->getStyle('A2:M' . $kolom - 1)->applyFromArray($style);
+        $sheet1->getStyle('A2:L' . $kolom - 1)->applyFromArray($style);
 
         // $spreadsheet->createSheet();
         // $spreadsheet->setActiveSheetIndex(1);
@@ -206,42 +206,42 @@ class GudangBkController extends Controller
         $sheet3 = $spreadsheet->getActiveSheet();
         $sheet3->setTitle('Rencana Produksi');
 
-        $sheet3->getStyle("A1:M1")->applyFromArray($style_atas);
+        $sheet3->getStyle("A1:L1")->applyFromArray($style_atas);
         $sheet3->setCellValue('A1', 'ID');
         $sheet3->setCellValue('B1', 'Buku');
-        $sheet3->setCellValue('C1', 'Suplier Awal');
-        $sheet3->setCellValue('D1', 'Date');
-        $sheet3->setCellValue('E1', 'Grade');
-        $sheet3->setCellValue('F1', 'Pcs');
-        $sheet3->setCellValue('G1', 'Gram');
-        $sheet3->setCellValue('H1', 'Rp/Gr');
-        $sheet3->setCellValue('I1', 'Lot');
-        $sheet3->setCellValue('J1', 'Keterangan/Nama Partai Herry');
-        $sheet3->setCellValue('K1', 'Keterangan/Nama Partai Sinta');
-        $sheet3->setCellValue('L1', 'Ttl Rp');
-        $sheet3->setCellValue('M1', 'Lok');
-        $sheet3->setCellValue('O2', 'kl mau import barang baru id kosongkan');
+
+        $sheet3->setCellValue('C1', 'Date');
+        $sheet3->setCellValue('D1', 'Grade');
+        $sheet3->setCellValue('E1', 'Pcs');
+        $sheet3->setCellValue('F1', 'Gram');
+        $sheet3->setCellValue('G1', 'Rp/Gr');
+        $sheet3->setCellValue('H1', 'Lot');
+        $sheet3->setCellValue('I1', 'Keterangan/Nama Partai Herry');
+        $sheet3->setCellValue('J1', 'Keterangan/Nama Partai Sinta');
+        $sheet3->setCellValue('K1', 'Ttl Rp');
+        $sheet3->setCellValue('L1', 'Lok');
+        $sheet3->setCellValue('N2', 'kl mau import barang baru id kosongkan');
         $kolom = 2;
         $pembelian = GudangBkModel::export_getPembelianBk('produksi');
         foreach ($pembelian as $d) {
             $sheet3->setCellValue('A' . $kolom, $d->id_buku_campur);
             $sheet3->setCellValue('B' . $kolom, $d->buku);
-            $sheet3->setCellValue('C' . $kolom, $d->suplier_awal);
-            $sheet3->setCellValue('D' . $kolom, $d->tgl);
-            $sheet3->setCellValue('E' . $kolom, $d->nm_grade);
-            $sheet3->setCellValue('F' . $kolom, $d->pcs);
-            $sheet3->setCellValue('G' . $kolom, $d->gr);
-            $sheet3->setCellValue('H' . $kolom, $d->rupiah);
-            $sheet3->setCellValue('I' . $kolom, $d->no_lot);
-            $sheet3->setCellValue('J' . $kolom, $d->ket);
-            $sheet3->setCellValue('K' . $kolom, $d->ket2);
-            $sheet3->setCellValue('L' . $kolom, $d->rupiah * $d->gr);
-            $sheet3->setCellValue('M' . $kolom, $d->lok_tgl);
+            // $sheet3->setCellValue('C' . $kolom, $d->suplier_awal);
+            $sheet3->setCellValue('C' . $kolom, $d->tgl);
+            $sheet3->setCellValue('D' . $kolom, $d->nm_grade);
+            $sheet3->setCellValue('E' . $kolom, $d->pcs);
+            $sheet3->setCellValue('F' . $kolom, $d->gr);
+            $sheet3->setCellValue('G' . $kolom, $d->rupiah);
+            $sheet3->setCellValue('H' . $kolom, $d->no_lot);
+            $sheet3->setCellValue('I' . $kolom, $d->ket);
+            $sheet3->setCellValue('J' . $kolom, $d->ket2);
+            $sheet3->setCellValue('K' . $kolom, $d->rupiah * $d->gr);
+            $sheet3->setCellValue('L' . $kolom, $d->lok_tgl);
 
             $kolom++;
         }
 
-        $sheet3->getStyle('A2:M' . $kolom - 1)->applyFromArray($style);
+        $sheet3->getStyle('A2:L' . $kolom - 1)->applyFromArray($style);
 
         // $spreadsheet->createSheet();
         // $spreadsheet->setActiveSheetIndex(2);
@@ -292,43 +292,43 @@ class GudangBkController extends Controller
         $sheet4 = $spreadsheet->getActiveSheet();
         $sheet4->setTitle('campur produksi');
 
-        $sheet4->getStyle("A1:M1")->applyFromArray($style_atas);
+        $sheet4->getStyle("A1:L1")->applyFromArray($style_atas);
         $sheet4->setCellValue('A1', 'ID');
         $sheet4->setCellValue('B1', 'Buku');
-        $sheet4->setCellValue('C1', 'Suplier Awal');
-        $sheet4->setCellValue('D1', 'Date');
-        $sheet4->setCellValue('E1', 'Grade');
-        $sheet4->setCellValue('F1', 'Pcs');
-        $sheet4->setCellValue('G1', 'Gram');
-        $sheet4->setCellValue('H1', 'Rp/Gr');
-        $sheet4->setCellValue('I1', 'Lot');
-        $sheet4->setCellValue('J1', 'Keterangan/Nama Partai Herry');
-        $sheet4->setCellValue('K1', 'Keterangan/Nama Partai Sinta');
-        $sheet4->setCellValue('L1', 'Ttl Rp');
-        $sheet4->setCellValue('M1', 'Lok');
+        // $sheet4->setCellValue('C1', 'Suplier Awal');
+        $sheet4->setCellValue('C1', 'Date');
+        $sheet4->setCellValue('D1', 'Grade');
+        $sheet4->setCellValue('E1', 'Pcs');
+        $sheet4->setCellValue('F1', 'Gram');
+        $sheet4->setCellValue('G1', 'Rp/Gr');
+        $sheet4->setCellValue('H1', 'Lot');
+        $sheet4->setCellValue('I1', 'Keterangan/Nama Partai Herry');
+        $sheet4->setCellValue('J1', 'Keterangan/Nama Partai Sinta');
+        $sheet4->setCellValue('K1', 'Ttl Rp');
+        $sheet4->setCellValue('L1', 'Lok');
 
-        $sheet4->setCellValue('O2', 'kl mau import barang baru id kosongkan');
+        $sheet4->setCellValue('N2', 'kl mau import barang baru id kosongkan');
         $kolom = 2;
         $pembelian = GudangBkModel::export_getPembelianBk('wip');
         foreach ($pembelian as $d) {
             $sheet4->setCellValue('A' . $kolom, $d->id_buku_campur);
             $sheet4->setCellValue('B' . $kolom, $d->buku);
-            $sheet4->setCellValue('C' . $kolom, $d->suplier_awal);
-            $sheet4->setCellValue('D' . $kolom, $d->tgl);
-            $sheet4->setCellValue('E' . $kolom, $d->nm_grade);
-            $sheet4->setCellValue('F' . $kolom, $d->pcs);
-            $sheet4->setCellValue('G' . $kolom, $d->gr);
-            $sheet4->setCellValue('H' . $kolom, $d->rupiah);
-            $sheet4->setCellValue('I' . $kolom, $d->no_lot);
-            $sheet4->setCellValue('J' . $kolom, $d->ket);
-            $sheet4->setCellValue('K' . $kolom, $d->ket2);
-            $sheet4->setCellValue('L' . $kolom, $d->rupiah * $d->gr);
-            $sheet4->setCellValue('M' . $kolom, $d->lok_tgl);
+            // $sheet4->setCellValue('C' . $kolom, $d->suplier_awal);
+            $sheet4->setCellValue('C' . $kolom, $d->tgl);
+            $sheet4->setCellValue('D' . $kolom, $d->nm_grade);
+            $sheet4->setCellValue('E' . $kolom, $d->pcs);
+            $sheet4->setCellValue('F' . $kolom, $d->gr);
+            $sheet4->setCellValue('G' . $kolom, $d->rupiah);
+            $sheet4->setCellValue('H' . $kolom, $d->no_lot);
+            $sheet4->setCellValue('I' . $kolom, $d->ket);
+            $sheet4->setCellValue('J' . $kolom, $d->ket2);
+            $sheet4->setCellValue('K' . $kolom, $d->rupiah * $d->gr);
+            $sheet4->setCellValue('L' . $kolom, $d->lok_tgl);
 
             $kolom++;
         }
 
-        $sheet4->getStyle('A2:M' . $kolom - 1)->applyFromArray($style);
+        $sheet4->getStyle('A2:L' . $kolom - 1)->applyFromArray($style);
 
         // $spreadsheet->createSheet();
         // $spreadsheet->setActiveSheetIndex(5);
@@ -467,39 +467,39 @@ class GudangBkController extends Controller
         $sheet2 = $spreadsheet->getActiveSheet();
         $sheet2->setTitle('rencana produksi');
 
-        $sheet2->getStyle("A1:L1")->applyFromArray($style_atas);
+        $sheet2->getStyle("A1:K1")->applyFromArray($style_atas);
 
         $sheet2->setCellValue('A1', 'ID');
         $sheet2->setCellValue('B1', 'Buku');
-        $sheet2->setCellValue('C1', 'Suplier Awal');
-        $sheet2->setCellValue('D1', 'Date');
-        $sheet2->setCellValue('E1', 'Grade');
-        $sheet2->setCellValue('F1', 'Pcs');
-        $sheet2->setCellValue('G1', 'Gram');
-        $sheet2->setCellValue('H1', 'Rp Gram');
-        $sheet2->setCellValue('I1', 'Lot');
-        $sheet2->setCellValue('J1', 'Keterangan/Nama Partai Herry');
-        $sheet2->setCellValue('K1', 'Keterangan/Nama Partai Sinta');
-        $sheet2->setCellValue('L1', 'Lok');
+        // $sheet2->setCellValue('C1', 'Suplier Awal');
+        $sheet2->setCellValue('C1', 'Date');
+        $sheet2->setCellValue('D1', 'Grade');
+        $sheet2->setCellValue('E1', 'Pcs');
+        $sheet2->setCellValue('F1', 'Gram');
+        $sheet2->setCellValue('G1', 'Rp Gram');
+        $sheet2->setCellValue('H1', 'Lot');
+        $sheet2->setCellValue('I1', 'Keterangan/Nama Partai Herry');
+        $sheet2->setCellValue('J1', 'Keterangan/Nama Partai Sinta');
+        $sheet2->setCellValue('K1', 'Lok');
         $kolom = 2;
         $pembelian = GudangBkModel::export_getPembelianBk('produksi');
         foreach ($pembelian as $d) {
             $sheet2->setCellValue('A' . $kolom, $d->id_buku_campur);
             $sheet2->setCellValue('B' . $kolom, $d->buku);
-            $sheet2->setCellValue('C' . $kolom, $d->suplier_awal);
-            $sheet2->setCellValue('D' . $kolom, $d->tgl);
-            $sheet2->setCellValue('E' . $kolom, $d->nm_grade);
-            $sheet2->setCellValue('F' . $kolom, $d->pcs);
-            $sheet2->setCellValue('G' . $kolom, $d->gr);
-            $sheet2->setCellValue('H' . $kolom, $d->rupiah);
-            $sheet2->setCellValue('I' . $kolom, $d->no_lot);
-            $sheet2->setCellValue('J' . $kolom, $d->ket);
-            $sheet2->setCellValue('K' . $kolom, $d->ket2);
-            $sheet2->setCellValue('L' . $kolom, $d->lok_tgl);
+            // $sheet2->setCellValue('C' . $kolom, $d->suplier_awal);
+            $sheet2->setCellValue('C' . $kolom, $d->tgl);
+            $sheet2->setCellValue('D' . $kolom, $d->nm_grade);
+            $sheet2->setCellValue('E' . $kolom, $d->pcs);
+            $sheet2->setCellValue('F' . $kolom, $d->gr);
+            $sheet2->setCellValue('G' . $kolom, $d->rupiah);
+            $sheet2->setCellValue('H' . $kolom, $d->no_lot);
+            $sheet2->setCellValue('I' . $kolom, $d->ket);
+            $sheet2->setCellValue('J' . $kolom, $d->ket2);
+            $sheet2->setCellValue('K' . $kolom, $d->lok_tgl);
 
             $kolom++;
         }
-        $sheet2->getStyle('A2:L' . $kolom - 1)->applyFromArray($style);
+        $sheet2->getStyle('A2:K' . $kolom - 1)->applyFromArray($style);
         $spreadsheet->createSheet();
         $spreadsheet->setActiveSheetIndex(1);
         $sheet3 = $spreadsheet->getActiveSheet();
@@ -766,18 +766,18 @@ class GudangBkController extends Controller
                     if (empty($rowData[0])) {
                         DB::table('buku_campur')->insert([
                             'id_grade' => '1',
-                            'pcs' => $rowData[5],
-                            'gr' => $rowData[6],
-                            'rupiah' => $rowData[7],
-                            'no_lot' => $rowData[8],
-                            'ket' => empty($rowData[9]) ? ' ' : $rowData[9],
-                            'ket2' => empty($rowData[10]) ? ' ' : $rowData[10],
-                            'lok_tgl' => empty($rowData[11]) ? ' ' : $rowData[11],
+                            'pcs' => $rowData[4],
+                            'gr' => $rowData[5],
+                            'rupiah' => $rowData[6],
+                            'no_lot' => $rowData[7],
+                            'ket' => empty($rowData[8]) ? ' ' : $rowData[8],
+                            'ket2' => empty($rowData[9]) ? ' ' : $rowData[9],
+                            'lok_tgl' => empty($rowData[10]) ? ' ' : $rowData[10],
                             'approve' => 'Y',
                             'gudang' => 'wip',
                         ]);
                         $idBukuCampur = DB::getPdo()->lastInsertId();
-                        $tgl = $rowData[3];
+                        $tgl = $rowData[2];
                         if (is_numeric($tgl)) {
                             $tanggalExcel = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($tgl);
                             $tanggalFormatted = $tanggalExcel->format('Y-m-d');
@@ -788,32 +788,32 @@ class GudangBkController extends Controller
                         DB::table('buku_campur_approve')->insert([
                             'id_buku_campur' => $idBukuCampur,
                             'buku' => empty($rowData[1]) ? ' ' : $rowData[1],
-                            'suplier_awal' => empty($rowData[2]) ? ' ' : $rowData[2],
+                            // 'suplier_awal' => empty($rowData[2]) ? ' ' : $rowData[2],
                             'tgl' => empty($tanggalFormatted) ? '0000-00-00' : $tanggalFormatted,
-                            'nm_grade' => $rowData[4],
-                            'pcs' => $rowData[5],
-                            'gr' => $rowData[6],
-                            'rupiah' => $rowData[7],
-                            'no_lot' => $rowData[8],
-                            'ket' => empty($rowData[9]) ? ' ' : $rowData[9],
-                            'ket2' => empty($rowData[10]) ? ' ' : $rowData[10],
-                            'lok_tgl' => empty($rowData[11]) ? ' ' : $rowData[11],
+                            'nm_grade' => $rowData[3],
+                            'pcs' => $rowData[4],
+                            'gr' => $rowData[5],
+                            'rupiah' => $rowData[6],
+                            'no_lot' => $rowData[7],
+                            'ket' => empty($rowData[8]) ? ' ' : $rowData[8],
+                            'ket2' => empty($rowData[9]) ? ' ' : $rowData[9],
+                            'lok_tgl' => empty($rowData[10]) ? ' ' : $rowData[10],
                             'gudang' => 'wip',
                         ]);
                     } else {
                         DB::table('buku_campur')->where('id_buku_campur', $rowData[0])->update([
                             'id_grade' => '1',
-                            'pcs' => $rowData[5],
-                            'gr' => $rowData[6],
-                            'rupiah' => $rowData[7],
-                            'no_lot' => $rowData[8],
-                            'ket' => empty($rowData[9]) ? ' ' : $rowData[9],
-                            'ket2' => empty($rowData[10]) ? ' ' : $rowData[10],
-                            'lok_tgl' => empty($rowData[11]) ? ' ' : $rowData[11],
+                            'pcs' => $rowData[4],
+                            'gr' => $rowData[5],
+                            'rupiah' => $rowData[6],
+                            'no_lot' => $rowData[7],
+                            'ket' => empty($rowData[8]) ? ' ' : $rowData[8],
+                            'ket2' => empty($rowData[9]) ? ' ' : $rowData[9],
+                            'lok_tgl' => empty($rowData[10]) ? ' ' : $rowData[10],
                             'approve' => 'Y',
                             'gudang' => 'wip',
                         ]);
-                        $tgl = $rowData[3];
+                        $tgl = $rowData[2];
                         if (is_numeric($tgl)) {
                             $tanggalExcel = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($tgl);
                             $tanggalFormatted = $tanggalExcel->format('Y-m-d');
@@ -823,21 +823,21 @@ class GudangBkController extends Controller
                         }
                         DB::table('buku_campur_approve')->where('id_buku_campur', $rowData[0])->update([
                             'buku' => empty($rowData[1]) ? ' ' : $rowData[1],
-                            'suplier_awal' => empty($rowData[2]) ? ' ' : $rowData[2],
+                            // 'suplier_awal' => empty($rowData[2]) ? ' ' : $rowData[2],
                             'tgl' => empty($tanggalFormatted) ? '0000-00-00' : $tanggalFormatted,
-                            'nm_grade' => $rowData[4],
-                            'pcs' => $rowData[5],
-                            'gr' => $rowData[6],
-                            'rupiah' => $rowData[7],
-                            'no_lot' => $rowData[8],
-                            'ket' => empty($rowData[9]) ? ' ' : $rowData[9],
-                            'ket2' => empty($rowData[10]) ? ' ' : $rowData[10],
-                            'lok_tgl' => empty($rowData[11]) ? ' ' : $rowData[11],
+                            'nm_grade' => $rowData[3],
+                            'pcs' => $rowData[4],
+                            'gr' => $rowData[5],
+                            'rupiah' => $rowData[6],
+                            'no_lot' => $rowData[7],
+                            'ket' => empty($rowData[8]) ? ' ' : $rowData[8],
+                            'ket2' => empty($rowData[9]) ? ' ' : $rowData[9],
+                            'lok_tgl' => empty($rowData[10]) ? ' ' : $rowData[10],
                             'gudang' => 'wip',
                         ]);
                     }
 
-                    DB::table('buku_campur_approve')->where('ket', $rowData[8])->update(['ket2' => empty($rowData[10]) ? ' ' : $rowData[10]]);
+                    DB::table('buku_campur_approve')->where('ket', $rowData[8])->update(['ket2' => empty($rowData[9]) ? ' ' : $rowData[9]]);
                 }
                 DB::commit(); // Konfirmasi transaksi jika berhasil
                 return redirect()->route('gudangnew.gudang_p_kerja')->with('sukses', 'Data berhasil import');
@@ -915,7 +915,7 @@ class GudangBkController extends Controller
                                 ]);
                                 $idBukuCampur = DB::getPdo()->lastInsertId();
 
-                                $tgl = $rowData[3];
+                                $tgl = $rowData[2];
                                 if (is_numeric($tgl)) {
                                     $tanggalExcel = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($tgl);
                                     $tanggalFormatted = $tanggalExcel->format('Y-m-d');
@@ -926,30 +926,30 @@ class GudangBkController extends Controller
                                 DB::table('buku_campur_approve')->insert([
                                     'id_buku_campur' => $idBukuCampur,
                                     'buku' => empty($rowData[1]) ? ' ' : $rowData[1],
-                                    'suplier_awal' => empty($rowData[2]) ? ' ' : $rowData[2],
+                                    // 'suplier_awal' => empty($rowData[2]) ? ' ' : $rowData[2],
                                     'tgl' => empty($tanggalFormatted) ? '0000-00-00' : $tanggalFormatted,
-                                    'nm_grade' => $rowData[4],
-                                    'pcs' => $rowData[5],
-                                    'gr' => $rowData[6],
-                                    'rupiah' => $rowData[7],
-                                    'no_lot' => $rowData[8],
-                                    'ket' => empty($rowData[9]) ? ' ' : $rowData[9],
-                                    'ket2' => empty($rowData[10]) ? ' ' : $rowData[10],
-                                    'lok_tgl' => empty($rowData[12]) ? ' ' : $rowData[12],
+                                    'nm_grade' => $rowData[3],
+                                    'pcs' => $rowData[4],
+                                    'gr' => $rowData[5],
+                                    'rupiah' => $rowData[6],
+                                    'no_lot' => $rowData[7],
+                                    'ket' => empty($rowData[8]) ? ' ' : $rowData[8],
+                                    'ket2' => empty($rowData[9]) ? ' ' : $rowData[9],
+                                    'lok_tgl' => empty($rowData[11]) ? ' ' : $rowData[11],
                                     'gudang' => $gudang,
                                 ]);
                             } else {
                                 $buku_campur = DB::table('buku_campur')->where('id_buku_campur', $rowData[0])->first();
                                 DB::table('buku_campur')->where('id_buku_campur', $rowData[0])->update([
                                     'approve' => 'Y',
-                                    'no_lot' => empty($buku_campur->no_nota) ? $rowData[8] : $buku_campur->no_lot,
+                                    'no_lot' => empty($buku_campur->no_nota) ? $rowData[7] : $buku_campur->no_lot,
                                     'gudang' => $gudang,
                                     'gabung' => 'T'
                                 ]);
 
                                 $bk_approve = DB::table('buku_campur_approve')->where('id_buku_campur', $rowData[0])->first();
 
-                                $tgl = $rowData[3];
+                                $tgl = $rowData[2];
                                 if (is_numeric($tgl)) {
                                     // Jika nilai berupa angka, konversi ke format tanggal
                                     $tanggalExcel = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($tgl);
@@ -963,32 +963,32 @@ class GudangBkController extends Controller
                                     DB::table('buku_campur_approve')->insert([
                                         'id_buku_campur' => $rowData[0],
                                         'buku' => $rowData[1],
-                                        'suplier_awal' => $rowData[2],
+                                        // 'suplier_awal' => $rowData[2],
                                         'tgl' => empty($tanggalFormatted) ? '0000-00-00' : $tanggalFormatted,
-                                        'nm_grade' => $rowData[4],
-                                        'pcs' => $rowData[5],
-                                        'gr' => $rowData[6],
-                                        'rupiah' => $rowData[7],
-                                        'no_lot' => empty($buku_campur->no_nota) ? $rowData[8] : $buku_campur->no_lot,
-                                        'ket' => empty($rowData[9]) ? ' ' : $rowData[9],
-                                        'ket2' => empty($rowData[10]) ? ' ' : $rowData[10],
-                                        'lok_tgl' => empty($rowData[12]) ? ' ' : $rowData[12],
+                                        'nm_grade' => $rowData[3],
+                                        'pcs' => $rowData[4],
+                                        'gr' => $rowData[5],
+                                        'rupiah' => $rowData[6],
+                                        'no_lot' => empty($buku_campur->no_nota) ? $rowData[7] : $buku_campur->no_lot,
+                                        'ket' => empty($rowData[8]) ? ' ' : $rowData[8],
+                                        'ket2' => empty($rowData[9]) ? ' ' : $rowData[9],
+                                        'lok_tgl' => empty($rowData[10]) ? ' ' : $rowData[10],
                                         'gudang' => $gudang,
                                     ]);
                                 } else {
                                     DB::table('buku_campur_approve')->where('id_buku_campur', $rowData[0])->update([
                                         'id_buku_campur' => $rowData[0],
                                         'buku' => $rowData[1],
-                                        'suplier_awal' => $rowData[2],
+                                        // 'suplier_awal' => $rowData[2],
                                         'tgl' => empty($tanggalFormatted) ? '0000-00-00' : $tanggalFormatted,
-                                        'nm_grade' => $rowData[4],
-                                        'pcs' => $rowData[5],
-                                        'gr' => $rowData[6],
-                                        'rupiah' => $rowData[7],
-                                        'no_lot' => empty($buku_campur->no_nota) ? $rowData[8] : $buku_campur->no_lot,
-                                        'ket' => empty($rowData[9]) ? ' ' : $rowData[9],
-                                        'ket2' => empty($rowData[10]) ? ' ' : $rowData[10],
-                                        'lok_tgl' => empty($rowData[12]) ? ' ' : $rowData[12],
+                                        'nm_grade' => $rowData[3],
+                                        'pcs' => $rowData[4],
+                                        'gr' => $rowData[5],
+                                        'rupiah' => $rowData[6],
+                                        'no_lot' => empty($buku_campur->no_nota) ? $rowData[7] : $buku_campur->no_lot,
+                                        'ket' => empty($rowData[8]) ? ' ' : $rowData[8],
+                                        'ket2' => empty($rowData[9]) ? ' ' : $rowData[9],
+                                        'lok_tgl' => empty($rowData[10]) ? ' ' : $rowData[10],
                                         'gudang' => $gudang,
                                     ]);
                                 }
