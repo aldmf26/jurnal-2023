@@ -907,7 +907,7 @@ class GudangBkController extends Controller
                                     'rupiah' => $rowData[7],
                                     'ket' => empty($rowData[9]) ? ' ' : $rowData[9],
                                     'ket2' => empty($rowData[10]) ? ' ' : $rowData[10],
-                                    'lok_tgl' => empty($rowData[12]) ? ' ' : $rowData[12],
+                                    'lok_tgl' => empty($rowData[11]) ? ' ' : $rowData[11],
                                     'approve' => 'Y',
                                     'gudang' => $gudang,
                                     'gabung' => 'T'
@@ -972,7 +972,7 @@ class GudangBkController extends Controller
                                         'no_lot' => empty($buku_campur->no_nota) ? $rowData[7] : $buku_campur->no_lot,
                                         'ket' => empty($rowData[8]) ? ' ' : $rowData[8],
                                         'ket2' => empty($rowData[9]) ? ' ' : $rowData[9],
-                                        'lok_tgl' => empty($rowData[10]) ? ' ' : $rowData[10],
+                                        'lok_tgl' => empty($rowData[11]) ? ' ' : $rowData[11],
                                         'gudang' => $gudang,
                                     ]);
                                 } else {
@@ -988,7 +988,7 @@ class GudangBkController extends Controller
                                         'no_lot' => empty($buku_campur->no_nota) ? $rowData[7] : $buku_campur->no_lot,
                                         'ket' => empty($rowData[8]) ? ' ' : $rowData[8],
                                         'ket2' => empty($rowData[9]) ? ' ' : $rowData[9],
-                                        'lok_tgl' => empty($rowData[10]) ? ' ' : $rowData[10],
+                                        'lok_tgl' => empty($rowData[11]) ? ' ' : $rowData[11],
                                         'gudang' => $gudang,
                                     ]);
                                 }
