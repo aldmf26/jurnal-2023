@@ -1011,7 +1011,7 @@ class GudangBkController extends Controller
                 return redirect()->back()->with('error', 'Nama sheet yg di import tidak sesuai');
             }
         }
-        return redirect()->route('gudangnew.index')->with('sukses', 'Data berhasil import');
+        return redirect()->route('gudangBk.index')->with('sukses', 'Data berhasil import');
     }
 
 

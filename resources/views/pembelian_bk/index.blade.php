@@ -156,7 +156,7 @@
                                             <x-theme.dropdown_kosong :emptyKondisi="$emptyKondisi" />
                                             @if (!empty($edit))
                                                 <li>
-                                                    <a class="dropdown-item text-primary edit_akun"
+                                                    <a class="dropdown-item text-primary edit_akun {{ !empty($p->rupiah) ? 'd-none' : '' }}"
                                                         href="{{ route('edit_pembelian_bk', ['nota' => $p->no_nota]) }}">
                                                         <i class="me-2 fas fa-pen"></i> Edit
                                                     </a>
@@ -166,7 +166,7 @@
                                             @else
                                                 @if (!empty($delete))
                                                     <li>
-                                                        <a class="dropdown-item  text-danger delete_nota"
+                                                        <a class="dropdown-item  text-danger delete_nota {{ !empty($p->rupiah) ? 'd-none' : '' }}"
                                                             no_nota="{{ $p->no_nota }}" href="#"
                                                             data-bs-toggle="modal" data-bs-target="#delete"><i
                                                                 class="me-2 fas fa-trash"></i>Delete
@@ -186,7 +186,7 @@
                                             @if (!empty($grading))
                                                 <li>
                                                     <a href="#"
-                                                        class="dropdown-item  text-info grading_notatambah"
+                                                        class="dropdown-item  text-info grading_notatambah {{ !empty($p->rupiah) ? 'd-none' : '' }}"
                                                         no_nota="{{ $p->no_nota }}" data-bs-toggle="modal"
                                                         data-bs-target="#grading"><i
                                                             class="me-2 fas fa-balance-scale-right"></i>Grading

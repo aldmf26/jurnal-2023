@@ -367,7 +367,7 @@ class PembelianBahanBakuController extends Controller
         $button = $r->button;
         if ($button == 'simpan') {
             $data = [
-                'id_suplier' => $suplier_awal,
+                // 'id_suplier' => $suplier_awal,
                 'tgl' => $tgl,
                 'no_nota' => $nota,
                 'no_lot' => $r->no_lot,
@@ -381,7 +381,7 @@ class PembelianBahanBakuController extends Controller
             DB::table('invoice_bk')->where('no_nota', $nota)->update($data);
         } else {
             $data = [
-                'id_suplier' => $suplier_awal,
+                // 'id_suplier' => $suplier_awal,
                 'tgl' => $tgl,
                 'no_nota' => $nota,
                 'no_lot' => $r->no_lot,
@@ -417,7 +417,7 @@ class PembelianBahanBakuController extends Controller
     public function grading(Request $r)
     {
         DB::table('grading')->where('no_nota', $r->no_nota)->delete();
-        DB::table('buku_campur')->where('no_nota', $r->no_nota)->delete();
+        // DB::table('buku_campur')->where('no_nota', $r->no_nota)->delete();
         $data = [
             'tgl' => $r->tgl,
             'no_nota' => $r->no_nota,
@@ -433,12 +433,14 @@ class PembelianBahanBakuController extends Controller
                 # code...
             } else {
                 $data = [
+                    'id_buku_campur' => $r->id_buku_campur[$x],
                     'id_grade' => $r->id_grade[$x],
                     'no_nota' => $r->no_nota,
                     'no_lot' => $r->no_lot,
                     'pcs' => $r->pcs[$x],
                     'gr' => $r->gr[$x],
                     'admin' => Auth::user()->name,
+                    'rupiah' => $r->rupiah[$x]
                 ];
                 DB::table('buku_campur')->insert($data);
             }

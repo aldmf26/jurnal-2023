@@ -11,7 +11,7 @@
     <tbody style="background-color: #F2F7FF">
         @foreach ($grade as $g)
             @php
-                $bk_campur = DB::selectOne("SELECT b.nm_grade, a.pcs, a.gr, a.rupiah
+                $bk_campur = DB::selectOne("SELECT a.id_buku_campur, b.nm_grade, a.pcs, a.gr, a.rupiah
                 FROM buku_campur as a
                 left join grade as b on b.id_grade = a.id_grade
                 where a.id_grade = '$g->id_grade' and a.no_nota = '$no_nota'
@@ -21,6 +21,8 @@
                 <td>
                     {{ $g->nm_grade }}
                     <input type="hidden" name="id_grade[]" value="{{ $g->id_grade }}">
+                    <input type="text" name="id_buku_campur[]" value="{{ $bk_campur->id_buku_campur ?? 0 }}">
+                    <input type="text" name="rupiah[]" value="{{ $bk_campur->rupiah ?? 0 }}">
                 </td>
                 <td><input type="text" class="form-control text-end" name="pcs[]"
                         value="{{ empty($bk_campur->pcs) ? 0 : $bk_campur->pcs }}"
