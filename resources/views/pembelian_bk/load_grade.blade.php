@@ -21,8 +21,8 @@
                 <td>
                     {{ $g->nm_grade }}
                     <input type="hidden" name="id_grade[]" value="{{ $g->id_grade }}">
-                    <input type="text" name="id_buku_campur[]" value="{{ $bk_campur->id_buku_campur ?? 0 }}">
-                    <input type="text" name="rupiah[]" value="{{ $bk_campur->rupiah ?? 0 }}">
+                    <input type="hidden" name="id_buku_campur[]" value="{{ $bk_campur->id_buku_campur ?? 0 }}">
+                    <input type="hidden" name="rupiah[]" value="{{ $bk_campur->rupiah ?? 0 }}">
                 </td>
                 <td><input type="text" class="form-control text-end" name="pcs[]"
                         value="{{ empty($bk_campur->pcs) ? 0 : $bk_campur->pcs }}"
