@@ -82,7 +82,7 @@ class GudangNewController extends Controller
 
     public function save_gudang_bk(Request $r)
     {
-        for ($x = 0; $x < count($r->suplier_awal); $x++) {
+        for ($x = 0; $x < count($r->ket2); $x++) {
             DB::table('buku_campur')->insert([
                 'no_lot' => $r->lot[$x],
                 'id_grade' => '1',
