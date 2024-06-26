@@ -417,7 +417,7 @@ class PembelianBahanBakuController extends Controller
     public function grading(Request $r)
     {
         DB::table('grading')->where('no_nota', $r->no_nota)->delete();
-        // DB::table('buku_campur')->where('no_nota', $r->no_nota)->delete();
+        DB::table('buku_campur')->where('no_nota', $r->no_nota)->delete();
         $data = [
             'tgl' => $r->tgl,
             'no_nota' => $r->no_nota,
