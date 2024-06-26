@@ -211,4 +211,10 @@ class ApiWipController extends Controller
 
         return response()->json($r);
     }
+    public function partai(Request $r)
+    {
+        $r = GudangBkModel::getPartai($r->nm_partai);
+
+        return response()->json($r);
+    }
 }

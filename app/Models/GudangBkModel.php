@@ -316,4 +316,14 @@ class GudangBkModel extends Model
             ");
         return $result;
     }
+
+    public static function getPartai($nm_partai)
+    {
+        $result = DB::selectOne("SELECT a.ket2, a.ket, sum(a.pcs) as pcs , sum(a.gr) as gr, a.rupiah
+        FROM buku_campur_approve as a 
+        where a.gudang = 'wip' and a.ket2 = ?
+        group by a.ket2;", [$nm_partai]);
+
+        return $result;
+    }
 }
