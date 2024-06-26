@@ -100,7 +100,7 @@
             <label for="">No Campur</label>
             <input type="text" class="form-control" name="no_campur">
             <input type="hidden" class="form-control nota_grading" name="no_nota" required>
-            <input type="text" class="form-control" name="no_lot" required value="{{ $invoice->no_lot }}">
+            <input type="hidden" class="form-control" name="no_lot" required value="{{ $invoice->no_lot }}">
         </div>
         <div class="col-lg-2">
             <label for="">Gram Basah</label>
