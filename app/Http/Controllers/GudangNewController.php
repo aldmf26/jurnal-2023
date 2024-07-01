@@ -445,7 +445,7 @@ class GudangNewController extends Controller
         $bk = DB::selectOne("SELECT sum(a.gr * a.rupiah) as ttl_rp
         FROM buku_campur_approve as a 
         left join buku_campur as b on b.id_buku_campur = a.id_buku_campur
-        where a.gudang = 'wip' and b.gabung = 'T' and a.selesai_2 = 'T' and a.ket2 = 'bjm 1033';
+        where a.gudang = 'wip' and b.gabung = 'T' and a.selesai_2 = 'T' and a.ket2 = '$partai';
         ");
 
 
