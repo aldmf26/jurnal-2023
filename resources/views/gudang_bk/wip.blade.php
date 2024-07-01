@@ -79,7 +79,7 @@
                         <th class="dhead">#</th>
                         <th class="dhead">ID</th>
                         <th class="dhead">Buku</th>
-                        <th class="dhead">Suplier Awal</th>
+                        {{-- <th class="dhead">Suplier Awal</th> --}}
                         <th class="dhead">Date</th>
                         <th class="dhead">Grade</th>
                         <th class="dhead text-end">Pcs <br> {{ number_format($pcs, 0) }}</th>
@@ -105,7 +105,7 @@
                             <td>{{ $no + 1 }}</td>
                             <td>{{ $g->id_buku_campur }}</td>
                             <td>{{ $g->buku }}</td>
-                            <td>{{ $g->suplier_awal }} </td>
+                            {{-- <td>{{ $g->suplier_awal }} </td> --}}
                             <td>{{ $g->tgl }}</td>
                             <td>{{ $g->nm_grade }}</td>
                             <td class="text-end">{{ number_format($g->pcs, 0) }}</td>
