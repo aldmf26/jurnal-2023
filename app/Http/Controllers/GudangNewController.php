@@ -452,7 +452,7 @@ class GudangNewController extends Controller
         $data = [
             'partai' => $partai,
             'get_partai' => $get,
-            'rp_satuan' =>  15277 / 14645,
+            'rp_satuan' => $bk->ttl_rp / $c->gr_awal_bk
         ];
         return view('gudangnew.get_susut', $data);
     }
