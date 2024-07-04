@@ -82,7 +82,7 @@
                                 $no = 0;
                             @endphp
                             <tr>
-                                <td>{{ $no + 1 }}</td>
+                                <td>{{ $no++ }}</td>
                                 <td>{{ $g->ket2 }}</td>
                                 <td>{{ $g->nm_grade }}</td>
                                 <td class="text-end">{{ number_format($g->pcs, 0) }}</td>
