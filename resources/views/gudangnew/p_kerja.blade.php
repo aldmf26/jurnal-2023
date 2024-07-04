@@ -52,6 +52,9 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @php
+                            $no = 1;
+                        @endphp
                         @foreach ($gudang as $g)
                             @php
                                 $ket = $g->ket2;
@@ -79,7 +82,6 @@
                                     continue;
                                 }
 
-                                $no = 0;
                             @endphp
                             <tr>
                                 <td>{{ $no++ }}</td>
