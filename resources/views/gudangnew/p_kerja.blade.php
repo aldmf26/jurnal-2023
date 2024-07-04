@@ -52,7 +52,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($gudang as $no => $g)
+                        @foreach ($gudang as $g)
                             @php
                                 $ket = $g->ket2;
                                 $resSum = Cache::remember(
@@ -78,6 +78,8 @@
                                 if ($WipSisaPcs + $WipSisaGr == '0') {
                                     continue;
                                 }
+
+                                $no = 0;
                             @endphp
                             <tr>
                                 <td>{{ $no + 1 }}</td>
