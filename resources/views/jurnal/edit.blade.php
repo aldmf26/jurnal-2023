@@ -353,9 +353,8 @@
                         style: "currency",
                         currency: "IDR",
                     });
-                    console.log(Math.round(total_debit), Math.round(total_kredit));
-                    console.log(selisih);
-                    if (total_debit === total_kredit) {
+
+                    if (Math.round(total_debit) === Math.round(total_kredit)) {
                         $(".cselisih").css("color", "green");
                         $(".button-save").removeAttr("hidden");
                     } else {
