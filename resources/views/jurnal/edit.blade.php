@@ -353,7 +353,7 @@
                         style: "currency",
                         currency: "IDR",
                     });
-                    console.log(total_debit, total_kredit);
+                    console.log(parseFloat(total_debit), total_kredit);
                     if (total_debit === total_kredit) {
                         $(".cselisih").css("color", "green");
                         $(".button-save").removeAttr("hidden");
