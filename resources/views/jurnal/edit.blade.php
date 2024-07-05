@@ -238,7 +238,7 @@
                         currency: "IDR",
                     });
 
-                    if (selisih === 0) {
+                    if (Math.round(total_debit) === Math.round(total_kredit)) {
                         $(".cselisih").css("color", "green");
                         $(".button-save").removeAttr("hidden");
                     } else {
@@ -299,7 +299,7 @@
                         style: "currency",
                         currency: "IDR",
                     });
-                    if (selisih === 0) {
+                    if (Math.round(total_debit) === Math.round(total_kredit)) {
                         $(".cselisih").css("color", "green");
                         $(".button-save").removeAttr("hidden");
                     } else {
