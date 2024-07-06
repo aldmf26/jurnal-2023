@@ -290,6 +290,12 @@ class BukuCampurController extends Controller
                         'rupiah' => $rowData[7],
                         'ket' => $rowData[9],
                     ]);
+                    DB::table('buku_campur_approve')->where('id_buku_campur', $rowData[0])->update([
+                        'pcs' => $rowData[5],
+                        'gr' => $rowData[6],
+                        'rupiah' => $rowData[7],
+                        'ket' => $rowData[9],
+                    ]);
                 }
             }
 

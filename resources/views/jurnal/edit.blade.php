@@ -307,10 +307,6 @@
                         $(".button-save").attr("hidden", true);
                     }
                     $(".selisih").text(selisih_total);
-
-
-
-
                 });
 
 
