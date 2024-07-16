@@ -51,7 +51,8 @@
                             <th class="dhead text-center" rowspan="2">Tanggal</th>
                             <th class="dhead text-center" rowspan="2">No Nota</th>
                             <th class="dhead text-center" rowspan="2">No Lot</th>
-                            <th class="dhead text-center" rowspan="2">Suplier</th>
+                            <th class="dhead text-center" rowspan="2">Suplier Awal</th>
+                            <th class="dhead text-center" rowspan="2">Suplier Akhir</th>
                             <th class="dhead" rowspan="2" style="text-align: right">Total Harga</th>
                             <th class="dhead" colspan="5" style="text-align: center">Status</th>
 
@@ -85,6 +86,7 @@
                                 <td class="text-center">{{ tanggal($p->tgl) }}</td>
                                 <td class="text-center">{{ $p->no_nota }}</td>
                                 <td class="text-center">{{ $p->no_lot }}</td>
+                                <td class="text-center">{{ ucwords(strtolower($p->nm_suplier)) }}</td>
                                 <td class="text-center">{{ ucwords(strtolower($p->suplier_akhir)) }}</td>
                                 <td align="right">
                                     {{-- <a href="javascript:void(0);" class="get_print" no_nota="{{ $p->no_nota }}">

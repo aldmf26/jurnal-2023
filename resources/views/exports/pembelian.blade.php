@@ -5,7 +5,8 @@
             <th width="110px">Tanggal</th>
             <th width="102px">Nota BK</th>
             <th width="102px">Nota Lot</th>
-            <th width="184px">Suplier</th>
+            <th width="184px">Suplier Awal</th>
+            <th width="184px">Suplier Akhir</th>
             <th width="151px">Keterangan</th>
             <th width="125px">Gr Beli</th>
             <th width="125px">Harga rata2</th>
@@ -50,6 +51,7 @@
                 {{-- <td>{{ strtoupper($p->nm_suplier) }}</td> --}}
                 <td>{{ $p->no_nota }}</td>
                 <td>{{ $p->no_lot }}</td>
+                <td>{{ strtoupper($p->nm_suplier) }}</td>
                 <td>{{ strtoupper($p->suplier_akhir) }}</td>
                 <td></td>
                 <td>{{ $p->gr_beli }}</td>

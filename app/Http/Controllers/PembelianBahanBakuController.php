@@ -54,9 +54,9 @@ class PembelianBahanBakuController extends Controller
     {
         $tgl1 =  $this->tgl1;
         $tgl2 =  $this->tgl2;
-        $pembelian = DB::select("SELECT a.id_invoice_bk, a.no_lot, a.tgl, a.no_nota, a.suplier_akhir, a.total_harga, a.lunas, c.kredit, c.debit, a.approve, d.no_nota as nota_grading, if(e.approve = 'Y',f.rupiah_approve,e.rupiah) as rupiah , e.no_nota as nota_bk_campur, e.approve, f.rupiah_approve
+        $pembelian = DB::select("SELECT a.id_invoice_bk, a.no_lot, a.tgl, a.no_nota, a.suplier_akhir, a.total_harga, a.lunas, c.kredit, c.debit, a.approve, d.no_nota as nota_grading, if(e.approve = 'Y',f.rupiah_approve,e.rupiah) as rupiah , e.no_nota as nota_bk_campur, e.approve, f.rupiah_approve, b.nm_suplier
         FROM invoice_bk as a 
-    
+        left join tb_suplier as b on b.id_suplier = a.id_suplier
         left join (
         SELECT c.no_nota , sum(c.debit) as debit, sum(c.kredit) as kredit  FROM bayar_bk as c
         group by c.no_nota

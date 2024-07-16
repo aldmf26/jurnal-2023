@@ -4,7 +4,8 @@
             <th width="30px">#</th>
             <th width="110px">Tanggal</th>
             <th width="102px">No Nota</th>
-            <th width="184px">Suplier</th>
+            <th width="184px">Suplier Awal</th>
+            <th width="184px">Suplier Akhir</th>
             <th width="125px">Total Gr</th>
             <th width="156px">Total Rp</th>
             <th width="50px">Status</th>
@@ -38,6 +39,7 @@
                 <td>{{ $no + 1 }}</td>
                 <td>{{ $p->tgl }}</td>
                 <td>{{ $p->no_nota }}</td>
+                <td>{{ strtoupper($p->nm_suplier) }}</td>
                 <td>{{ strtoupper($p->suplier_akhir) }}</td>
                 <td>{{ $p->qty }}</td>
                 <td>{{ $p->total_harga }}</td>

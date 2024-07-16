@@ -99,7 +99,8 @@
                             <th class="dhead">Tanggal</th>
                             <th class="dhead">No Nota</th>
                             <th class="dhead" width="10%">Akun</th>
-                            <th class="dhead">Suplier</th>
+                            <th class="dhead">Suplier Awal</th>
+                            <th class="dhead">Suplier Akhir</th>
                             <th class="dhead" style="text-align: right">Total Rp</th>
                             <th class="dhead" style="text-align: right">Terbayar</th>
                             <th class="dhead" style="text-align: right">Sisa Hutang</th>
@@ -127,6 +128,7 @@
                                 <td>{{ tanggal($p->tgl) }}</td>
                                 <td>{{ $p->no_nota }}</td>
                                 <td>Bkin</td>
+                                <td>{{ ucwords(strtolower($p->nm_suplier)) }}</td>
                                 <td>{{ ucwords(strtolower($p->suplier_akhir)) }}</td>
                                 <td align="right">Rp. {{ number_format($p->total_harga, 0) }}</td>
                                 <td align="right">Rp. {{ number_format($p->kredit, 0) }}</td>

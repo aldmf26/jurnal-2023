@@ -57,11 +57,11 @@ class BkinExport  implements FromView, WithEvents
         return [
             AfterSheet::class    => function (AfterSheet $event) {
                 $totalrow = $this->totalrow + 1;
-                $cellRange = 'A1:U1';
+                $cellRange = 'A1:V1';
                 // All headers
                 $event->sheet->getDelegate()->getStyle($cellRange)->getFont()->setSize(12);
                 $event->sheet->setAutoFilter($cellRange);
-                $event->sheet->getStyle('A1:U1')->applyFromArray([
+                $event->sheet->getStyle('A1:V1')->applyFromArray([
                     'borders' => [
                         'allBorders' => [
                             'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
@@ -74,7 +74,7 @@ class BkinExport  implements FromView, WithEvents
                         'bold' => true
                     ]
                 ]);
-                $event->sheet->getStyle('A2:U' . $totalrow)->applyFromArray([
+                $event->sheet->getStyle('A2:V' . $totalrow)->applyFromArray([
                     'borders' => [
                         'allBorders' => [
                             'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
