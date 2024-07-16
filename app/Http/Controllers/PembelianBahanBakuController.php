@@ -216,7 +216,7 @@ class PembelianBahanBakuController extends Controller
         $button = $r->button;
         if ($button == 'simpan') {
             $data = [
-                // 'id_suplier' => $suplier_awal,
+                'id_suplier' => $suplier_awal,
                 'tgl' => $tgl,
                 'no_nota' => $sub_po,
                 'no_lot' => $max_l,
@@ -229,7 +229,7 @@ class PembelianBahanBakuController extends Controller
             DB::table('invoice_bk')->insert($data);
         } else {
             $data = [
-                // 'id_suplier' => $suplier_awal,
+                'id_suplier' => $suplier_awal,
                 'tgl' => $tgl,
                 'no_nota' => $sub_po,
                 'no_lot' => $max_l,
@@ -367,7 +367,7 @@ class PembelianBahanBakuController extends Controller
         $button = $r->button;
         if ($button == 'simpan') {
             $data = [
-                // 'id_suplier' => $suplier_awal,
+                'id_suplier' => $suplier_awal,
                 'tgl' => $tgl,
                 'no_nota' => $nota,
                 'no_lot' => $r->no_lot,
@@ -381,7 +381,7 @@ class PembelianBahanBakuController extends Controller
             DB::table('invoice_bk')->where('no_nota', $nota)->update($data);
         } else {
             $data = [
-                // 'id_suplier' => $suplier_awal,
+                'id_suplier' => $suplier_awal,
                 'tgl' => $tgl,
                 'no_nota' => $nota,
                 'no_lot' => $r->no_lot,

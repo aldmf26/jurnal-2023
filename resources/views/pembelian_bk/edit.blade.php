@@ -31,7 +31,7 @@
                     <input type="hidden" class="form-control nota_bk" name="approve_bk_campur"
                         value="{{ $invoice->approve_bk_campur }}">
                 </div>
-                {{-- <div class="col-lg-2 col-6">
+                <div class="col-lg-2 col-6">
                     <label for="">Suplier Awal</label>
                     <select name="suplier_awal" id="select2" class="">
                         <option value="">Pilih Suplier</option>
@@ -41,7 +41,7 @@
                             </option>
                         @endforeach
                     </select>
-                </div> --}}
+                </div>
                 <div class="col-lg-2 col-6">
                     <label for="">Suplier Akhir</label>
                     <input type="text" class="form-control" name="suplier_akhir"

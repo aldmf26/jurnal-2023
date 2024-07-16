@@ -29,7 +29,7 @@
                     <input type="text" class="form-control nota_bk" name="no_lot" value="{{ $no_lot }}"
                         readonly>
                 </div>
-                {{-- <div class="col-lg-2 col-6">
+                <div class="col-lg-2 col-6">
                     <label for="">Suplier Awal</label>
                     <select name="suplier_awal" id="select2" class="" required>
                         <option value="">Pilih Suplier</option>
@@ -37,7 +37,7 @@
                             <option value="{{ $s->id_suplier }}">{{ $s->nm_suplier }}</option>
                         @endforeach
                     </select>
-                </div> --}}
+                </div>
                 <div class="col-lg-2 col-6">
                     <label for="">Suplier</label>
                     <input type="text" class="form-control" name="suplier_akhir" value="" required>
@@ -102,8 +102,8 @@
                                             value="0" name="h_satuan[]">
                                     </td>
                                     <td style="vertical-align: top;" align="right">
-                                        <input type="text" class="form-control total_harga1 text-end " value=""
-                                            count="1" style="width: 150px" readonly>
+                                        <input type="text" class="form-control total_harga1 text-end "
+                                            value="" count="1" style="width: 150px" readonly>
                                         <input type="hidden"
                                             class="form-control total_harga_biasa total_harga_biasa1 text-end"
                                             value="" readonly>
