@@ -178,35 +178,37 @@ class GudangNewController extends Controller
         $spreadsheet->setActiveSheetIndex(0);
         $sheet1 = $spreadsheet->getActiveSheet();
         $sheet1->setTitle('Bk Opname');
-        $sheet1->getStyle("A1:J1")->applyFromArray($style_atas);
+        $sheet1->getStyle("A1:K1")->applyFromArray($style_atas);
         $sheet1->setCellValue('A1', 'No');
         $sheet1->setCellValue('B1', 'Nama Partai');
-        $sheet1->setCellValue('C1', 'Grade');
-        $sheet1->setCellValue('D1', 'Pcs');
-        $sheet1->setCellValue('E1', 'Gr');
-        $sheet1->setCellValue('F1', 'Ttl Rp');
-        $sheet1->setCellValue('G1', 'Pcs Ulang');
-        $sheet1->setCellValue('H1', 'Gr Ulang');
-        $sheet1->setCellValue('I1', 'Susut');
-        $sheet1->setCellValue('J1', 'Keterangan Opname');
+        $sheet1->setCellValue('C1', 'Nama Partai ko herry');
+        $sheet1->setCellValue('D1', 'Grade');
+        $sheet1->setCellValue('E1', 'Pcs');
+        $sheet1->setCellValue('F1', 'Gr');
+        $sheet1->setCellValue('G1', 'Ttl Rp');
+        $sheet1->setCellValue('H1', 'Pcs Ulang');
+        $sheet1->setCellValue('I1', 'Gr Ulang');
+        $sheet1->setCellValue('J1', 'Susut');
+        $sheet1->setCellValue('K1', 'Keterangan Opname');
         $kolom = 2;
         $gudang = GudangBkModel::g_p_kerja();
         foreach ($gudang as $no => $g) {
             $sheet1->setCellValue('A' . $kolom, $no + 1);
             $sheet1->setCellValue('B' . $kolom, $g->ket2);
-            $sheet1->setCellValue('C' . $kolom, $g->nm_grade);
-            $sheet1->setCellValue('D' . $kolom, $g->pcs);
-            $sheet1->setCellValue('E' . $kolom, $g->gr);
-            $sheet1->setCellValue('F' . $kolom, $g->total_rp);
-            $sheet1->setCellValue('G' . $kolom, $g->pcs_bk);
-            $sheet1->setCellValue('H' . $kolom, $g->gr_bk);
-            $sheet1->setCellValue('I' . $kolom, empty($g->gr_bk) ? 0 : round((1 - ($g->gr_bk / $g->gr)) * 100, 0));
-            $sheet1->setCellValue('J' . $kolom, $g->opname_bulan);
+            $sheet1->setCellValue('C' . $kolom, $g->ket);
+            $sheet1->setCellValue('D' . $kolom, $g->nm_grade);
+            $sheet1->setCellValue('E' . $kolom, $g->pcs);
+            $sheet1->setCellValue('F' . $kolom, $g->gr);
+            $sheet1->setCellValue('G' . $kolom, $g->total_rp);
+            $sheet1->setCellValue('H' . $kolom, $g->pcs_bk);
+            $sheet1->setCellValue('I' . $kolom, $g->gr_bk);
+            $sheet1->setCellValue('J' . $kolom, empty($g->gr_bk) ? 0 : round((1 - ($g->gr_bk / $g->gr)) * 100, 0));
+            $sheet1->setCellValue('K' . $kolom, $g->opname_bulan);
 
 
             $kolom++;
         }
-        $sheet1->getStyle('A2:J' . $kolom - 1)->applyFromArray($style);
+        $sheet1->getStyle('A2:K' . $kolom - 1)->applyFromArray($style);
         $namafile = "Gudang Cabut Pengawas.xlsx";
 
         $writer = new Xlsx($spreadsheet);
