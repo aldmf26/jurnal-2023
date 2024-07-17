@@ -217,4 +217,12 @@ class ApiWipController extends Controller
 
         return response()->json($r);
     }
+    public function sum_partai(Request $r)
+    {
+        $r = DB::select("SELECT a.nm_partai, sum(a.pcs_awal) as pcs, sum(a.gr_awal) as gr
+        FROM bk as a 
+        GROUP by a.nm_partai;");
+
+        return response()->json($r);
+    }
 }

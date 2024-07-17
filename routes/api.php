@@ -32,4 +32,5 @@ Route::controller(ApiWipController::class)
         Route::get('/detailOpname/{no}', 'detailOpname')->name('detailOpname');
         Route::get('/bkSortirApi', 'bkSortirApi')->name('bkSortirApi');
         Route::get('/partai', 'partai')->name('partai');
+        Route::get('/sum_partai', 'sum_partai')->name('sum_partai');
     });
