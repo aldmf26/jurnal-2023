@@ -478,6 +478,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/get_susut', 'get_susut')->name('get_susut');
             Route::post('/save_susut', 'save_susut')->name('save_susut');
             Route::post('/save_bulan_opname', 'save_bulan_opname')->name('save_bulan_opname');
+            Route::get('/export_p_kerja', 'export_p_kerja')->name('export_p_kerja');
         });
     Route::controller(GudangGradingController::class)
         ->prefix('gudang_grading')

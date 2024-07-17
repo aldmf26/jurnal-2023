@@ -23,14 +23,18 @@
         <form action="{{ route('gudangnew.save_bulan_opname') }}" method="post">
             @csrf
             <section class="row">
-                <div class="col-lg-9">
+                <div class="col-lg-7">
 
                 </div>
-                <div class="col-lg-3">
+                <div class="col-lg-5">
                     <table class="float-end">
                         <td>Search :</td>
                         <td><input type="text" id="pencarian" class="form-control float-end"></td>
                         <td><button class="btn btn-primary float-end me-2">Simpan</button></td>
+                        <td>
+                            <a href="{{ route('gudangnew.export_p_kerja') }}"
+                                class="btn btn-primary float-end me-2">Export</a>
+                        </td>
                     </table>
                 </div>
                 <div class="col-lg-12 mt-2">
