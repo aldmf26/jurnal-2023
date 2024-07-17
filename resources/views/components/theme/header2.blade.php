@@ -40,11 +40,11 @@
                     class="user-dropdown d-flex align-items-center dropend dropdown-toggle " data-bs-toggle="dropdown"
                     aria-expanded="false">
                     <div class="avatar avatar-md2">
-                        @php
+                        {{-- @php
                             $idPosisi = auth()->user()->posisi->id_posisi;
                             $gambar = $idPosisi == 1 ? 'kitchen' : 'server';
-                        @endphp
-                        <img src='{{ asset("img/$gambar.png") }}' alt="Avatar">
+                        @endphp --}}
+                        <img src='{{ asset('img/kitchen.png') }}' alt="Avatar">
                     </div>
                     <div class="text">
                         <p class="user-dropdown-name">{{ ucwords(auth()->user()->name) }}</p>
