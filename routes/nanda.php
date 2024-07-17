@@ -477,6 +477,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/export_show_box', 'export_show_box')->name('export_show_box');
             Route::get('/get_susut', 'get_susut')->name('get_susut');
             Route::post('/save_susut', 'save_susut')->name('save_susut');
+            Route::post('/save_bulan_opname', 'save_bulan_opname')->name('save_bulan_opname');
         });
     Route::controller(GudangGradingController::class)
         ->prefix('gudang_grading')

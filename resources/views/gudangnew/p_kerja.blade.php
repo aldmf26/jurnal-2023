@@ -20,100 +20,89 @@
     </x-slot>
     <x-slot name="cardBody">
         {{-- <form action="{{ route('gudangBk.export_buku_campur_bk') }}" method="post"> --}}
-        @csrf
-        <section class="row">
+        <form action="{{ route('gudangnew.save_bulan_opname') }}" method="post">
+            @csrf
+            <section class="row">
+                <div class="col-lg-9">
 
-            {{-- <div class="col-lg-9">
-                @include('gudangnew.nav')
-            </div> --}}
-            {{-- <div class="col-lg-3">
+                </div>
+                <div class="col-lg-3">
                     <table class="float-end">
                         <td>Search :</td>
                         <td><input type="text" id="pencarian" class="form-control float-end"></td>
+                        <td><button class="btn btn-primary float-end me-2">Simpan</button></td>
                     </table>
-                </div> --}}
-            <div class="col-lg-12 mt-2">
-
-                <table class="table table-hover table-bordered" id="table" width="100%">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Ket/Nama Partai</th>
-                            <th>Grade</th>
-                            <th class="text-end">Pcs bk</th>
-                            <th class="text-end">Gr bk</th>
-                            <th class="text-end">Cost bk</th>
-                            <th class="text-end">Pcs timbang ulang</th>
-                            <th class="text-end">Gr timbang ulang</th>
-                            <th class="text-end">Pcs Susut</th>
-                            <th class="text-end">Gr Susut</th>
-                            <th class="text-end bg-danger">Pcs Sisa</th>
-                            <th class="text-end bg-danger">Gr Sisa</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @php
-                            $no = 1;
-                        @endphp
-                        @foreach ($gudang as $g)
-                            @php
-                                $ket = $g->ket2;
-                                $resSum = Cache::remember(
-                                    'datacabutsum5_' . $ket,
-                                    now()->addMinutes(5),
-                                    function () use ($ket, $linkApi) {
-                                        return Http::get("$linkApi/datacabutsum2", ['nm_partai' => $ket])->object();
-                                    },
-                                );
-                                $c = $resSum;
-                                $g->relatedModel = $c;
-
-                                $wipPcs = $g->pcs ?? 0;
-                                $wipGr = $g->gr ?? 0;
-
-                                $bkPcs = $c->pcs_bk ?? 0;
-                                $bkGr = $c->gr_awal_bk ?? 0;
-                                $gr_susut = $g->gr_susut ?? 0;
-                                $pcs_susut = $g->pcs_susut ?? 0;
-                                $WipSisaPcs = $wipPcs - $bkPcs - $pcs_susut;
-                                $WipSisaGr = $wipGr - $bkGr - $gr_susut;
-
-                                if ($WipSisaPcs + $WipSisaGr == '0') {
-                                    continue;
-                                }
-
-                            @endphp
+                </div>
+                <div class="col-lg-12 mt-2">
+                    <table class="table table-hover table-bordered" id="tableSearch" width="100%">
+                        <thead>
                             <tr>
-                                <td>{{ $no++ }}</td>
-                                <td>{{ $g->ket2 }}</td>
-                                <td>{{ $g->nm_grade }}</td>
-                                <td class="text-end">{{ number_format($g->pcs, 0) }}</td>
-                                <td class="text-end">{{ number_format($g->gr, 0) }}</td>
-                                <td class="text-end">{{ number_format($g->total_rp, 0) }}</td>
-                                <td class="text-end">{{ number_format($bkPcs, 0) }}</td>
-                                <td class="text-end">{{ number_format($bkGr, 0) }}</td>
-                                <td class="text-end">
-                                    <a href="#" class="partai fw-bold" partai="{{ $g->ket2 }}"
-                                        data-bs-toggle="modal" data-bs-target="#susut">
-                                        <u>{{ number_format($pcs_susut, 0) }}</u>
-                                    </a>
-                                </td>
-                                <td class="text-end"><a href="#" class="partai fw-bold"
-                                        partai="{{ $g->ket2 }}" data-bs-toggle="modal" data-bs-target="#susut">
-                                        <u>{{ number_format($gr_susut, 0) }}</u>
-                                    </a>
-                                </td>
-                                <td class="text-end">{{ number_format($WipSisaPcs, 0) }}</td>
-                                <td class="text-end">{{ number_format($WipSisaGr, 0) }}</td>
-
+                                <th class="dhead">No</th>
+                                <th class="dhead">Ket/Nama Partai</th>
+                                <th class="dhead">Grade</th>
+                                <th class="text-end dhead">Pcs bk</th>
+                                <th class="text-end dhead">Gr bk</th>
+                                <th class="text-end dhead">Cost bk</th>
+                                <th class="text-end dhead">Pcs timbang ulang</th>
+                                <th class="text-end dhead">Gr timbang ulang</th>
+                                <th class="text-end dhead">Pcs Susut</th>
+                                <th class="text-end dhead">Gr Susut</th>
+                                <th class="text-end text-white bg-danger">Pcs Sisa</th>
+                                <th class="text-end text-white bg-danger">Gr Sisa</th>
+                                <th class="text-end dhead" width="200px">Keterangan Opname</th>
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @foreach ($gudang as $no => $g)
+                                @php
+                                    $wipPcs = $g->pcs ?? 0;
+                                    $wipGr = $g->gr ?? 0;
 
-            </div>
+                                    $bkPcs = $g->pcs_bk ?? 0;
+                                    $bkGr = $g->gr_bk ?? 0;
+                                    $gr_susut = $g->gr_susut ?? 0;
+                                    $pcs_susut = $g->pcs_susut ?? 0;
+                                    $WipSisaPcs = $wipPcs - $bkPcs - $pcs_susut;
+                                    $WipSisaGr = $wipGr - $bkGr - $gr_susut;
+                                @endphp
+                                <tr>
+                                    <td>{{ $no + 1 }}</td>
+                                    <td>{{ $g->ket2 }}</td>
+                                    <td>{{ $g->nm_grade }}</td>
+                                    <td class="text-end">{{ number_format($g->pcs, 0) }}</td>
+                                    <td class="text-end">{{ number_format($g->gr, 0) }}</td>
+                                    <td class="text-end">{{ number_format($g->total_rp, 0) }}</td>
+                                    <td class="text-end">{{ number_format($bkPcs, 0) }}</td>
+                                    <td class="text-end">{{ number_format($bkGr, 0) }}</td>
+                                    <td class="text-end">
+                                        <a href="#" class="partai fw-bold" partai="{{ $g->ket2 }}"
+                                            data-bs-toggle="modal" data-bs-target="#susut">
+                                            <u>{{ number_format($pcs_susut, 0) }}</u>
+                                        </a>
+                                    </td>
+                                    <td class="text-end"><a href="#" class="partai fw-bold"
+                                            partai="{{ $g->ket2 }}" data-bs-toggle="modal"
+                                            data-bs-target="#susut">
+                                            <u>{{ number_format($gr_susut, 0) }}</u>
+                                        </a>
+                                    </td>
+                                    <td class="text-end">{{ number_format($WipSisaPcs, 0) }}</td>
+                                    <td class="text-end">{{ number_format($WipSisaGr, 0) }}</td>
+                                    <td>
+                                        <input type="hidden" name="partai[]" value="{{ $g->ket2 }}">
+                                        <input type="text" class="form-control" name="ket[]"
+                                            value="{{ $g->opname_bulan }}">
+                                    </td>
 
-        </section>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+
+                </div>
+
+            </section>
+        </form>
         {{-- </form> --}}
 
         <form action="{{ route('gudangnew.import_buku_campur_produksi') }}" method="post"

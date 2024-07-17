@@ -126,15 +126,36 @@ class GudangNewController extends Controller
 
     public function gudang_p_kerja(Request $r)
     {
+        $bk = Http::get("https://sarang.ptagafood.com/api/apibk/sum_partai");
+        $bk = json_decode($bk, TRUE);
+        DB::table('bk_timbang_ulang')->truncate();
+        foreach ($bk as $v) {
+            $data = [
+                'nm_partai' => $v['nm_partai'],
+                'pcs' => $v['pcs'],
+                'gr' => $v['gr'],
+            ];
+            DB::table('bk_timbang_ulang')->insert($data);
+        }
         $gudang = GudangBkModel::g_p_kerja();
-
-
         $data =  [
             'title' => 'Gudang Partai Kerja',
             'gudang' => $gudang,
             'linkApi' => $this->linkApi,
         ];
         return view('gudangnew.p_kerja', $data);
+    }
+
+    public function save_bulan_opname(Request $r)
+    {
+        for ($x = 0; $x < count($r->partai); $x++) {
+            $data = [
+                'opname_bulan' => $r->ket[$x],
+            ];
+            DB::table('table_susut')->where('ket2', $r->partai[$x])->where('gudang', 'wip')->update($data);
+        }
+
+        return redirect()->route('gudangnew.gudang_p_kerja')->with('sukses', 'Data susut ditambhkan');
     }
 
     public function gudang_c_pgws(Request $r)
