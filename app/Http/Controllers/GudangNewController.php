@@ -152,7 +152,7 @@ class GudangNewController extends Controller
             $data = [
                 'opname_bulan' => $r->ket[$x],
             ];
-            DB::table('table_susut')->where('ket2', $r->partai[$x])->where('gudang', 'wip')->update($data);
+            DB::table('buku_campur_approve')->where('ket2', $r->partai[$x])->where('gudang', 'wip')->update($data);
         }
 
         return redirect()->route('gudangnew.gudang_p_kerja')->with('sukses', 'Data susut ditambhkan');
