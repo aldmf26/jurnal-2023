@@ -29,11 +29,11 @@
                 <div class="col-lg-5">
                     <table class="float-end">
                         <td>Search :</td>
-                        <td><input type="text" id="pencarian" class="form-control float-end"></td>
-                        <td><button class="btn btn-primary float-end me-2">Simpan</button></td>
+                        <td><input type="text" id="pencarian" class="form-control float-end"> </td>
+                        <td><button class="btn btn-primary float-end ms-2">Simpan</button></td>
                         <td>
-                            <a href="{{ route('gudangnew.export_p_kerja') }}" class="btn btn-success float-end me-2"><i
-                                    class="fas fa-file-excel"></i> Opname</a>
+                            <a href="{{ route('gudangnew.export_p_kerja') }}"
+                                class="btn btn-success float-end ms-2 me-2"><i class="fas fa-file-excel"></i> Opname</a>
                         </td>
                     </table>
                 </div>
