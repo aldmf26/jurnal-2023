@@ -123,7 +123,7 @@ class GudangBkController extends Controller
         $sheet1->getStyle("A1:L1")->applyFromArray($style_atas);
         $sheet1->setCellValue('A1', 'ID');
         $sheet1->setCellValue('B1', 'Buku');
-        // $sheet1->setCellValue('C1', 'Suplier Awal');
+        $sheet1->setCellValue('C1', 'Suplier Awal');
         $sheet1->setCellValue('C1', 'Date');
         $sheet1->setCellValue('D1', 'Grade');
         $sheet1->setCellValue('E1', 'Pcs');
@@ -140,7 +140,7 @@ class GudangBkController extends Controller
         foreach ($pembelian as $d) {
             $sheet1->setCellValue('A' . $kolom, $d->id_buku_campur);
             $sheet1->setCellValue('B' . $kolom, $d->buku);
-            // $sheet1->setCellValue('C' . $kolom, $d->suplier_awal);
+            $sheet1->setCellValue('C' . $kolom, $d->suplier_awal);
             $sheet1->setCellValue('C' . $kolom, $d->tgl);
             $sheet1->setCellValue('D' . $kolom, $d->nm_grade);
             $sheet1->setCellValue('E' . $kolom, $d->pcs);
