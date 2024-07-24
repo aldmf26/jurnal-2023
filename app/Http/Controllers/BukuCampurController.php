@@ -290,7 +290,7 @@ class BukuCampurController extends Controller
                         'gr' => $rowData[6],
                         'rupiah' => $rowData[7],
                         'ket' => $rowData[9],
-                        'approve' => 'Y',
+                        'approve' => 'T',
                         'gabung' => 'T'
                     ]);
 
