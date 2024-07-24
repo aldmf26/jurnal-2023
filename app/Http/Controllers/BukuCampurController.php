@@ -291,9 +291,11 @@ class BukuCampurController extends Controller
                         'rupiah' => $rowData[7],
                         'ket' => $rowData[9],
                         'approve' => 'Y',
+                        'gabung' => 'T'
                     ]);
 
                     $buku_campur_approve = DB::table('buku_campur_approve')->where('id_buku_campur', $rowData[0])->first();
+
                     if (empty($buku_campur_approve->id_buku_campur)) {
                         DB::table('buku_campur_approve')->insert([
                             'id_buku_campur' => $rowData[0],
