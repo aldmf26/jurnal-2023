@@ -280,6 +280,7 @@ class BukuCampurController extends Controller
 
                 $bk = DB::table('buku_campur')->where('id_buku_campur', $rowData[0])->first();
 
+
                 $invoice =  DB::table('invoice_bk')->where('no_nota', $bk->no_nota)->first();
                 if ($invoice->approve_bk_campur == 'Y') {
                 } else {
@@ -289,13 +290,26 @@ class BukuCampurController extends Controller
                         'gr' => $rowData[6],
                         'rupiah' => $rowData[7],
                         'ket' => $rowData[9],
+                        'approve' => 'Y',
                     ]);
-                    DB::table('buku_campur_approve')->where('id_buku_campur', $rowData[0])->update([
-                        'pcs' => $rowData[5],
-                        'gr' => $rowData[6],
-                        'rupiah' => $rowData[7],
-                        'ket' => $rowData[9],
-                    ]);
+
+                    $buku_campur_approve = DB::table('buku_campur_approve')->where('id_buku_campur', $rowData[0])->first();
+                    if (empty($buku_campur_approve->id_buku_campur)) {
+                        DB::table('buku_campur_approve')->insert([
+                            'id_buku_campur' => $rowData[0],
+                            'pcs' => $rowData[5],
+                            'gr' => $rowData[6],
+                            'rupiah' => $rowData[7],
+                            'ket' => $rowData[9],
+                        ]);
+                    } else {
+                        DB::table('buku_campur_approve')->where('id_buku_campur', $rowData[0])->update([
+                            'pcs' => $rowData[5],
+                            'gr' => $rowData[6],
+                            'rupiah' => $rowData[7],
+                            'ket' => $rowData[9],
+                        ]);
+                    }
                 }
             }
 
