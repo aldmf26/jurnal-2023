@@ -286,10 +286,10 @@ class BukuCampurController extends Controller
                 } else {
                     DB::table('buku_campur')->where('id_buku_campur', $rowData[0])->update([
                         // 'no_lot' => $rowData[8],
-                        'pcs' => $rowData[5],
-                        'gr' => $rowData[6],
-                        'rupiah' => $rowData[7],
-                        'ket' => $rowData[9],
+                        'pcs' => $rowData[6],
+                        'gr' => $rowData[7],
+                        'rupiah' => $rowData[8],
+                        'ket' => $rowData[10],
                         'approve' => 'T',
                         'gabung' => 'T'
                     ]);
@@ -299,17 +299,17 @@ class BukuCampurController extends Controller
                     if (empty($buku_campur_approve->id_buku_campur)) {
                         DB::table('buku_campur_approve')->insert([
                             'id_buku_campur' => $rowData[0],
-                            'pcs' => $rowData[5],
-                            'gr' => $rowData[6],
-                            'rupiah' => $rowData[7],
-                            'ket' => $rowData[9],
+                            'pcs' => $rowData[6],
+                            'gr' => $rowData[7],
+                            'rupiah' => $rowData[8],
+                            'ket' => $rowData[10],
                         ]);
                     } else {
                         DB::table('buku_campur_approve')->where('id_buku_campur', $rowData[0])->update([
-                            'pcs' => $rowData[5],
-                            'gr' => $rowData[6],
-                            'rupiah' => $rowData[7],
-                            'ket' => $rowData[9],
+                            'pcs' => $rowData[6],
+                            'gr' => $rowData[7],
+                            'rupiah' => $rowData[8],
+                            'ket' => $rowData[10],
                         ]);
                     }
                 }
