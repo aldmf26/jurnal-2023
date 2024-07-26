@@ -498,23 +498,24 @@ class PembelianBahanBakuController extends Controller
             $sheet1->setCellValue('B1', 'Tanggal');
             $sheet1->setCellValue('C1', 'Nota BK');
             $sheet1->setCellValue('D1', 'Nota Lot');
-            $sheet1->setCellValue('E1', 'Suplier');
-            $sheet1->setCellValue('F1', 'Keterangan');
-            $sheet1->setCellValue('G1', 'Gr Beli');
-            $sheet1->setCellValue('H1', 'Rp/gr');
-            $sheet1->setCellValue('I1', 'Total Nota Bk');
-            $sheet1->setCellValue('J1', 'Gr Basah');
-            $sheet1->setCellValue('K1', 'Pcs Awal');
-            $sheet1->setCellValue('L1', 'Gr Kering');
-            $sheet1->setCellValue('M1', 'Susut');
-            $sheet1->setCellValue('N1', 'No Buku Campur');
-            $sheet1->setCellValue('O1', 'TGL Grade');
-            $sheet1->setCellValue('P1', 'Status');
-            $sheet1->setCellValue('Q1', $akun_kas->nm_akun);
-            $sheet1->setCellValue('R1', $akun_bca->nm_akun);
-            $sheet1->setCellValue('S1', $akun_mandiri->nm_akun);
-            $sheet1->setCellValue('T1', $akun_bca22->nm_akun);
-            $sheet1->setCellValue('U1', 'Sisa Hutang');
+            $sheet1->setCellValue('E1', 'Suplier Awal');
+            $sheet1->setCellValue('F1', 'Suplier Akhir');
+            $sheet1->setCellValue('G1', 'Keterangan');
+            $sheet1->setCellValue('H1', 'Gr Beli');
+            $sheet1->setCellValue('I1', 'Rp/gr');
+            $sheet1->setCellValue('J1', 'Total Nota Bk');
+            $sheet1->setCellValue('K1', 'Gr Basah');
+            $sheet1->setCellValue('L1', 'Pcs Awal');
+            $sheet1->setCellValue('M1', 'Gr Kering');
+            $sheet1->setCellValue('N1', 'Susut');
+            $sheet1->setCellValue('O1', 'No Buku Campur');
+            $sheet1->setCellValue('P1', 'TGL Grade');
+            $sheet1->setCellValue('Q1', 'Status');
+            $sheet1->setCellValue('R1', $akun_kas->nm_akun);
+            $sheet1->setCellValue('S1', $akun_bca->nm_akun);
+            $sheet1->setCellValue('T1', $akun_mandiri->nm_akun);
+            $sheet1->setCellValue('U1', $akun_bca22->nm_akun);
+            $sheet1->setCellValue('V1', 'Sisa Hutang');
 
             $kolom = 2;
 
@@ -523,9 +524,9 @@ class PembelianBahanBakuController extends Controller
                 return strcmp($a, $b);
             });
             foreach ($tes as $nota) {
-                $pembelian = DB::selectOne("SELECT a.id_invoice_bk, a.tgl, a.no_nota, a.no_lot, a.suplier_akhir, c.gr_basah, c.pcs_awal, c.gr_kering, a.total_harga, f.total_harga as ttl_hrg, a.approve_bk_campur, g.gr_basah as gr_basah_apr, g.pcs_awal as pcs_awal_apr, g.gr_kering as gr_kering_apr, e.gr_beli, c.tgl as tgl_grading, c.no_campur, a.lunas
+                $pembelian = DB::selectOne("SELECT a.id_invoice_bk, a.tgl, a.no_nota, a.no_lot, a.suplier_akhir, c.gr_basah, c.pcs_awal, c.gr_kering, a.total_harga, f.total_harga as ttl_hrg, a.approve_bk_campur, g.gr_basah as gr_basah_apr, g.pcs_awal as pcs_awal_apr, g.gr_kering as gr_kering_apr, e.gr_beli, c.tgl as tgl_grading, c.no_campur, a.lunas, b.nm_suplier
                 FROM invoice_bk as a 
-                -- left join tb_suplier as  b on b.id_suplier = a.id_suplier
+                left join tb_suplier as  b on b.id_suplier = a.id_suplier
                 left join grading as c on c.no_nota = a.no_nota
                 Left join(
                 SELECT e.no_nota, sum(e.qty) as gr_beli
@@ -559,60 +560,61 @@ class PembelianBahanBakuController extends Controller
                 $sheet1->setCellValue('B' . $kolom, $pembelian->tgl);
                 $sheet1->setCellValue('C' . $kolom, $pembelian->no_nota);
                 $sheet1->setCellValue('D' . $kolom, $pembelian->no_lot);
-                $sheet1->setCellValue('E' . $kolom, $pembelian->suplier_akhir);
-                $sheet1->setCellValue('F' . $kolom, '');
-                $sheet1->setCellValue('G' . $kolom, $pembelian->gr_beli);
+                $sheet1->setCellValue('E' . $kolom, $pembelian->nm_suplier);
+                $sheet1->setCellValue('F' . $kolom, $pembelian->suplier_akhir);
+                $sheet1->setCellValue('G' . $kolom, '');
+                $sheet1->setCellValue('H' . $kolom, $pembelian->gr_beli);
                 if ($pembelian->gr_beli == 0) {
                     $rp_gr = 0;
                 } else {
                     $rp_gr = $pembelian->approve_bk_campur == 'Y' ? $pembelian->ttl_hrg / $pembelian->gr_beli : $pembelian->total_harga / $pembelian->gr_beli;
                 }
-                $sheet1->setCellValue('H' . $kolom, $rp_gr);
-                $sheet1->setCellValue('I' . $kolom, $pembelian->approve_bk_campur == 'Y' ? $pembelian->ttl_hrg : $pembelian->total_harga);
-                $sheet1->setCellValue('J' . $kolom, $pembelian->approve_bk_campur == 'Y' ? $pembelian->gr_basah_apr : $pembelian->gr_basah);
-                $sheet1->setCellValue('K' . $kolom, $pembelian->approve_bk_campur == 'Y' ? $pembelian->pcs_awal_apr : $pembelian->pcs_awal);
-                $sheet1->setCellValue('L' . $kolom, $pembelian->approve_bk_campur == 'Y' ? $pembelian->gr_kering_apr :  $pembelian->gr_kering);
+                $sheet1->setCellValue('I' . $kolom, $rp_gr);
+                $sheet1->setCellValue('J' . $kolom, $pembelian->approve_bk_campur == 'Y' ? $pembelian->ttl_hrg : $pembelian->total_harga);
+                $sheet1->setCellValue('K' . $kolom, $pembelian->approve_bk_campur == 'Y' ? $pembelian->gr_basah_apr : $pembelian->gr_basah);
+                $sheet1->setCellValue('L' . $kolom, $pembelian->approve_bk_campur == 'Y' ? $pembelian->pcs_awal_apr : $pembelian->pcs_awal);
+                $sheet1->setCellValue('M' . $kolom, $pembelian->approve_bk_campur == 'Y' ? $pembelian->gr_kering_apr :  $pembelian->gr_kering);
                 if ($pembelian->gr_beli == 0) {
-                    $sheet1->setCellValue('M' . $kolom,  '0%');
+                    $sheet1->setCellValue('N' . $kolom,  '0%');
                 } else {
-                    $sheet1->setCellValue('M' . $kolom, $pembelian->approve_bk_campur == 'Y' ? round((1 - $pembelian->gr_beli / $pembelian->gr_kering_apr) * 100) : round((1 - $pembelian->gr_beli /  $pembelian->gr_kering) * -100) . '%');
+                    $sheet1->setCellValue('N' . $kolom, $pembelian->approve_bk_campur == 'Y' ? round((1 - $pembelian->gr_beli / $pembelian->gr_kering_apr) * 100) : round((1 - $pembelian->gr_beli /  $pembelian->gr_kering) * -100) . '%');
                 }
 
-                $sheet1->setCellValue('N' . $kolom, $pembelian->no_campur);
-                $sheet1->setCellValue('O' . $kolom, $pembelian->tgl_grading);
+                $sheet1->setCellValue('O' . $kolom, $pembelian->no_campur);
+                $sheet1->setCellValue('P' . $kolom, $pembelian->tgl_grading);
                 $kas2 = empty($kas->bayar) ? '0' : $kas->bayar;
                 $bca2 = empty($bca->bayar) ? '0' : $bca->bayar;
                 $bca222 = empty($bca22->bayar) ? '0' : $bca22->bayar;
                 $mandiri2 = empty($mandiri->bayar) ? '0' : $mandiri->bayar;
-                $sheet1->setCellValue('P' . $kolom, $pembelian->lunas == 'D' ? 'Draft' : ($pembelian->total_harga - $kas2 - $bca2 - $mandiri2 - $bca222 <= 0 ? 'Paid' : 'Unpaid'));
-                $sheet1->setCellValue('Q' . $kolom,  empty($kas->bayar) ? '0' : $kas->bayar);
-                $sheet1->setCellValue('R' . $kolom,  empty($bca->bayar) ? '0' : $bca->bayar);
-                $sheet1->setCellValue('S' . $kolom,  empty($mandiri->bayar) ? '0' : $mandiri->bayar);
-                $sheet1->setCellValue('T' . $kolom,  $bca222);
-                $sheet1->setCellValue('U' . $kolom,  $pembelian->total_harga - $kas2 - $bca2 - $mandiri2 - $bca222);
+                $sheet1->setCellValue('Q' . $kolom, $pembelian->lunas == 'D' ? 'Draft' : ($pembelian->total_harga - $kas2 - $bca2 - $mandiri2 - $bca222 <= 0 ? 'Paid' : 'Unpaid'));
+                $sheet1->setCellValue('R' . $kolom,  empty($kas->bayar) ? '0' : $kas->bayar);
+                $sheet1->setCellValue('S' . $kolom,  empty($bca->bayar) ? '0' : $bca->bayar);
+                $sheet1->setCellValue('T' . $kolom,  empty($mandiri->bayar) ? '0' : $mandiri->bayar);
+                $sheet1->setCellValue('U' . $kolom,  $bca222);
+                $sheet1->setCellValue('V' . $kolom,  $pembelian->total_harga - $kas2 - $bca2 - $mandiri2 - $bca222);
 
                 $kolom++;
             }
-
-            $sheet1->getStyle('A2:U' . $kolom - 1)->applyFromArray($style);
+            $sheet1->getStyle('A2:V' . $kolom - 1)->applyFromArray($style);
 
             $spreadsheet->createSheet();
             $spreadsheet->setActiveSheetIndex(1);
             $sheet2 = $spreadsheet->getActiveSheet(1);
             $sheet2->setTitle('Buku Campur');
-            $sheet2->getStyle('A1:K1')->applyFromArray($style_atas);
+            $sheet2->getStyle('A1:L1')->applyFromArray($style_atas);
 
             $sheet2->setCellValue('A1', 'ID BK Campur');
             $sheet2->setCellValue('B1', 'no buku');
-            $sheet2->setCellValue('C1', 'Suplier');
-            $sheet2->setCellValue('D1', 'DATE');
-            $sheet2->setCellValue('E1', 'GRD');
-            $sheet2->setCellValue('F1', 'pcs-gdg');
-            $sheet2->setCellValue('G1', 'gr-gdg');
-            $sheet2->setCellValue('H1', 'rp/gr-gdg');
-            $sheet2->setCellValue('I1', 'lot no');
-            $sheet2->setCellValue('J1', 'Keterangan');
-            $sheet2->setCellValue('K1', 'ttlrp-gdg');
+            $sheet2->setCellValue('C1', 'Suplier Awal');
+            $sheet2->setCellValue('D1', 'Suplier Akhir');
+            $sheet2->setCellValue('E1', 'DATE');
+            $sheet2->setCellValue('F1', 'GRD');
+            $sheet2->setCellValue('G1', 'pcs-gdg');
+            $sheet2->setCellValue('H1', 'gr-gdg');
+            $sheet2->setCellValue('I1', 'rp/gr-gdg');
+            $sheet2->setCellValue('J1', 'lot no');
+            $sheet2->setCellValue('K1', 'Keterangan');
+            $sheet2->setCellValue('L1', 'ttlrp-gdg');
 
             $kolom2 = 2;
             foreach ($tes as $nota) {
@@ -622,7 +624,8 @@ class PembelianBahanBakuController extends Controller
                 a.no_lot,  a.gudang, a.gabung,
                 if(a.approve = 'T',b.nm_grade,d.nm_grade) as nm_grade, 
                 if(a.approve = 'T',c.no_campur,d.buku) as buku, 
-                if(a.approve = 'T',e.suplier_akhir,d.suplier_awal) as suplier, 
+                e.suplier_akhir as suplier, 
+                f.nm_suplier as nm_suplier,
                 if(a.approve = 'T',a.pcs,d.pcs) as pcs, 
                 if(a.approve = 'T',a.gr,d.gr) as gr, 
                 if(a.approve = 'T',a.rupiah,d.rupiah) as rupiah,
@@ -634,6 +637,7 @@ class PembelianBahanBakuController extends Controller
                 left join grading as c on c.no_nota = a.no_nota
                 left join buku_campur_approve as d on d.id_buku_campur = a.id_buku_campur
                 left join invoice_bk as e on e.no_nota = a.no_nota
+                left join tb_suplier as f on f.id_suplier = e.id_suplier
                 where a.no_nota = '$nota'
                 order by a.no_nota ASC, b.urutan ASC;");
                 // $buku_campur = GudangBkModel::getPembelianBkExportnota($nota);
@@ -642,19 +646,20 @@ class PembelianBahanBakuController extends Controller
                 foreach ($buku_campur as $b) {
                     $sheet2->setCellValue('A' . $kolom2, $b->id_buku_campur);
                     $sheet2->setCellValue('B' . $kolom2, $b->buku);
-                    $sheet2->setCellValue('C' . $kolom2, $b->suplier);
-                    $sheet2->setCellValue('D' . $kolom2, $b->tgl);
-                    $sheet2->setCellValue('E' . $kolom2, $b->nm_grade);
-                    $sheet2->setCellValue('F' . $kolom2, $b->pcs);
-                    $sheet2->setCellValue('G' . $kolom2, $b->gr);
-                    $sheet2->setCellValue('H' . $kolom2, $b->rupiah);
-                    $sheet2->setCellValue('I' . $kolom2, $b->no_lot);
-                    $sheet2->setCellValue('J' . $kolom2, $b->ket);
-                    $sheet2->setCellValue('K' . $kolom2, $b->rupiah * $b->gr);
+                    $sheet2->setCellValue('C' . $kolom2, $b->nm_suplier);
+                    $sheet2->setCellValue('D' . $kolom2, $b->suplier);
+                    $sheet2->setCellValue('E' . $kolom2, $b->tgl);
+                    $sheet2->setCellValue('F' . $kolom2, $b->nm_grade);
+                    $sheet2->setCellValue('G' . $kolom2, $b->pcs);
+                    $sheet2->setCellValue('H' . $kolom2, $b->gr);
+                    $sheet2->setCellValue('I' . $kolom2, $b->rupiah);
+                    $sheet2->setCellValue('J' . $kolom2, $b->no_lot);
+                    $sheet2->setCellValue('K' . $kolom2, $b->ket);
+                    $sheet2->setCellValue('L' . $kolom2, $b->rupiah * $b->gr);
                     $kolom2++;
                 }
             }
-            $sheet2->getStyle('A2:K' . $kolom2 - 1)->applyFromArray($style);
+            $sheet2->getStyle('A2:L' . $kolom2 - 1)->applyFromArray($style);
 
 
 
