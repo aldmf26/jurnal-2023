@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
 Route::controller(ApiWipController::class)
     ->prefix('apibk')
     ->name('apibk.')
@@ -32,4 +33,5 @@ Route::controller(ApiWipController::class)
         Route::get('/detailOpname/{no}', 'detailOpname')->name('detailOpname');
         Route::get('/bkSortirApi', 'bkSortirApi')->name('bkSortirApi');
         Route::get('/partai', 'partai')->name('partai');
+        Route::get('/sum_partai', 'sum_partai')->name('sum_partai');
     });

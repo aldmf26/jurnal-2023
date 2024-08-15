@@ -217,4 +217,11 @@ class ApiWipController extends Controller
 
         return response()->json($r);
     }
+
+    public function sum_partai(Request $r)
+    {
+        $gudang = GudangBkModel::g_p_kerja();
+
+        return response()->json($gudang);
+    }
 }
