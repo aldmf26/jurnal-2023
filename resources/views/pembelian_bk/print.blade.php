@@ -144,7 +144,7 @@
             <div class="row mt-4">
                 <div class="col">
                     <div class="tbl-container bdr">
-                        <table class="table">
+                        <table class="table table-sm">
                             <thead class=" text-white" style="background-color: #309fee">
                                 <tr>
                                     <th class="text-start">Grade</th>
