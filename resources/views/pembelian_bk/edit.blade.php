@@ -1,4 +1,4 @@
-<x-theme.app title="{{ $title }}" table="Y" sizeCard="12">
+<x-theme.app title="{{ $title }}" table="Y" sizeCard="12" cont='container-fluid'>
 
     <x-slot name="cardHeader">
         <div class="row justify-content-end">
@@ -56,12 +56,12 @@
                         <thead>
                             <tr>
                                 <th width="2%">#</th>
-                                <th width="15%">Produk</th>
-                                <th width="15%">Keterangan</th>
-                                <th width="7%">Qty</th>
-                                <th width="10%">Satuan</th>
-                                <th width="12%" style="text-align: right;white-space: nowrap;">Harga Satuan</th>
-                                <th width="12%" style="text-align: right;white-space: nowrap;">Total Harga</th>
+                                <th width="7%">Produk</th>
+                                <th width="7%">Keterangan</th>
+                                <th width="10%">Qty</th>
+                                <th width="5%">Satuan</th>
+                                <th width="10%" style="text-align: right;white-space: nowrap;">Harga Satuan</th>
+                                <th width="17%" style="text-align: right;white-space: nowrap;">Total Harga</th>
                                 <th width="5%">Aksi</th>
                             </tr>
                         </thead>
