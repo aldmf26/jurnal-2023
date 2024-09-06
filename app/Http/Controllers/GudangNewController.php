@@ -195,7 +195,7 @@ class GudangNewController extends Controller
         $gudang = GudangBkModel::g_p_kerja();
         foreach ($gudang as $no => $g) {
             $sheet1->setCellValue('A' . $kolom, $no + 1);
-            $sheet1->setCellValue('B' . $kolom, date('m', strtotime($g->tgl)));
+            $sheet1->setCellValue('B' . $kolom, date('f', strtotime($g->tgl)));
             $sheet1->setCellValue('C' . $kolom, $g->ket2);
             $sheet1->setCellValue('D' . $kolom, $g->ket);
             $sheet1->setCellValue('E' . $kolom, $g->nm_grade);
