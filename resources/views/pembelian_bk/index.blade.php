@@ -463,6 +463,86 @@
                     });
                 });
 
+                function navigateInputs(className, e) {
+                    if (e.keyCode === 40 || e.keyCode === 38) { // 40 untuk down, 38 untuk up
+                        e.preventDefault();
+
+                        var $input = $(e.target);
+                        var currentCount = parseInt($input.attr('count')); // Ambil nilai count dari input saat ini
+
+                        // Tentukan arah navigasi (1 untuk down, -1 untuk up)
+                        var direction = (e.keyCode === 40) ? 1 : (e.keyCode === 38) ? -1 : 0;
+
+                        // Cari baris berikutnya (atau sebelumnya) dalam tabel
+                        var $row = $input.closest('tr');
+                        var $nextRow = direction === 1 ? $row.next('tr') : $row.prev(
+                            'tr'); // Baris berikut atau sebelumnya
+
+                        // Cari input di dalam baris tersebut dengan class yang sesuai dan count yang diinginkan
+                        var $nextInput = $nextRow.find('.' + className + '[count="' + (currentCount + direction) +
+                            '"]');
+
+                        // Jika input berikutnya ditemukan, fokuskan input tersebut
+                        if ($nextInput.length) {
+                            $nextInput.focus();
+
+                            // Jika input tersebut memiliki kelas pcsAwal atau grAwal, pilih seluruh teks dalam input
+                            if ($nextInput.hasClass('pcsAwal') || $nextInput.hasClass('grAwal')) {
+                                $nextInput.select(); // Memilih seluruh teks
+                            }
+                        }
+                    }
+                }
+
+                // Menggunakan event delegation untuk menangani semua input dalam tabel dengan kelas .table2
+                $(document).on('keydown', '.table2 input', function(e) {
+                    var className = $(this).attr('class').split(' ')[
+                        1]; // Mendapatkan kelas kedua seperti 'pcsAwal' atau 'grAwal'
+                    if (e.keyCode === 40 || e.keyCode === 38) { // 40 untuk down, 38 untuk up
+                        e.preventDefault();
+
+                        var $input = $(e.target);
+                        var currentCount = parseInt($input.attr(
+                            'count')); // Ambil nilai count dari input saat ini
+
+
+
+                        // Tentukan arah navigasi (1 untuk down, -1 untuk up)
+                        var direction = (e.keyCode === 40) ? 1 : (e.keyCode === 38) ? -1 : 0;
+
+                        // Cari baris berikutnya (atau sebelumnya) dalam tabel
+                        var $row = $input.closest('tr');
+                        var $nextRow = direction === 1 ? $row.next('tr') : $row.prev(
+                            'tr'); // Baris berikut atau sebelumnya
+
+                        // Debugging - apakah baris berikutnya ditemukan?
+                        console.log('Navigating to next row:', $nextRow);
+
+                        // Cari input di dalam baris tersebut dengan class yang sesuai dan count yang diinginkan
+                        var $nextInput = $nextRow.find('.' + className + '[count="' + (currentCount +
+                            direction) + '"]');
+
+                        // Debugging - apakah input berikutnya ditemukan?
+                        console.log('Next input found:', $nextInput);
+
+                        // Jika input berikutnya ditemukan, fokuskan input tersebut
+                        if ($nextInput.length) {
+                            $nextInput.focus();
+
+                            // Jika input tersebut memiliki kelas pcsAwal atau grAwal, pilih seluruh teks dalam input
+                            if ($nextInput.hasClass('pcsAwal') || $nextInput.hasClass('grAwal')) {
+                                $nextInput.select(); // Memilih seluruh teks
+                            }
+                        } else {
+                            // Debugging - jika input tidak ditemukan, beri pesan
+                            console.log('Next input not found for direction', direction);
+                        }
+                    }
+                });
+
+
+
+
             });
         </script>
     @endsection
