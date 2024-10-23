@@ -500,7 +500,7 @@
                         1]; // Mendapatkan kelas kedua seperti 'pcsAwal' atau 'grAwal'
                     if (e.keyCode === 40 || e.keyCode === 38) { // 40 untuk down, 38 untuk up
                         e.preventDefault();
-                        alert(e.keyCode);
+
 
                         var $input = $(e.target);
                         var currentCount = parseInt($input.attr(
