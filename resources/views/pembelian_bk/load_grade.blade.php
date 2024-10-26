@@ -25,11 +25,11 @@
                     <input type="hidden" name="rupiah[]" value="{{ $bk_campur->rupiah ?? 0 }}">
                 </td>
                 <td><input type="text" count="{{ $no + 1 }}" class="form-control pcsAwal text-end "
-                        name="pcs[]" value="{{ empty($bk_campur->pcs) ? 0 : $bk_campur->pcs }}"
+                        name="pcs[]" value="{{ empty($bk_campur->pcs) ? 0 : $bk_campur->pcs }}" autocomplete="off"
                         {{ $invoice->approve_bk_campur == 'Y' ? 'readonly' : '' }}></td>
 
                 <td><input type="text" count="{{ $no + 1 }}" class="form-control grAwal text-end "
-                        name="gr[]" value="{{ empty($bk_campur->gr) ? 0 : $bk_campur->gr }}"
+                        name="gr[]" value="{{ empty($bk_campur->gr) ? 0 : $bk_campur->gr }}" autocomplete="off"
                         {{ $invoice->approve_bk_campur == 'Y' ? 'readonly' : '' }}></td>
                 {{-- <td>
                     <input type="text" class="form-control text-end" name="rupiah[]"
