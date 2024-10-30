@@ -78,15 +78,15 @@
                                     <td class="text-end">{{ number_format($g->total_rp, 0) }}</td>
                                     <td class="text-end">{{ number_format($bkPcs, 0) }}</td>
                                     <td class="text-end">{{ number_format($bkGr, 0) }}</td>
-                                    <td class="text-end">
+                                    <td class="text-end {{ empty($g->ket_susut) ? 'bg-warning' : '' }}">
                                         <a href="#" class="partai fw-bold" partai="{{ $g->ket2 }}"
                                             data-bs-toggle="modal" data-bs-target="#susut">
                                             <u>{{ number_format($pcs_susut, 0) }}</u>
                                         </a>
                                     </td>
-                                    <td class="text-end"><a href="#" class="partai fw-bold"
-                                            partai="{{ $g->ket2 }}" data-bs-toggle="modal"
-                                            data-bs-target="#susut">
+                                    <td class="text-end {{ empty($g->ket_susut) ? 'bg-warning' : '' }}"><a
+                                            href="#" class="partai fw-bold" partai="{{ $g->ket2 }}"
+                                            data-bs-toggle="modal" data-bs-target="#susut">
                                             <u>{{ number_format($gr_susut, 0) }}</u>
                                         </a>
                                     </td>
