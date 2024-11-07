@@ -63,7 +63,7 @@
                             <td>{{ number_format($c->hrga_beli, 0) }}</td>
                             <td>{{ empty($c->gr) ? 0 : number_format(($c->ttl / $c->gr) * ((100 - $c->persen_air) / 100)) }}
                             </td>
-                            <td>{{ number_format($c->ttl / $c->gr) }}</td>
+                            <td>{{ empty($c->gr) ? 0 : number_format($c->ttl / $c->gr) }}</td>
                             <td>{{ number_format($c->gr, 0) }}</td>
                             @foreach ($grade as $g)
                                 @php
