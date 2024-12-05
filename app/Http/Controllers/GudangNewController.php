@@ -537,7 +537,7 @@ class GudangNewController extends Controller
         $partai = $r->partai;
         $get = DB::table('table_susut')->where('ket', $partai)->where('gudang', 'wip')->first();
         $linkApi = $this->linkApi;
-        $response = Http::get("$linkApi/datacabutsum2", ['nm_partai' => $partai]);
+        $response = Http::get("$linkApi/datacabutsum3", ['nm_partai' => $partai]);
         $resSum = $response->object();
         $c = $resSum;
 
