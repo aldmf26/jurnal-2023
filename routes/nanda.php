@@ -218,7 +218,7 @@ Route::middleware('auth')->group(function () {
     });
     Route::controller(PembelianBahanBakuController::class)->group(function () {
         Route::get('/pembelian_bk', 'index')->name('pembelian_bk');
-        Route::get('/pembelian_bk.add', 'add')->name('pembelian_bk.add');
+        Route::get('/pembelian_bk/add', 'add')->name('pembelian_bk.add');
         Route::get('/get_satuan_produk', 'get_satuan_produk')->name('get_satuan_produk');
         Route::get('/tambah_baris_bk', 'tambah_baris_bk')->name('tambah_baris_bk');
         Route::post('/save_pembelian_bk', 'save_pembelian_bk')->name('save_pembelian_bk');
