@@ -84,7 +84,9 @@
                         @foreach ($grade as $key => $g)
                             @php
                                 $letter = chr(97 + $key);
-                                $persen = DB::selectOne("SELECT a.gr, a.hrga  FROM tb_cong as a where a.no_nota = '$c->no_nota' and a.id_grade = '$g->id_grade_cong' and a.ket = '$c->ket'");
+                                $persen = DB::selectOne(
+                                    "SELECT a.gr, a.hrga  FROM tb_cong as a where a.no_nota = '$c->no_nota' and a.id_grade = '$g->id_grade_cong' and a.ket = '$c->ket'",
+                                );
                             @endphp
                             <div class="col-lg-4 mt-2" style="border-right: 1px solid black">
                                 <div class="row">
@@ -121,7 +123,9 @@
                             </div>
                             @php
                                 $gr += empty($persen->gr) ? '0' : $persen->gr;
-                                $total_rp += (empty($persen->gr) ? '0' : $persen->gr) * (empty($persen->hrga) ? '0' : $persen->hrga);
+                                $total_rp +=
+                                    (empty($persen->gr) ? '0' : $persen->gr) *
+                                    (empty($persen->hrga) ? '0' : $persen->hrga);
                             @endphp
                         @endforeach
                     </div>

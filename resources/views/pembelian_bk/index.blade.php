@@ -1,8 +1,10 @@
 <x-theme.app title="{{ $title }}" table="Y" sizeCard="12" cont="container-fluid">
     <x-slot name="cardHeader">
         <div class="row justify-content-end">
+
             <div class="col-lg-6">
-                <h6 class="float-start mt-1">{{ $title }} : {{ tanggal($tgl1) }} ~ {{ tanggal($tgl2) }}</h6>
+                <h6 class="float-start mt-1">{{ $title }} : {{ tanggal($tgl1) }} ~ {{ tanggal($tgl2) }}
+                </h6>
             </div>
             <div class="col-lg-6">
 
@@ -24,9 +26,39 @@
 
                 <x-theme.akses :halaman="$halaman" route="pembelian_bk" />
             </div>
+
         </div>
     </x-slot>
     <x-slot name="cardBody">
+        <div class="row">
+            <div class="col-lg-9">
+
+                <ul class="nav nav-pills float-start" id="myTab" role="tablist">
+                    <li class="nav-item " role="presentation">
+                        <a class="nav-link {{ $page == 'pembelian' ? 'active' : '' }}"
+                            href="{{ route('pembelian_bk', ['page' => 'pembelian', 'period' => 'costume', 'tgl1' => $tgl1, 'tgl2' => $tgl2]) }}"
+                            type="button" role="tab" aria-controls="pills-home" aria-selected="true">Pembelian</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link {{ $page == 'belum_grading' ? 'active' : '' }}"
+                            href="{{ route('pembelian_bk', ['page' => 'belum_grading', 'period' => 'costume', 'tgl1' => $tgl1, 'tgl2' => $tgl2]) }}"
+                            type="button" role="tab" aria-controls="pills-home" aria-selected="true">Belum
+                            Grading</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link {{ $page == 'sudah_grading' ? 'active' : '' }}"
+                            href="{{ route('pembelian_bk', ['page' => 'sudah_grading', 'period' => 'costume', 'tgl1' => $tgl1, 'tgl2' => $tgl2]) }}"
+                            type="button" role="tab" aria-controls="pills-home" aria-selected="true">Sudah
+                            grading</a>
+                    </li>
+
+
+                </ul>
+            </div>
+        </div>
+
+
+
         {{-- @include('pembelian_bk.nav') --}}
         <form action="{{ route('approve_invoice_bk') }}" method="post">
             @csrf
@@ -44,165 +76,171 @@
                     </table>
 
                 </div>
-                <table class="table table-hover " id="tableSearch" width="100%">
-                    <thead>
-                        <tr>
-                            <th class="dhead text-center" rowspan="2" width="5">#</th>
-                            <th class="dhead text-center" rowspan="2">Tanggal</th>
-                            <th class="dhead text-center" rowspan="2">No Nota</th>
-                            <th class="dhead text-center" rowspan="2">No Lot</th>
-                            <th class="dhead text-center" rowspan="2">Suplier Awal</th>
-                            <th class="dhead text-center" rowspan="2">Suplier Akhir</th>
-                            <th class="dhead" rowspan="2" style="text-align: right">Total Harga</th>
-                            <th class="dhead" colspan="5" style="text-align: center">Status</th>
+                <div class="col-lg-12">
 
-                            {{-- @if (!empty($approve))
-                                <th rowspan="2" class="dhead" style="text-align: center">Approve <br> <input
-                                        type="checkbox" name="" id="checkAll" id="">
-                                </th>
-                            @endif --}}
-                            <th rowspan="2" class="dhead">Aksi</th>
-                        </tr>
-                        <tr>
-                            <th class="dhead" style="text-align: center">Pembayaran</th>
-                            <th class="dhead" style="text-align: center">Grading</th>
-                            <th class="dhead" style="text-align: center">Export <br> <button type="submit"
-                                    name="submit" value="export" class="badge bg-success"><i
-                                        class="fas fa-file-excel"></i></button>
-                                <br><input type="checkbox" name="" id="checkAll" id="">
-                            </th>
-                            <th class="dhead" style="text-align: center">Harga</th>
-                            <th class="dhead" style="text-align: center">Approve <br> <button type="submit"
-                                    name="submit" value="approve" class="badge bg-primary"><i
-                                        class="fas fa-check"></i></button> <br>
-                                <input type="checkbox" name="" id="checkAll2" id="">
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($pembelian as $no => $p)
+                    <table class="table table-hover " id="tableSearch" width="100%">
+                        <thead>
                             <tr>
-                                <td class="text-center">{{ $no + 1 }}</td>
-                                <td class="text-center">{{ tanggal($p->tgl) }}</td>
-                                <td class="text-center">{{ $p->no_nota }}</td>
-                                <td class="text-center">{{ $p->no_lot }}</td>
-                                <td class="text-center">{{ ucwords(strtolower($p->nm_suplier)) }}</td>
-                                <td class="text-center">{{ ucwords(strtolower($p->suplier_akhir)) }}</td>
-                                <td align="right">
-                                    {{-- <a href="javascript:void(0);" class="get_print" no_nota="{{ $p->no_nota }}">
+                                <th class="dhead text-center" rowspan="2" width="5">#</th>
+                                <th class="dhead text-center" rowspan="2">Tanggal</th>
+                                <th class="dhead text-center" rowspan="2">No Nota</th>
+                                <th class="dhead text-center" rowspan="2">No Lot</th>
+                                <th class="dhead text-center" rowspan="2">Suplier Awal</th>
+                                <th class="dhead text-center" rowspan="2">Suplier Akhir</th>
+                                <th class="dhead" rowspan="2" style="text-align: right">Total Harga</th>
+                                <th class="dhead" colspan="5" style="text-align: center">Status</th>
 
-                                    </a> --}}
-                                    <a href="#" class="get_detail" no_nota="{{ $p->no_nota }}"
-                                        data-bs-toggle="modal" data-bs-target="#viewdetail">Rp.
-                                        {{ number_format($p->total_harga, 0) }}</a>
+                                {{-- @if (!empty($approve))
+                                    <th rowspan="2" class="dhead" style="text-align: center">Approve <br> <input
+                                            type="checkbox" name="" id="checkAll" id="">
+                                    </th>
+                                @endif --}}
+                                <th rowspan="2" class="dhead">Aksi</th>
+                            </tr>
+                            <tr>
+                                <th class="dhead" style="text-align: center">Pembayaran</th>
+                                <th class="dhead" style="text-align: center">Grading</th>
+                                <th class="dhead" style="text-align: center">Export <br> <button type="submit"
+                                        name="submit" value="export" class="badge bg-success"><i
+                                            class="fas fa-file-excel"></i></button>
+                                    <br><input type="checkbox" name="" id="checkAll" id="">
+                                </th>
+                                <th class="dhead" style="text-align: center">Harga</th>
+                                <th class="dhead" style="text-align: center">Approve <br> <button type="submit"
+                                        name="submit" value="approve" class="badge bg-primary"><i
+                                            class="fas fa-check"></i></button> <br>
+                                    <input type="checkbox" name="" id="checkAll2" id="">
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($pembelian as $no => $p)
+                                <tr>
+                                    <td class="text-center">{{ $no + 1 }}</td>
+                                    <td class="text-center">{{ tanggal($p->tgl) }}</td>
+                                    <td class="text-center">{{ $p->no_nota }}</td>
+                                    <td class="text-center">{{ $p->no_lot }}</td>
+                                    <td class="text-center">{{ ucwords(strtolower($p->nm_suplier)) }}</td>
+                                    <td class="text-center">{{ ucwords(strtolower($p->suplier_akhir)) }}</td>
+                                    <td align="right">
+                                        {{-- <a href="javascript:void(0);" class="get_print" no_nota="{{ $p->no_nota }}">
+    
+                                        </a> --}}
+                                        <a href="#" class="get_detail" no_nota="{{ $p->no_nota }}"
+                                            data-bs-toggle="modal" data-bs-target="#viewdetail">Rp.
+                                            {{ number_format($p->total_harga, 0) }}</a>
 
-                                </td>
+                                    </td>
 
-                                <td align="center">
-                                    <span
-                                        class="badge {{ $p->lunas == 'D' ? 'bg-warning' : ($p->total_harga + $p->debit - $p->kredit == 0 ? 'bg-success' : 'bg-danger') }}">
-                                        {{ $p->lunas == 'D' ? 'Draft' : ($p->total_harga + $p->debit - $p->kredit == 0 ? 'Paid' : 'Unpaid') }}
-                                    </span>
-                                </td>
-
-                                <td align="center">
-                                    @if (empty($p->nota_grading))
-                                        <i class="fas fa-times text-danger"></i>
-                                    @else
-                                        <a href="#" class="btn btn-sm btn-success grading_nota"
-                                            no_nota="{{ $p->no_nota }}" data-bs-toggle="modal"
-                                            data-bs-target="#viewgrading"><i class="fas fa-eye"></i></a>
-                                    @endif
-
-                                </td>
-
-                                <td class="text-center">
-                                    @if (empty($p->nota_grading) || empty($p->nota_bk_campur))
-                                        <i class="fas fa-times text-danger"></i>
-                                        <input type="checkbox" name="ceknota_excel[]" id=""
-                                            value="{{ $p->no_nota }}" hidden>
-                                    @else
-                                        <input type="checkbox" name="ceknota_excel[]" class="checkbox-item-excel"
-                                            id="" value="{{ $p->no_nota }}">
-                                    @endif
-                                </td>
-                                <td align="center">
-                                    @if (empty($p->nota_grading) || empty($p->nota_bk_campur))
-                                        <i class="fas fa-times text-danger"></i>
-                                    @else
-                                        <span class="badge {{ empty($p->rupiah) ? 'bg-danger' : 'bg-success' }}">
-                                            {!! empty($p->rupiah) ? 'Harga ?' : 'Harga <i class="fas fa-check"></i>' !!}
+                                    <td align="center">
+                                        <span
+                                            class="badge {{ $p->lunas == 'D' ? 'bg-warning' : ($p->total_harga + $p->debit - $p->kredit == 0 ? 'bg-success' : 'bg-danger') }}">
+                                            {{ $p->lunas == 'D' ? 'Draft' : ($p->total_harga + $p->debit - $p->kredit == 0 ? 'Paid' : 'Unpaid') }}
                                         </span>
-                                    @endif
-                                </td>
-                                <td style="text-align: center">
-                                    @if (!empty($approve))
-                                        @if ($p->approve == 'Y')
-                                            <i class="fas fa-check text-primary"></i>
-                                            <input type="hidden" name="ceknota[]" id="" value="Y">
+                                    </td>
+
+                                    <td align="center">
+                                        @if (empty($p->nota_grading))
+                                            <i class="fas fa-times text-danger"></i>
                                         @else
-                                            <input type="checkbox" name="ceknota[]" class="checkbox-item"
+                                            <a href="#" class="btn btn-sm btn-success grading_nota"
+                                                no_nota="{{ $p->no_nota }}" data-bs-toggle="modal"
+                                                data-bs-target="#viewgrading"><i class="fas fa-eye"></i></a>
+                                        @endif
+
+
+                                    </td>
+
+                                    <td class="text-center">
+                                        @if (empty($p->nota_grading) || empty($p->nota_bk_campur))
+                                            <i class="fas fa-times text-danger"></i>
+                                            <input type="checkbox" name="ceknota_excel[]" id=""
+                                                value="{{ $p->no_nota }}" hidden>
+                                        @else
+                                            <input type="checkbox" name="ceknota_excel[]" class="checkbox-item-excel"
                                                 id="" value="{{ $p->no_nota }}">
                                         @endif
-                                    @endif
-                                </td>
-                                <td>
-                                    <div class="btn-group" role="group">
-                                        <span class="btn btn-sm" data-bs-toggle="dropdown">
-                                            <i class="fas fa-ellipsis-v text-primary"></i>
-                                        </span>
-                                        <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                            @php
-                                                $emptyKondisi = [$edit, $delete, $print, $grading];
-                                            @endphp
-                                            <x-theme.dropdown_kosong :emptyKondisi="$emptyKondisi" />
-                                            @if (!empty($edit))
-                                                <li>
-                                                    <a class="dropdown-item text-primary edit_akun "
-                                                        href="{{ route('edit_pembelian_bk', ['nota' => $p->no_nota]) }}">
-                                                        <i class="me-2 fas fa-pen"></i> Edit
-                                                    </a>
-                                                </li>
-                                            @endif
+                                    </td>
+                                    <td align="center">
+                                        @if (empty($p->nota_grading) || empty($p->nota_bk_campur))
+                                            <i class="fas fa-times text-danger"></i>
+                                        @else
+                                            <span class="badge {{ empty($p->rupiah) ? 'bg-danger' : 'bg-success' }}">
+                                                {!! empty($p->rupiah) ? 'Harga ?' : 'Harga <i class="fas fa-check"></i>' !!}
+                                            </span>
+                                        @endif
+                                    </td>
+                                    <td style="text-align: center">
+                                        @if (!empty($approve))
                                             @if ($p->approve == 'Y')
+                                                <i class="fas fa-check text-primary"></i>
+                                                <input type="hidden" name="ceknota[]" id=""
+                                                    value="Y">
                                             @else
-                                                @if (!empty($delete))
+                                                <input type="checkbox" name="ceknota[]" class="checkbox-item"
+                                                    id="" value="{{ $p->no_nota }}">
+                                            @endif
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <div class="btn-group" role="group">
+                                            <span class="btn btn-sm" data-bs-toggle="dropdown">
+                                                <i class="fas fa-ellipsis-v text-primary"></i>
+                                            </span>
+                                            <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                                @php
+                                                    $emptyKondisi = [$edit, $delete, $print, $grading];
+                                                @endphp
+                                                <x-theme.dropdown_kosong :emptyKondisi="$emptyKondisi" />
+                                                @if (!empty($edit))
                                                     <li>
-                                                        <a class="dropdown-item  text-danger delete_nota {{ !empty($p->rupiah) ? 'd-none' : '' }}"
-                                                            no_nota="{{ $p->no_nota }}" href="#"
-                                                            data-bs-toggle="modal" data-bs-target="#delete"><i
-                                                                class="me-2 fas fa-trash"></i>Delete
+                                                        <a class="dropdown-item text-primary edit_akun "
+                                                            href="{{ route('edit_pembelian_bk', ['nota' => $p->no_nota]) }}">
+                                                            <i class="me-2 fas fa-pen"></i> Edit
                                                         </a>
                                                     </li>
                                                 @endif
-                                            @endif
-                                            @if (!empty($print))
-                                                <li>
-                                                    <a class="dropdown-item  text-info detail_nota" target="_blank"
-                                                        href="{{ route('print_bk', ['no_nota' => $p->no_nota]) }}"><i
-                                                            class="me-2 fas fa-print"></i>Print
-                                                    </a>
-                                                </li>
-                                            @endif
+                                                @if ($p->approve == 'Y')
+                                                @else
+                                                    @if (!empty($delete))
+                                                        <li>
+                                                            <a class="dropdown-item  text-danger delete_nota {{ !empty($p->rupiah) ? 'd-none' : '' }}"
+                                                                no_nota="{{ $p->no_nota }}" href="#"
+                                                                data-bs-toggle="modal" data-bs-target="#delete"><i
+                                                                    class="me-2 fas fa-trash"></i>Delete
+                                                            </a>
+                                                        </li>
+                                                    @endif
+                                                @endif
+                                                @if (!empty($print))
+                                                    <li>
+                                                        <a class="dropdown-item  text-info detail_nota"
+                                                            target="_blank"
+                                                            href="{{ route('print_bk', ['no_nota' => $p->no_nota]) }}"><i
+                                                                class="me-2 fas fa-print"></i>Print
+                                                        </a>
+                                                    </li>
+                                                @endif
 
-                                            @if (!empty($grading))
-                                                <li>
-                                                    <a href="#"
-                                                        class="dropdown-item  text-info grading_notatambah {{ !empty($p->rupiah) ? 'd-none' : '' }}"
-                                                        no_nota="{{ $p->no_nota }}" data-bs-toggle="modal"
-                                                        data-bs-target="#grading"><i
-                                                            class="me-2 fas fa-balance-scale-right"></i>Grading
-                                                    </a>
-                                                </li>
-                                            @endif
-                                        </ul>
-                                    </div>
-                                </td>
+                                                @if (!empty($grading))
+                                                    <li>
+                                                        <a href="#"
+                                                            class="dropdown-item  text-info grading_notatambah {{ !empty($p->rupiah) ? 'd-none' : '' }}"
+                                                            no_nota="{{ $p->no_nota }}" data-bs-toggle="modal"
+                                                            data-bs-target="#grading"><i
+                                                                class="me-2 fas fa-balance-scale-right"></i>Grading
+                                                        </a>
+                                                    </li>
+                                                @endif
+                                            </ul>
+                                        </div>
+                                    </td>
 
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
 
 
             </section>
