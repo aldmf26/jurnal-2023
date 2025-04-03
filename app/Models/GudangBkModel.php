@@ -290,14 +290,14 @@ class GudangBkModel extends Model
 
     public static function g_p_kerja()
     {
-        $result = DB::select("SELECT a.nm_grade,count(a.no_lot) as no_lot1, a.id_buku_campur, a.no_lot, a.ket,a.ket2, sum(a.pcs) as pcs, sum(a.gr) as gr, sum(a.rupiah * a.gr) as total_rp , a.selesai_1, a.selesai_2, a.ket2, c.pcs as pcs_susut, c.gr as gr_susut, c.selesai, d.pcs as pcs_bk , d.gr as gr_bk, a.opname_bulan, a.tgl, c.ket as ket_susut
+        $result = DB::select("SELECT a.nm_grade,count(a.no_lot) as no_lot1, a.id_buku_campur, a.no_lot, a.ket,a.ket2, sum(a.pcs) as pcs, sum(a.gr) as gr, sum(a.rupiah * a.gr) as total_rp , a.selesai_1, a.selesai_2, a.ket2, c.pcs as pcs_susut, c.gr as gr_susut, c.selesai, d.pcs as pcs_bk , d.gr as gr_bk, a.opname_bulan, a.tgl, c.ket as ket_susut, a.buku
             FROM buku_campur_approve as a 
             left join buku_campur as b on b.id_buku_campur = a.id_buku_campur
             left join table_susut as c on c.ket = a.ket2 and c.gudang = 'wip'
             left join bk_timbang_ulang as d on d.nm_partai = a.ket2
-            WHERE a.gudang = 'wip' and b.gabung = 'T' and a.selesai_2 = 'T'
+            WHERE a.gudang = 'wip' and b.gabung = 'T' and a.selesai_2 = 'T' and b.buku != '10968'
             GROUP by a.ket2
-            order by a.ket2 ASC
+            order by a.ket2 ASC;
             ");
         return $result;
     }
