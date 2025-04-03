@@ -295,7 +295,7 @@ class GudangBkModel extends Model
             left join buku_campur as b on b.id_buku_campur = a.id_buku_campur
             left join table_susut as c on c.ket = a.ket2 and c.gudang = 'wip'
             left join bk_timbang_ulang as d on d.nm_partai = a.ket2
-            WHERE a.gudang = 'wip' and b.gabung = 'T' and a.selesai_2 = 'T' and b.buku != '10968'
+            WHERE a.gudang = 'wip' and b.gabung = 'T' and a.selesai_2 = 'T' and a.buku != '10968'
             GROUP by a.ket2
             order by a.ket2 ASC;
             ");
