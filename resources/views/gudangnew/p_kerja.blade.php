@@ -47,6 +47,7 @@
                                 <th class="text-end dhead">Pcs bk</th>
                                 <th class="text-end dhead">Gr bk</th>
                                 <th class="text-end dhead">Cost bk</th>
+                                <th class="text-end dhead">Rata-rata</th>
                                 <th class="text-end dhead">Pcs timbang ulang</th>
                                 <th class="text-end dhead">Gr timbang ulang</th>
                                 <th class="text-end dhead">Pcs Susut</th>
@@ -76,6 +77,7 @@
                                     <td class="text-end">{{ number_format($g->pcs, 0) }}</td>
                                     <td class="text-end">{{ number_format($g->gr, 0) }}</td>
                                     <td class="text-end">{{ number_format($g->total_rp, 0) }}</td>
+                                    <td class="text-end">{{ number_format($g->total_rp / $g->gr, 0) }}</td>
                                     <td class="text-end">{{ number_format($bkPcs, 0) }}</td>
                                     <td class="text-end">{{ number_format($bkGr, 0) }}</td>
                                     <td class="text-end {{ empty($g->ket_susut) ? 'bg-warning' : '' }}">
