@@ -70,7 +70,7 @@
                                     </td>
                                     <td>
                                         <select name="id_produk[]" id=""
-                                            class="select2_add pilih_produk pilih_produk1" count='1'>
+                                            class="select2_add pilih_produk pilih_produk1" count='1' required>
                                             <option value="">Pilih Produk</option>
                                             @foreach ($produk as $p)
                                                 <option value="{{ $p->id_produk }}">{{ $p->nm_produk }}</option>
