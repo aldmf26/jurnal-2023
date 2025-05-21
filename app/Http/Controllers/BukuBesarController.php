@@ -111,7 +111,7 @@ class BukuBesarController extends Controller
 
         $total = DB::selectOne("SELECT count(a.id_jurnal) as jumlah FROM jurnal as a where a.id_akun = '$id_akun' and a.tgl between '$tgl1' and '$tgl2' AND a.penutup = 'T'");
         // return Excel::download(new Buku_besarExport($tgl1, $tgl2, $id_akun, $totalrow), 'detail_buku_besar.xlsx');
-        $akun = DB::table('akun')->where('id_klasifikasi', $id_klasifikasi)->get();
+        $akun = DB::table('akun')->get();
         $style = [
             'borders' => [
                 'alignment' => [
