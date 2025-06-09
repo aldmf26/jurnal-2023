@@ -48,7 +48,7 @@ class ConganController extends Controller
         $tgl2 =  $this->tgl2;
         $data = [
             'title' => 'Cong-congan',
-            'grade' => DB::table('grade_congan')->get(),
+            'grade' => DB::table('grade_congan')->where('aktif', 'Y')->get(),
             'congan' => DB::select("SELECT a.*, b.ttl
             FROM invoice_congan as a
             left JOIN (
@@ -69,7 +69,7 @@ class ConganController extends Controller
     public function load_row(Request $r)
     {
         $data = [
-            'grade' => DB::table('grade_congan')->get(),
+            'grade' => DB::table('grade_congan')->where('aktif', 'Y')->get(),
             'count' => $r->count
         ];
         return view('congan.tambah_baris', $data);
@@ -80,7 +80,7 @@ class ConganController extends Controller
         $data = [
             'title' => 'Detail Nota',
             'no_nota' => $r->no_nota,
-            'grade' => DB::table('grade_congan')->get(),
+            'grade' => DB::table('grade_congan')->where('aktif', 'Y')->get(),
             'congan' => DB::select("SELECT a.*
             FROM invoice_congan as a
             where a.no_nota = '$r->no_nota'
@@ -387,7 +387,7 @@ class ConganController extends Controller
         $sheet1->setTitle('Cong-congan');
 
 
-        $grade = DB::table('grade_congan')->get();
+        $grade = DB::table('grade_congan')->where('aktif', 'Y')->get();
 
 
         $sheet1->setCellValue('A1', 'ID');
