@@ -93,8 +93,9 @@
                                     <div class="col-lg-6 col-4">
                                         <input type="hidden" name="id_grade{{ $no }}[]"
                                             value="{{ $g->id_grade_cong }}">
-                                        <input type="text" class="form-control" value="{{ $g->nm_grade }}"
-                                            readonly>
+                                        {{-- <input type="text" class="form-control" value="{{ $g->nm_grade }}"
+                                            readonly> --}}
+                                        <span>{{ $g->nm_grade }}</span>
                                     </div>
                                     <div class="col-lg-3 col-4">
 
