@@ -64,7 +64,7 @@ class ConganController extends Controller
             'tgl1' => $tgl1,
             'tgl2' => $tgl2
         ];
-        return view('congan.indexnew', $data);
+        return view('congan.index', $data);
     }
 
     public function load_row(Request $r)
