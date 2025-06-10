@@ -1,19 +1,19 @@
 <div class="row baris{{ $count }}">
     <div class="col-lg-2 col-4">
         <label for="">Tanggal</label>
-        <input type="date" class="form-control" name="tgl">
+        <input type="date" class="form-control" name="tgl" required>
     </div>
     <div class="col-lg-2 col-4">
         <label for="">Pemilik</label>
-        <input type="text" class="form-control" name="pemilik">
+        <input type="text" class="form-control" name="pemilik" required>
     </div>
     <div class="col-lg-2 col-4">
         <label for="">Keterangan</label>
-        <input type="text" class="form-control" name="ket[]">
+        <input type="text" class="form-control" name="ket[]" required>
     </div>
     <div class="col-lg-2 col-4">
         <label for="">Persen Air</label>
-        <input type="text" class="form-control" value="0" name="persen_air[]">
+        <input type="text" class="form-control" value="0" name="persen_air[]" required>
     </div>
 </div>
 <div class="row mt-4  baris{{ $count }}">
@@ -29,9 +29,8 @@
         <thead>
             <tr>
                 <th class="dhead">Grade</th>
-                <th class="dhead text-end" width="15%">Harga</th>
                 <th class="dhead text-end" width="15%">Gr</th>
-                <th class="dhead text-end">Ttl Rp</th>
+                <th class="dhead text-end" width="15%">Harga</th>
                 <th class="dhead text-end">Comp%</th>
             </tr>
         </thead>
@@ -42,15 +41,12 @@
                     <input type="hidden" name="id_grade{{ $count }}[]" value="{{ $g->id_grade_cong }}">
                     <td>{{ $g->nm_grade }}</td>
                     <td class="text-end">
-                        <input type="text" class="form-control" value="0" name="harga{{ $count }}[]"
-                            readonly>
+                        <input type="text" class="form-control inputan gr gr{{ $count }}"
+                            count="{{ $count }}" value="0" name="gr{{ $count }}[]">
                     </td>
                     <td class="text-end">
-                        <input type="text" class="form-control gr gr{{ $count }}" count="{{ $count }}"
-                            value="0" name="gr{{ $count }}[]">
-                    </td>
-                    <td class="text-end">
-                        Rp 0
+                        <input type="text" class="form-control inputan" value="0"
+                            name="harga{{ $count }}[]" readonly>
                     </td>
                     <td class="text-end">
                         0
