@@ -41,6 +41,9 @@
                 <br>
             @endif --}}
         <section class="row">
+            @php
+                $posisi_id = Auth::user()->posisi_id;
+            @endphp
             <form action="{{ route('congan.edit_congan') }}" method="post">
                 @csrf
                 @foreach ($congan as $no => $c)
@@ -75,9 +78,12 @@
                                 <thead>
                                     <tr>
                                         <th class="dhead">Grade</th>
-                                        <th class="dhead text-end" width="15%">Harga</th>
                                         <th class="dhead text-end" width="15%">Gr</th>
-                                        <th class="dhead text-end">Ttl Rp</th>
+                                        @if ($posisi_id == 1)
+                                            <th class="dhead text-end" width="15%">Harga</th>
+                                        @else
+                                        @endif
+
                                         <th class="dhead text-end">Comp%</th>
                                     </tr>
                                 </thead>
@@ -100,29 +106,35 @@
                                             <td class="text-end">
 
                                                 <input type="text"
-                                                    class="form-control text-end inputan harga harga{{ $no }}{{ $letter }}"
-                                                    count="{{ $no }}" hruf="{{ $letter }}"
-                                                    value="{{ empty($persen->hrga) ? '0' : $persen->hrga }}"
-                                                    name="harga{{ $no }}[]">
-                                                @php
-                                                    $gram = empty($persen->gr) ? '0' : $persen->gr;
-                                                    $hgra = empty($persen->hrga) ? '0' : $persen->hrga;
-                                                @endphp
-                                                <input type="hidden"
-                                                    class="ttl_hrga{{ $no }} ttl_hrga{{ $no }}{{ $letter }}"
-                                                    value="{{ $gram * $hgra }}">
-                                            </td>
-                                            <td class="text-end">
-                                                <input type="text"
                                                     class="form-control inputan text-end gr{{ $no }} gr{{ $no }}{{ $letter }}"
                                                     count="{{ $no }}" name="gr{{ $no }}[]"
                                                     hruf="{{ $letter }}"
                                                     value="{{ empty($persen->gr) ? '0' : $persen->gr }}">
                                             </td>
-                                            <td class="text-end tl_harga{{ $no }}{{ $letter }}">
+                                            @if ($posisi_id == 1)
+                                                <td class="text-end">
+
+                                                    <input type="text"
+                                                        class="form-control text-end inputan harga harga{{ $no }}{{ $letter }}"
+                                                        count="{{ $no }}" hruf="{{ $letter }}"
+                                                        value="{{ empty($persen->hrga) ? '0' : $persen->hrga }}"
+                                                        name="harga{{ $no }}[]">
+                                                    @php
+                                                        $gram = empty($persen->gr) ? '0' : $persen->gr;
+                                                        $hgra = empty($persen->hrga) ? '0' : $persen->hrga;
+                                                    @endphp
+                                                    <input type="hidden"
+                                                        class="ttl_hrga{{ $no }} ttl_hrga{{ $no }}{{ $letter }}"
+                                                        value="{{ $gram * $hgra }}">
+                                                </td>
+                                            @else
+                                            @endif
+
+
+                                            {{-- <td class="text-end tl_harga{{ $no }}{{ $letter }}">
                                                 Rp
                                                 {{ number_format(($persen->gr ?? 0) * ($persen->hrga ?? 0), 0, ',', '.') }}
-                                            </td>
+                                            </td> --}}
                                             <td class="text-end">
                                                 {{ empty($persen->gr) ? 0 : number_format(($persen->gr / $c->gr) * 100, 2) }}
                                             </td>
@@ -158,8 +170,10 @@
                                         <h6>Harga Beli &nbsp;</h6>
                                     </td>
                                     <td>
+
                                         <input type="text" class="form-control hrga_beli{{ $no }}"
                                             name="hrga_beli[]" value="{{ $c->hrga_beli }}" required>
+
                                     </td>
                                 </tr>
                                 <tr>
@@ -187,11 +201,16 @@
                 @endforeach
                 <div class="row">
                     <div class="col-lg-12">
-                        <button type="submit" class="float-end btn btn-primary button-save">Simpan</button>
-                        <button class="float-end btn btn-primary btn_save_loading" type="button" disabled hidden>
-                            <span class="spinner-border spinner-border-sm " role="status" aria-hidden="true"></span>
-                            Loading...
-                        </button>
+                        @if ($posisi_id == 1)
+                            <button type="submit" class="float-end btn btn-primary button-save">Simpan</button>
+                            <button class="float-end btn btn-primary btn_save_loading" type="button" disabled hidden>
+                                <span class="spinner-border spinner-border-sm " role="status"
+                                    aria-hidden="true"></span>
+                                Loading...
+                            </button>
+                        @else
+                        @endif
+
                         <a href="{{ route('congan.index') }}"
                             class="float-end btn btn-outline-primary me-2">Batal</a>
                     </div>
