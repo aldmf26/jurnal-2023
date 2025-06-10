@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use Throwable;
 
 class ConganController extends Controller
 {
@@ -88,7 +89,7 @@ class ConganController extends Controller
             order by a.no_nota DESC
             "),
         ];
-        return view('congan.detail', $data);
+        return view('congan.detail_new', $data);
     }
 
     public function add_congan(Request $r)
@@ -125,12 +126,13 @@ class ConganController extends Controller
             $idInvoiceCongan = DB::table('invoice_congan')->insertGetId($data);
 
             for ($x = 0; $x < count($id_grade); $x++) {
+                $hrga_dlu = DB::table('tb_cong')->where('id_grade', $id_grade[$x])->orderByDesc('no_nota')->first();
                 if (!empty($gr[$x])) {
                     $data  = [
                         'tgl' => $r->tgl,
                         'id_grade' => $id_grade[$x],
                         'gr' => $gr[$x],
-                        'hrga' => $harga[$x],
+                        'hrga' => $hrga_dlu->hrga ?? 0,
                         'urutan' => $urutan,
                         'no_nota' => $urutan,
                         'ket' => $r->ket[$y],
@@ -148,52 +150,70 @@ class ConganController extends Controller
     {
 
 
-        $urutan = $r->no_nota;
+        try {
+            DB::beginTransaction();
 
-        DB::table('tb_cong')->where('no_nota', $urutan)->delete();
+            $urutan = $r->no_nota;
 
-        for ($y = 0; $y < count($r->pemilik); $y++) {
-            $count = $r->count;
-            $ttl_gr = 0;
+            // Simpan data lama sebelum dihapus
+            $dataLama = DB::table('tb_cong')->where('no_nota', $urutan)->get();
 
-            $id_grade = $r->{"id_grade" . $count[$y]};
-            $gr = $r->{"gr" . $count[$y]};
-            $harga = $r->{"harga" . $count[$y]};
-            for ($x = 0; $x < count($id_grade); $x++) {
-                $ttl_gr += $gr[$x];
-            }
-            $data = [
-                'tgl' => $r->tgl[$y],
-                'pemilik' => $r->pemilik[$y],
-                'ket' => $r->ket[$y],
-                'persen_air' => $r->persen_air[$y],
-                'hrga_beli' => $r->hrga_beli[$y],
-                'no_nota' => $urutan,
-                'gr' => $ttl_gr
+            // Hapus data lama
+            DB::table('tb_cong')->where('no_nota', $urutan)->delete();
 
-            ];
-            DB::table('invoice_congan')->where('id_invoice_congan', $r->id_invoice_congan[$y])->update($data);
+            for ($y = 0; $y < count($r->pemilik); $y++) {
+                $count = $r->count;
+                $ttl_gr = 0;
 
+                $id_grade = $r->{"id_grade" . $count[$y]};
+                $gr = $r->{"gr" . $count[$y]};
+                $harga = $r->{"harga" . $count[$y]};
+                for ($x = 0; $x < count($id_grade); $x++) {
+                    $ttl_gr += $gr[$x];
+                }
 
+                $data = [
+                    'tgl' => $r->tgl[$y],
+                    'pemilik' => $r->pemilik[$y],
+                    'ket' => $r->ket[$y],
+                    'persen_air' => $r->persen_air[$y],
+                    'hrga_beli' => $r->hrga_beli[$y],
+                    'no_nota' => $urutan,
+                    'gr' => $ttl_gr
+                ];
+                DB::table('invoice_congan')->where('id_invoice_congan', $r->id_invoice_congan[$y])->update($data);
 
-            for ($x = 0; $x < count($id_grade); $x++) {
-                if (!empty($gr[$x])) {
-                    $data  = [
-                        'tgl' => $r->tgl[$y],
-                        'id_grade' => $id_grade[$x],
-                        'gr' => $gr[$x],
-                        'hrga' => $harga[$x],
-                        'urutan' => $urutan,
-                        'no_nota' => $urutan,
-                        'ket' => $r->ket[$y],
-                        'id_invoice_congan' => $r->id_invoice_congan[$y]
-                    ];
-                    DB::table('tb_cong')->insert($data);
+                for ($x = 0; $x < count($id_grade); $x++) {
+                    if (!empty($gr[$x])) {
+                        $data  = [
+                            'tgl' => $r->tgl[$y],
+                            'id_grade' => $id_grade[$x],
+                            'gr' => $gr[$x],
+                            'hrga' => $harga[$x],
+                            'urutan' => $urutan,
+                            'no_nota' => $urutan,
+                            'ket' => $r->ket[$y],
+                            'id_invoice_congan' => $r->id_invoice_congan[$y]
+                        ];
+                        DB::table('tb_cong')->insert($data);
+                    }
                 }
             }
-        }
 
-        return redirect()->route('congan.index')->with('sukses', 'Data berhasil disimpan');
+            DB::commit();
+            return redirect()->route('congan.index')->with('sukses', 'Data berhasil disimpan');
+        } catch (Throwable $e) {
+            DB::rollBack();
+
+            // Restore data lama jika ada
+            if (!empty($dataLama)) {
+                foreach ($dataLama as $row) {
+                    DB::table('tb_cong')->insert((array) $row);
+                }
+            }
+
+            return redirect()->route('congan.index')->with('error', 'Gagal menyimpan data. Data lama telah dikembalikan.');
+        }
     }
 
     public function buat_nota(Request $r)

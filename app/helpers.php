@@ -56,6 +56,13 @@ if (!function_exists('tanggal')) {
     }
 }
 
+if (!function_exists('sumBk')) {
+    function sumBk($kategori, $data)
+    {
+        return array_sum(array_column($kategori, $data));
+    }
+}
+
 if (!function_exists('kode')) {
     function kode($kode)
     {
