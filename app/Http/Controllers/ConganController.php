@@ -64,7 +64,7 @@ class ConganController extends Controller
             'tgl1' => $tgl1,
             'tgl2' => $tgl2
         ];
-        return view('congan.indexnew', $data);
+        return view('congan.index', $data);
     }
 
     public function load_row(Request $r)
@@ -73,7 +73,7 @@ class ConganController extends Controller
             'grade' => DB::table('grade_congan')->where('aktif', 'Y')->orderBy('urutan', 'ASC')->get(),
             'count' => $r->count
         ];
-        return view('congan.tambah_baris_new', $data);
+        return view('congan.tambah_baris', $data);
     }
 
     public function detail_nota(Request $r)
