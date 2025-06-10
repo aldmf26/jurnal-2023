@@ -19,6 +19,20 @@
                 }
             }
         </style>
+        <style>
+            @media (min-width: 768px) {
+                .inputan {
+                    width: auto !important;
+                    /* atau misalnya 150px */
+                }
+            }
+
+            @media (max-width: 767.98px) {
+                .inputan {
+                    width: 90px !important;
+                }
+            }
+        </style>
 
         @csrf
         {{-- @if (!empty($approve))
@@ -86,7 +100,7 @@
                                             <td class="text-end">
 
                                                 <input type="text"
-                                                    class="form-control text-end harga harga{{ $no }}{{ $letter }}"
+                                                    class="form-control text-end inputan harga harga{{ $no }}{{ $letter }}"
                                                     count="{{ $no }}" hruf="{{ $letter }}"
                                                     value="{{ empty($persen->hrga) ? '0' : $persen->hrga }}"
                                                     name="harga{{ $no }}[]">
@@ -100,7 +114,7 @@
                                             </td>
                                             <td class="text-end">
                                                 <input type="text"
-                                                    class="form-control text-end gr{{ $no }} gr{{ $no }}{{ $letter }}"
+                                                    class="form-control inputan text-end gr{{ $no }} gr{{ $no }}{{ $letter }}"
                                                     count="{{ $no }}" name="gr{{ $no }}[]"
                                                     hruf="{{ $letter }}"
                                                     value="{{ empty($persen->gr) ? '0' : $persen->gr }}">
