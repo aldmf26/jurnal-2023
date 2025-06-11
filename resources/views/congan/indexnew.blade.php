@@ -61,7 +61,7 @@
                             <td>{{ date('d M Y', strtotime($c->tgl)) }}</td>
                             <td>{{ $c->pemilik }}</td>
                             <td>{{ number_format($c->hrga_beli, 0) }}</td>
-                            <td>{{ empty($c->gr) ? 0 : number_format(($c->ttl / $c->gr) * ((100 - $c->persen_air) / 100)) }}
+                            <td>{{ empty($c->gr) || empty($c->gr_kuning) ? 0 : number_format(($c->ttl / ($c->gr + $c->gr_kuning)) * ((100 - $c->persen_air) / 100)) }}
                             </td>
                             <td>{{ empty($c->gr) || empty($c->gr_kuning) ? 0 : number_format($c->ttl / ($c->gr + $c->gr_kuning)) }}
                             </td>
