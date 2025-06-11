@@ -48,6 +48,7 @@
                                     <th class="text-center">Aktif</th>
                                     <th class="text-center">Aksi</th>
                                     <th class="text-center">
+                                        nonaktifkan <br>
                                         <input type="checkbox" class="checkAll" name="" id="">
                                     </th>
 
