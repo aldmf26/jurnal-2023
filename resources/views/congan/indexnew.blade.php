@@ -38,9 +38,9 @@
                         <th class="text-center">No Nota</th>
                         <th class="text-center">Tanggal</th>
                         <th class="text-center">Nama</th>
-                        <th class="text-center">Harga Beli</th>
                         <th class="text-center">Harga (100%)</th>
-                        <th class="text-center">Harga (%)</th>
+                        <th class="text-center">Harga (% air)</th>
+                        <th class="text-center">Harga Beli</th>
                         <th class="text-center">GR</th>
                         @foreach ($grade as $g)
                             <th class="text-center">{{ $g->nm_grade }}(%)</th>
@@ -60,11 +60,12 @@
                             </td>
                             <td>{{ date('d M Y', strtotime($c->tgl)) }}</td>
                             <td>{{ $c->pemilik }}</td>
-                            <td>{{ number_format($c->hrga_beli, 0) }}</td>
-                            <td>{{ empty($c->gr) || empty($c->gr_kuning) ? 0 : number_format(($c->ttl / ($c->gr + $c->gr_kuning)) * ((100 - $c->persen_air) / 100)) }}
-                            </td>
                             <td>{{ empty($c->gr) || empty($c->gr_kuning) ? 0 : number_format($c->ttl / ($c->gr + $c->gr_kuning)) }}
                             </td>
+                            <td>{{ empty($c->gr) || empty($c->gr_kuning) ? 0 : number_format(($c->ttl / ($c->gr + $c->gr_kuning)) * ((100 - $c->persen_air) / 100)) }}
+                            </td>
+
+                            <td>{{ number_format($c->hrga_beli, 0) }}</td>
                             <td>{{ number_format($c->gr + $c->gr_kuning, 0) }}</td>
                             @foreach ($grade as $g)
                                 @php
