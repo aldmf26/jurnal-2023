@@ -171,7 +171,8 @@
                                                 {{ number_format(($persen->gr ?? 0) * ($persen->hrga ?? 0), 0, ',', '.') }}
                                             </td> --}}
                                             <td class="text-end">
-                                                {{ empty($persen->gr) ? 0 : number_format(($persen->gr / ($c->gr + $c->gr_kuning)) * 100, 2) }}
+                                                {{ empty($persen->gr) ? 0 : number_format(($persen->gr / ($c->gr + $c->gr_kuning)) * 100, 0) }}
+                                                %
                                             </td>
                                             <td class="text-end">
 
@@ -204,7 +205,8 @@
                                             @else
                                             @endif
                                             <td class="text-end">
-                                                {{ empty($persen->gr_kuning) ? 0 : number_format(($persen->gr_kuning / ($c->gr + $c->gr_kuning)) * 100, 2) }}
+                                                {{ empty($persen->gr_kuning) ? 0 : number_format(($persen->gr_kuning / ($c->gr + $c->gr_kuning)) * 100, 0) }}
+                                                %
                                             </td>
 
                                         </tr>
