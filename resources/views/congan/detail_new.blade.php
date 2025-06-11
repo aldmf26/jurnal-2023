@@ -70,7 +70,7 @@
                         </div>
                     </div>
                     <div class="row mb-4 mt-4">
-                        <div class="col-lg-12 table-responsive">
+                        <div class="col-lg-8 table-responsive">
                             <table class="table table-bordered">
                                 <thead>
                                     <tr>
