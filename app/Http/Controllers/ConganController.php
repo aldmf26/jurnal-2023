@@ -55,7 +55,7 @@ class ConganController extends Controller
             'congan' => DB::select("SELECT a.*, b.ttl
             FROM invoice_congan as a
             left JOIN (
-            SELECT b.no_nota, b.ket, sum(b.gr * b.hrga) as ttl
+            SELECT b.no_nota, b.ket, sum((COALESCE(b.gr,0) * COALESCE(b.hrga,0)) + (COALESCE(b.gr_kuning,0) * COALESCE(b.hrga_kuning,0))) as ttl
                 FROM tb_cong as b 
                 GROUP by b.no_nota, b.ket
             ) as b on b.no_nota = a.no_nota and b.ket = a.ket
