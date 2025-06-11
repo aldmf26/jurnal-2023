@@ -59,9 +59,21 @@ class GradeController extends Controller
     public function getEdit(Request $r)
     {
         $data = [
-            'grade' => DB::table('grade_congan')->where('id_grade_cong', $r->id)->get(),
+            'id' => $r->id,
+            'grade' => DB::table('grade_congan')->where('id_grade_cong', $r->id)->first(),
             'kategori' => DB::table('kategori')->get()
         ];
         return view('grade.getEdit', $data);
+    }
+
+    public function Edit(Request $r)
+    {
+        $data = [
+            'kategori_id' => $r->kategori,
+            'nm_grade' => $r->nm_grade,
+            'urutan' => $r->urutan,
+        ];
+        DB::table('grade_congan')->where('id_grade_cong', $r->id)->update($data);
+        return redirect()->route('grade.index')->with('sukses', 'Data Berhasil Diubah');
     }
 }

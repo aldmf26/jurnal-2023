@@ -146,7 +146,7 @@
             </x-theme.modal>
         </form>
 
-        <form action="{{ route('grade.save') }}" method="post">
+        <form action="{{ route('grade.Edit') }}" method="post">
             @csrf
             <x-theme.modal title="Edit Data" idModal="edit" size="modal-lg">
                 <div id="load_edit">
@@ -237,6 +237,7 @@
 
                 $(document).on("click", ".edit", function() {
                     var id = $(this).attr("data-id");
+
                     $.ajax({
                         type: "get",
                         url: "{{ route('grade.getEdit') }}",
@@ -244,7 +245,7 @@
                             id: id
                         },
                         success: function(response) {
-
+                            $('#load_edit').html(response);
                         }
                     });
                 });

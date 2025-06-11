@@ -528,5 +528,6 @@ Route::middleware('auth')->group(function () {
             Route::get('/getEdit', 'getEdit')->name('getEdit');
             Route::post('/save', 'save')->name('save');
             Route::post('/non', 'non')->name('non');
+            Route::post('/Edit', 'Edit')->name('Edit');
         });
 });
