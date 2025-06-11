@@ -529,5 +529,7 @@ Route::middleware('auth')->group(function () {
             Route::post('/save', 'save')->name('save');
             Route::post('/non', 'non')->name('non');
             Route::post('/Edit', 'Edit')->name('Edit');
+            Route::get('/export_grade', 'export_grade')->name('export_grade');
+            Route::post('/import_grade', 'import_grade')->name('import_grade');
         });
 });

@@ -12,8 +12,6 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Reader\Exception;
 
-
-
 class GudangBkController extends Controller
 {
     protected $tgl1, $tgl2, $period;

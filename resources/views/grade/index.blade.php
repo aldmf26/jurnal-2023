@@ -24,10 +24,11 @@
                         <div class="col-lg-8 mb-2">
                             <x-theme.button modal="Y" idModal="tambah" teks="Tambah Data" icon="fa-plus"
                                 addClass="float-end" />
-                            <a href="" class="btn btn-primary  float-end me-2"><i class="fas fa-file-excel"></i>
+                            <a href="{{ route('grade.export_grade') }}" class="btn btn-primary  float-end me-2"><i
+                                    class="fas fa-file-excel"></i>
                                 export</a>
-                            <a href="" class="btn btn-primary  float-end me-2"><i class="fas fa-file-import"></i>
-                                Import</a>
+                            <x-theme.button modal="Y" idModal="import" icon="fas fa-upload" addClass="float-end"
+                                teks="Import" />
                             <button class="btn btn-danger float-end me-2 nonaktif" type="submit"
                                 style="display:none;">Non
                                 Aktif</button>
@@ -153,6 +154,19 @@
                 <div id="load_edit">
 
                 </div>
+            </x-theme.modal>
+        </form>
+
+        <form action="{{ route('grade.import_grade') }}" method="post" enctype="multipart/form-data">
+            @csrf
+            <x-theme.modal title="Import Grade congan" idModal="import" btnSave="Y">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <label for="">File</label>
+                        <input type="file" class="form-control" name="file">
+                    </div>
+                </div>
+
             </x-theme.modal>
         </form>
 
