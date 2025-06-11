@@ -133,7 +133,6 @@ class NavbarController extends Controller
                 'img' => 'law-book.png',
                 'deskripsi' => 'Mencatat berbagai transaksi keuangan dengan menetapkan langsung rekening di sisi debit dan kredit.',
             ],
-
             [
                 'judul' => 'Jurnal Penutup',
                 'route' => 'penutup.index',
@@ -149,6 +148,12 @@ class NavbarController extends Controller
     public function pembelian()
     {
         $data = [
+            [
+                'judul' => 'Grade & Kategori',
+                'route' => 'grade.index',
+                'img' => 'score.png',
+                'deskripsi' => 'membuat pengajuan pembelian ke pemasok',
+            ],
             [
                 'judul' => 'Congan',
                 'route' => 'congan.index',

@@ -49,7 +49,9 @@ class ConganController extends Controller
         $tgl2 =  $this->tgl2;
         $data = [
             'title' => 'Cong-congan',
-            'grade' => DB::table('grade_congan')->where('aktif', 'Y')->orderBy('urutan', 'ASC')->get(),
+            'grade' => DB::table('grade_congan')
+                ->leftJoin('kategori', 'kategori.id', '=', 'grade_congan.kategori_id')
+                ->where('aktif', 'Y')->orderBy('kategori.id', 'ASC')->orderBy('grade_congan.urutan', 'ASC')->get(),
             'congan' => DB::select("SELECT a.*, b.ttl
             FROM invoice_congan as a
             left JOIN (
@@ -64,7 +66,7 @@ class ConganController extends Controller
             'tgl1' => $tgl1,
             'tgl2' => $tgl2
         ];
-        return view('congan.index', $data);
+        return view('congan.indexnew', $data);
     }
 
     public function load_row(Request $r)
@@ -81,7 +83,9 @@ class ConganController extends Controller
         $data = [
             'title' => 'Detail Nota',
             'no_nota' => $r->no_nota,
-            'grade' => DB::table('grade_congan')->where('aktif', 'Y')->orderBy('urutan', 'ASC')->get(),
+            'grade' => DB::table('grade_congan')
+                ->leftJoin('kategori', 'kategori.id', '=', 'grade_congan.kategori_id')
+                ->where('aktif', 'Y')->orderBy('kategori.id', 'ASC')->orderBy('grade_congan.urutan', 'ASC')->get(),
             'congan' => DB::select("SELECT a.*
             FROM invoice_congan as a
             where a.no_nota = '$r->no_nota'
@@ -104,13 +108,16 @@ class ConganController extends Controller
         for ($y = 0; $y < count($r->ket); $y++) {
             $count = $r->count;
             $ttl_gr = 0;
+            $ttl_gr_kuning = 0;
 
             $id_grade = $r->{"id_grade" . $count[$y]};
             $gr = $r->{"gr" . $count[$y]};
+            $gr_kuning = $r->{"gr_kuning" . $count[$y]};
             $harga = $r->{"harga" . $count[$y]};
 
             for ($x = 0; $x < count($id_grade); $x++) {
                 $ttl_gr += $gr[$x];
+                $ttl_gr_kuning += $gr_kuning[$x];
             }
 
             $data = [
@@ -120,19 +127,33 @@ class ConganController extends Controller
                 'persen_air' => $r->persen_air[$y],
                 'hrga_beli' => $r->hrga_beli[$y],
                 'no_nota' => $urutan,
-                'gr' => $ttl_gr
+                'gr' => $ttl_gr,
+                'gr_kuning' => $ttl_gr_kuning
 
             ];
             $idInvoiceCongan = DB::table('invoice_congan')->insertGetId($data);
 
             for ($x = 0; $x < count($id_grade); $x++) {
-                $hrga_dlu = DB::table('tb_cong')->where('id_grade', $id_grade[$x])->orderByDesc('no_nota')->first();
-                if (!empty($gr[$x])) {
+                $hrga_dlu = DB::table('tb_cong')
+                    ->where('id_grade', $id_grade[$x])
+                    ->where('no_nota', '!=', $urutan)
+                    ->where('hrga', '!=', 0)
+                    ->orderBy('no_nota', 'desc')
+                    ->first();
+                $hrga_dlu_kuning = DB::table('tb_cong')
+                    ->where('id_grade', $id_grade[$x])
+                    ->where('no_nota', '!=', $urutan)
+                    ->where('hrga_kuning', '!=', 0)
+                    ->orderBy('no_nota', 'desc')
+                    ->first();
+                if (!empty($gr[$x]) || !empty($gr_kuning[$x])) {
                     $data  = [
                         'tgl' => $r->tgl,
                         'id_grade' => $id_grade[$x],
                         'gr' => $gr[$x],
+                        'gr_kuning' =>  $gr_kuning[$x],
                         'hrga' => $hrga_dlu->hrga ?? 0,
+                        'hrga_kuning' => $hrga_dlu_kuning->hrga_kuning ?? 0,
                         'urutan' => $urutan,
                         'no_nota' => $urutan,
                         'ket' => $r->ket[$y],
@@ -156,7 +177,7 @@ class ConganController extends Controller
             $urutan = $r->no_nota;
 
             // Simpan data lama sebelum dihapus
-            $dataLama = DB::table('tb_cong')->where('no_nota', $urutan)->get();
+
 
             // Hapus data lama
             DB::table('tb_cong')->where('no_nota', $urutan)->delete();
@@ -168,6 +189,7 @@ class ConganController extends Controller
                 $id_grade = $r->{"id_grade" . $count[$y]};
                 $gr = $r->{"gr" . $count[$y]};
                 $harga = $r->{"harga" . $count[$y]};
+                $nm_grade = $r->{"nm_grade" . $count[$y]};
                 for ($x = 0; $x < count($id_grade); $x++) {
                     $ttl_gr += $gr[$x];
                 }
@@ -184,6 +206,12 @@ class ConganController extends Controller
                 DB::table('invoice_congan')->where('id_invoice_congan', $r->id_invoice_congan[$y])->update($data);
 
                 for ($x = 0; $x < count($id_grade); $x++) {
+
+                    $data = [
+                        'nm_grade' => $nm_grade[$x],
+                    ];
+                    DB::table('grade_congan')->where('id_grade_cong', $id_grade[$x])->update($data);
+
                     if (!empty($gr[$x])) {
                         $data  = [
                             'tgl' => $r->tgl[$y],
@@ -204,14 +232,6 @@ class ConganController extends Controller
             return redirect()->route('congan.index')->with('sukses', 'Data berhasil disimpan');
         } catch (Throwable $e) {
             DB::rollBack();
-
-            // Restore data lama jika ada
-            if (!empty($dataLama)) {
-                foreach ($dataLama as $row) {
-                    DB::table('tb_cong')->insert((array) $row);
-                }
-            }
-
             return redirect()->route('congan.index')->with('error', 'Gagal menyimpan data. Data lama telah dikembalikan.');
         }
     }

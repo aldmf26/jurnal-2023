@@ -20,16 +20,13 @@
             }
         </style>
         <style>
-            @media (min-width: 768px) {
-                .inputan {
-                    width: auto !important;
-                    /* atau misalnya 150px */
-                }
-            }
-
             @media (max-width: 767.98px) {
                 .inputan {
                     width: 90px !important;
+                }
+
+                .inputan2 {
+                    width: 170px !important;
                 }
             }
         </style>
@@ -73,36 +70,73 @@
                         </div>
                     </div>
                     <div class="row mb-4 mt-4">
-                        <div class="col-lg-8">
+                        <div class="col-lg-12 table-responsive">
                             <table class="table table-bordered">
                                 <thead>
                                     <tr>
+                                        <th class="dhead">Kategori</th>
                                         <th class="dhead">Grade</th>
-                                        <th class="dhead text-end" width="15%">Gr</th>
+                                        <th class="dhead text-end" width="12%">Putih Gr</th>
+                                        <th class="dhead text-end" width="12%">Kuning Gr</th>
                                         @if ($posisi_id == 1)
-                                            <th class="dhead text-end" width="15%">Harga</th>
+                                            <th class="dhead text-end" width="12%">Putih Rp/gr</th>
                                         @else
                                         @endif
-
-                                        <th class="dhead text-end">Comp%</th>
+                                        <th class="dhead text-end">Comp</th>
+                                        @if ($posisi_id == 1)
+                                            <th class="dhead text-end" width="12%">Kuning Rp/gr</th>
+                                        @else
+                                        @endif
+                                        <th class="dhead text-end">Comp</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @php
                                         $total_rp = 0;
                                         $gr = 0;
+                                        $prevKategori = null;
                                     @endphp
                                     @foreach ($grade as $key => $g)
                                         @php
                                             $persen = DB::selectOne(
-                                                "SELECT a.gr, a.hrga  FROM tb_cong as a where a.no_nota = '$c->no_nota' and a.id_grade = '$g->id_grade_cong' and a.ket = '$c->ket'",
+                                                "SELECT a.gr, a.hrga, a.gr_kuning, a.hrga_kuning  FROM tb_cong as a where a.no_nota = '$c->no_nota' and a.id_grade = '$g->id_grade_cong' and a.ket = '$c->ket'",
                                             );
                                             $letter = chr(97 + $key);
+
+                                            $hrga_dlu = DB::table('tb_cong')
+                                                ->where('id_grade', $g->id_grade_cong)
+                                                ->where('no_nota', '!=', $no_nota)
+                                                ->where('hrga', '!=', 0)
+                                                ->orderBy('no_nota', 'desc')
+                                                ->first();
+                                            $hrga_dlu_kuning = DB::table('tb_cong')
+                                                ->where('id_grade', $g->id_grade_cong)
+                                                ->where('no_nota', '!=', $no_nota)
+                                                ->where('hrga_kuning', '!=', 0)
+                                                ->orderBy('no_nota', 'desc')
+                                                ->first();
+
                                         @endphp
                                         <tr>
+                                            <td>
+                                                @if ($g->nm_kategori !== $prevKategori)
+                                                    {{ $g->nm_kategori }}
+                                                    @php $prevKategori = $g->nm_kategori; @endphp
+                                                @endif
+                                            </td>
                                             <input type="hidden" name="id_grade{{ $no }}[]"
                                                 value="{{ $g->id_grade_cong }}">
-                                            <td>{{ $g->nm_grade }}</td>
+                                            <td>
+                                                @if ($posisi_id == 1)
+                                                    <input type="text"
+                                                        class="form-control  inputan2 nm_grade nm_grade{{ $g->id_grade_cong }}"
+                                                        id_grade="{{ $g->id_grade_cong }}"
+                                                        name="nm_grade{{ $no }}[]"
+                                                        value="{{ $g->nm_grade }}">
+                                                @else
+                                                    {{ $g->nm_grade }}
+                                                @endif
+                                            </td>
                                             <td class="text-end">
 
                                                 <input type="text"
@@ -111,13 +145,21 @@
                                                     hruf="{{ $letter }}"
                                                     value="{{ empty($persen->gr) ? '0' : $persen->gr }}">
                                             </td>
+                                            <td class="text-end">
+
+                                                <input type="text"
+                                                    class="form-control inputan text-end gr_kuning{{ $no }} gr{{ $no }}{{ $letter }}"
+                                                    count="{{ $no }}" name="gr_kuning{{ $no }}[]"
+                                                    hruf="{{ $letter }}"
+                                                    value="{{ empty($persen->gr_kuning) ? '0' : $persen->gr_kuning }}">
+                                            </td>
                                             @if ($posisi_id == 1)
                                                 <td class="text-end">
 
                                                     <input type="text"
                                                         class="form-control text-end inputan harga harga{{ $no }}{{ $letter }}"
                                                         count="{{ $no }}" hruf="{{ $letter }}"
-                                                        value="{{ empty($persen->hrga) ? '0' : $persen->hrga }}"
+                                                        value="{{ empty($persen->hrga) ? $hrga_dlu->hrga ?? 0 : $persen->hrga }}"
                                                         name="harga{{ $no }}[]">
                                                     @php
                                                         $gram = empty($persen->gr) ? '0' : $persen->gr;
@@ -138,13 +180,38 @@
                                             <td class="text-end">
                                                 {{ empty($persen->gr) ? 0 : number_format(($persen->gr / $c->gr) * 100, 2) }}
                                             </td>
+                                            @if ($posisi_id == 1)
+                                                <td class="text-end">
+
+                                                    <input type="text"
+                                                        class="form-control text-end inputan harga harga_kuning{{ $no }}{{ $letter }}"
+                                                        count="{{ $no }}" hruf="{{ $letter }}"
+                                                        value="{{ empty($persen->hrga_kuning) ? $hrga_dlu->hrga_kuning ?? 0 : $persen->hrga_kuning }}"
+                                                        name="harga_kuning{{ $no }}[]">
+                                                    @php
+                                                        $gram_kuning = empty($persen->gr_kuning)
+                                                            ? '0'
+                                                            : $persen->gr_kuning;
+                                                        $hgra_kuning = empty($persen->hrga_kuning)
+                                                            ? '0'
+                                                            : $persen->hrga_kuning;
+                                                    @endphp
+                                                    <input type="hidden"
+                                                        class="ttl_hrga{{ $no }} ttl_hrga_kuning{{ $no }}{{ $letter }}"
+                                                        value="{{ $gram_kuning * $hgra_kuning }}">
+                                                </td>
+                                            @else
+                                            @endif
+                                            <td class="text-end">
+                                                {{ empty($persen->gr) ? 0 : number_format(($persen->gr_kuning / $c->gr_kuning) * 100, 2) }}
                                             </td>
+
                                         </tr>
                                         @php
-                                            $gr += empty($persen->gr) ? '0' : $persen->gr;
+                                            $gr += ($persen->gr ?? 0) + ($persen->gr_kuning ?? 0);
                                             $total_rp +=
-                                                (empty($persen->gr) ? '0' : $persen->gr) *
-                                                (empty($persen->hrga) ? '0' : $persen->hrga);
+                                                ($persen->gr ?? 0) * ($persen->hrga ?? 0) +
+                                                ($persen->gr_kuning ?? 0) * ($persen->hrga_kuning ?? 0);
                                         @endphp
                                     @endforeach
                                 </tbody>
@@ -156,13 +223,33 @@
                     <div class="row">
                         <div class="col-lg-3">
                             <table style="padding: 10px">
-                                <tr>
+                                {{-- <tr>
                                     <td>
-                                        <h6>Total Gram &nbsp; {{ $gr }}</h6>
+                                        <h6>Total Gram Putih </h6>
                                     </td>
                                     <td>
                                         <input type="text" class="form-control total_gram{{ $no }}"
                                             readonly value="{{ $c->gr }}">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <h6>Total Gram Kuning </h6>
+                                    </td>
+                                    <td>
+                                        <input type="text"
+                                            class="form-control total_gram_kuning{{ $no }}" readonly
+                                            value="{{ $c->gr_kuning }}">
+                                    </td>
+                                </tr> --}}
+                                <tr>
+                                    <td>
+                                        <h6>Total Gram </h6>
+                                    </td>
+                                    <td>
+                                        <input type="text"
+                                            class="form-control gradndtotal_gram{{ $no }}" readonly
+                                            value="{{ $c->gr_kuning + $c->gr }}">
                                     </td>
                                 </tr>
                                 <tr>
@@ -188,7 +275,7 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <h6>Harga(%) &nbsp;</h6>
+                                        <h6>Harga(%) &nbsp; {{ $total_rp }}</h6>
                                     </td>
                                     <td><input type="text" class="form-control hrga_persen{{ $no }}"
                                             value="Rp. {{ number_format($total_rp / $gr, 0) }}" readonly></td>
@@ -292,6 +379,13 @@
                         minimumFractionDigits: 0,
                     });
                     $('.tl_harga' + count + letter).text(tl_harga);
+                });
+
+                $(".nm_grade").on("keyup", function(e) {
+                    var id_grade = $(this).attr('id_grade');
+                    var nm_grade = $(this).val();
+
+                    $('.nm_grade' + id_grade).val(nm_grade);
                 });
             });
         </script>

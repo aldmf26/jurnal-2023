@@ -146,16 +146,27 @@
                     <table class="table table-bordered">
                         <thead>
                             <tr>
+                                <th class="dhead">Kategori</th>
                                 <th class="dhead">Grade</th>
-                                <th class="dhead text-end" width="15%">Gr</th>
-                                <th class="dhead text-end" width="15%">Harga</th>
-                                <th class="dhead text-end">Comp%</th>
+                                <th class="dhead text-end" width="15%">Putih Gr</th>
+                                <th class="dhead text-end" width="15%">Kuning Gr</th>
+                                {{-- <th class="dhead text-end" width="15%">Harga</th> --}}
+                                {{-- <th class="dhead text-end">Putih Comp</th>
+                                <th class="dhead text-end">Kuning Comp</th> --}}
                             </tr>
                         </thead>
                         <tbody>
-
+                            @php
+                                $prevKategori = null;
+                            @endphp
                             @foreach ($grade as $key => $g)
                                 <tr>
+                                    <td>
+                                        @if ($g->nm_kategori !== $prevKategori)
+                                            {{ $g->nm_kategori }}
+                                            @php $prevKategori = $g->nm_kategori; @endphp
+                                        @endif
+                                    </td>
                                     <input type="hidden" name="id_grade1[]" value="{{ $g->id_grade_cong }}">
                                     <td>{{ $g->nm_grade }}</td>
                                     <td class="text-end">
@@ -163,13 +174,15 @@
                                             value="0" name="gr1[]">
                                     </td>
                                     <td class="text-end">
-
-                                        <input type="text" class="form-control inputan" value="0"
-                                            name="harga1[]" readonly>
+                                        <input type="text" class="form-control inputan gr_kuning gr_kuning1"
+                                            count="1" value="0" name="gr_kuning1[]">
+                                    </td>
+                                    {{-- <td class="text-end">
+                                        0
                                     </td>
                                     <td class="text-end">
                                         0
-                                    </td>
+                                    </td> --}}
 
                                 </tr>
                             @endforeach
@@ -184,9 +197,18 @@
                         <table style="padding: 10px">
                             <tr>
                                 <td>
-                                    <h6>Total Gram &nbsp;</h6>
+                                    <h6>Total Gram Putih &nbsp;</h6>
                                 </td>
                                 <td><input type="text" class="form-control total_gram1" readonly value="0">
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h6>Total Gram Kuning &nbsp;</h6>
+                                </td>
+                                <td><input type="text" class="form-control total_gram_kuning1" readonly
+                                        value="0">
                                 </td>
 
                             </tr>
@@ -219,11 +241,11 @@
 
                 </div>
 
-                <div class="row">
+                {{-- <div class="row">
                     <div class="col-lg-12">
                         <button type="button" class="btn btn-success float-end tambah_row">Tambah Baris</button>
                     </div>
-                </div>
+                </div> --}}
 
             </x-theme.modal>
         </form>
@@ -289,6 +311,16 @@
                     }, 0);
 
                     $('.total_gram' + count).val(total);
+                });
+                $(document).on("keyup", ".gr_kuning", function() {
+                    var count = $(this).attr('count');
+
+                    var total = $('.gr_kuning' + count).toArray().reduce(function(acc, input) {
+                        var value = parseFloat($(input).val()) || 0;
+                        return acc + value;
+                    }, 0);
+
+                    $('.total_gram_kuning' + count).val(total);
                 });
 
 

@@ -33,18 +33,18 @@
 
 <script>
     document.addEventListener(
-                "DOMContentLoaded",
-                function() {
-                    var tooltipTriggerList = [].slice.call(
-                        document.querySelectorAll('[data-bs-toggle="tooltip"]')
-                    );
-                    var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
-                        return new bootstrap.Tooltip(tooltipTriggerEl);
-                    });
-                },
-                false
+        "DOMContentLoaded",
+        function() {
+            var tooltipTriggerList = [].slice.call(
+                document.querySelectorAll('[data-bs-toggle="tooltip"]')
             );
-            
+            var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+        },
+        false
+    );
+
     $(document).on('click', '.akses_h', function() {
         var id_user = $(this).attr('id_user');
         if ($('.akses_h' + id_user).prop("checked") == true) {
@@ -295,6 +295,7 @@
 
         })
     }
+
     function plusRow(count, classPlus, url) {
         $(document).on("click", "." + classPlus, function() {
             count = count + 1;
@@ -304,7 +305,7 @@
                 success: function(data) {
                     $("#" + classPlus).append(data);
                     $(".select2").select2();
-                    
+
                 },
             });
         });
@@ -421,7 +422,7 @@
             });
         })
     }
-    
+
 
     function inputChecked(allId, itemClass) {
         $(document).on('click', '#' + allId, function() {
@@ -464,7 +465,7 @@
     });
 
     $('#nanda').DataTable({
-        "searching": false,
+        "searching": true,
         scrollY: '400px',
         scrollX: false,
         scrollCollapse: true,

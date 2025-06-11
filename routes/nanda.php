@@ -9,6 +9,7 @@ use App\Http\Controllers\ConganController;
 use App\Http\Controllers\ControlflowController;
 use App\Http\Controllers\CrudPermissionController;
 use App\Http\Controllers\FakturPenjualanController;
+use App\Http\Controllers\GradeController;
 use App\Http\Controllers\GudangBjController;
 use App\Http\Controllers\GudangBkController;
 use App\Http\Controllers\GudangCetakController;
@@ -517,5 +518,15 @@ Route::middleware('auth')->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/get_data', 'get_data')->name('get_data');
             Route::get('/print_nota', 'print_nota')->name('print_nota');
+        });
+    Route::controller(GradeController::class)
+        ->prefix('grade')
+        ->name('grade.')
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/load_row', 'load_row')->name('load_row');
+            Route::get('/getEdit', 'getEdit')->name('getEdit');
+            Route::post('/save', 'save')->name('save');
+            Route::post('/non', 'non')->name('non');
         });
 });

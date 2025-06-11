@@ -28,16 +28,20 @@
     <table class="table table-bordered">
         <thead>
             <tr>
+
                 <th class="dhead">Grade</th>
-                <th class="dhead text-end" width="15%">Gr</th>
-                <th class="dhead text-end" width="15%">Harga</th>
-                <th class="dhead text-end">Comp%</th>
+                <th class="dhead text-end" width="15%">Putih Gr</th>
+                <th class="dhead text-end" width="15%">Kuning Gr</th>
+                {{-- <th class="dhead text-end" width="15%">Harga</th> --}}
+                {{-- <th class="dhead text-end">Putih Comp</th>
+                <th class="dhead text-end">Kuning Comp</th> --}}
             </tr>
         </thead>
         <tbody>
 
             @foreach ($grade as $key => $g)
                 <tr>
+
                     <input type="hidden" name="id_grade{{ $count }}[]" value="{{ $g->id_grade_cong }}">
                     <td>{{ $g->nm_grade }}</td>
                     <td class="text-end">
@@ -45,13 +49,20 @@
                             count="{{ $count }}" value="0" name="gr{{ $count }}[]">
                     </td>
                     <td class="text-end">
+                        <input type="text" class="form-control inputan gr_kuning gr_kuning{{ $count }}"
+                            count="{{ $count }}" value="0" name="gr{{ $count }}[]">
+                    </td>
+                    {{-- <td class="text-end">
                         <input type="text" class="form-control inputan" value="0"
                             name="harga{{ $count }}[]" readonly>
+                    </td> --}}
+                    {{-- <td class="text-end">
+                        0
                     </td>
                     <td class="text-end">
                         0
-                    </td>
-                    </td>
+                    </td> --}}
+
                 </tr>
             @endforeach
         </tbody>
@@ -65,9 +76,18 @@
         <table style="padding: 10px">
             <tr>
                 <td>
-                    <h6>Total Gram &nbsp;</h6>
+                    <h6>Total Gram Putih &nbsp;</h6>
                 </td>
                 <td><input type="text" class="form-control total_gram{{ $count }}" readonly value="0">
+                </td>
+
+            </tr>
+            <tr>
+                <td>
+                    <h6>Total Gram Kuning &nbsp;</h6>
+                </td>
+                <td><input type="text" class="form-control total_gram_kuning{{ $count }}" readonly
+                        value="0">
                 </td>
 
             </tr>
