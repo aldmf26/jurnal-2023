@@ -77,12 +77,12 @@
                                         <th class="dhead">Kategori</th>
                                         <th class="dhead">Grade</th>
                                         <th class="dhead text-end" width="12%">Putih Gr</th>
-                                        <th class="dhead text-end" width="12%">Kuning Gr</th>
                                         @if ($posisi_id == 1)
                                             <th class="dhead text-end" width="12%">Putih Rp/gr</th>
                                         @else
                                         @endif
                                         <th class="dhead text-end">Comp</th>
+                                        <th class="dhead text-end" width="12%">Kuning Gr</th>
                                         @if ($posisi_id == 1)
                                             <th class="dhead text-end" width="12%">Kuning Rp/gr</th>
                                         @else
@@ -145,14 +145,7 @@
                                                     hruf="{{ $letter }}"
                                                     value="{{ empty($persen->gr) ? '0' : $persen->gr }}">
                                             </td>
-                                            <td class="text-end">
 
-                                                <input type="text"
-                                                    class="form-control inputan text-end gr_kuning{{ $no }} gr{{ $no }}{{ $letter }}"
-                                                    count="{{ $no }}" name="gr_kuning{{ $no }}[]"
-                                                    hruf="{{ $letter }}"
-                                                    value="{{ empty($persen->gr_kuning) ? '0' : $persen->gr_kuning }}">
-                                            </td>
                                             @if ($posisi_id == 1)
                                                 <td class="text-end">
 
@@ -180,11 +173,19 @@
                                             <td class="text-end">
                                                 {{ empty($persen->gr) ? 0 : number_format(($persen->gr / $c->gr) * 100, 2) }}
                                             </td>
+                                            <td class="text-end">
+
+                                                <input type="text"
+                                                    class="form-control inputan text-end gr_kuning{{ $no }} gr_kuning{{ $no }}{{ $letter }}"
+                                                    count="{{ $no }}" name="gr_kuning{{ $no }}[]"
+                                                    hruf="{{ $letter }}"
+                                                    value="{{ empty($persen->gr_kuning) ? '0' : $persen->gr_kuning }}">
+                                            </td>
                                             @if ($posisi_id == 1)
                                                 <td class="text-end">
 
                                                     <input type="text"
-                                                        class="form-control text-end inputan harga harga_kuning{{ $no }}{{ $letter }}"
+                                                        class="form-control text-end inputan harga_kuning harga_kuning{{ $no }}{{ $letter }}"
                                                         count="{{ $no }}" hruf="{{ $letter }}"
                                                         value="{{ empty($persen->hrga_kuning) ? $hrga_dlu->hrga_kuning ?? 0 : $persen->hrga_kuning }}"
                                                         name="harga_kuning{{ $no }}[]">
@@ -197,13 +198,13 @@
                                                             : $persen->hrga_kuning;
                                                     @endphp
                                                     <input type="hidden"
-                                                        class="ttl_hrga{{ $no }} ttl_hrga_kuning{{ $no }}{{ $letter }}"
+                                                        class="ttl_hrga_kuning{{ $no }} ttl_hrga_kuning{{ $no }}{{ $letter }}"
                                                         value="{{ $gram_kuning * $hgra_kuning }}">
                                                 </td>
                                             @else
                                             @endif
                                             <td class="text-end">
-                                                {{ empty($persen->gr) ? 0 : number_format(($persen->gr_kuning / $c->gr_kuning) * 100, 2) }}
+                                                {{ empty($persen->gr_kuning) ? 0 : number_format(($persen->gr_kuning / $c->gr_kuning) * 100, 2) }}
                                             </td>
 
                                         </tr>
@@ -329,57 +330,6 @@
                 });
 
                 aksiBtn("form");
-
-                $('.harga').keyup(function() {
-                    var count = $(this).attr('count');
-                    var letter = $(this).attr('hruf');
-
-                    var gr = $('.gr' + count + letter).val();
-                    var harga = $('.harga' + count + letter).val();
-
-                    var ttl = parseFloat(gr) * parseFloat(harga);
-
-                    var ttl_hrga = $('.ttl_hrga' + count + letter).val(ttl);
-
-
-                    var total_harga = $('.ttl_hrga' + count).toArray().reduce(function(acc, input) {
-                        var value = parseFloat($(input).val()) || 0;
-                        return acc + value;
-                    }, 0);
-
-
-                    var total = $('.gr' + count).toArray().reduce(function(acc, input) {
-                        var value = parseFloat($(input).val()) || 0;
-                        return acc + value;
-                    }, 0);
-
-                    var hrga_persen = parseFloat(total_harga) / parseFloat(total)
-                    var persen_air = $('.persen_air' + count).val();
-
-                    var totalRupiah = hrga_persen.toLocaleString("id-ID", {
-                        style: "currency",
-                        currency: "IDR",
-                        minimumFractionDigits: 0,
-                    });
-                    $('.hrga_persen' + count).val(totalRupiah);
-
-                    var hrga_kurang = parseFloat(hrga_persen) * ((100 - parseFloat(persen_air)) / 100);
-
-                    var totalRupiah2 = hrga_kurang.toLocaleString("id-ID", {
-                        style: "currency",
-                        currency: "IDR",
-                        minimumFractionDigits: 0,
-                    });
-                    $('.hrga_seratus' + count).val(totalRupiah2);
-
-
-                    var tl_harga = ttl.toLocaleString("id-ID", {
-                        style: "currency",
-                        currency: "IDR",
-                        minimumFractionDigits: 0,
-                    });
-                    $('.tl_harga' + count + letter).text(tl_harga);
-                });
 
                 $(".nm_grade").on("keyup", function(e) {
                     var id_grade = $(this).attr('id_grade');

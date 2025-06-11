@@ -185,13 +185,19 @@ class ConganController extends Controller
             for ($y = 0; $y < count($r->pemilik); $y++) {
                 $count = $r->count;
                 $ttl_gr = 0;
+                $ttl_gr_kuning = 0;
 
                 $id_grade = $r->{"id_grade" . $count[$y]};
                 $gr = $r->{"gr" . $count[$y]};
+                $gr_kuning = $r->{"gr_kuning" . $count[$y]};
+
+
                 $harga = $r->{"harga" . $count[$y]};
+                $harga_kuning = $r->{"harga_kuning" . $count[$y]};
                 $nm_grade = $r->{"nm_grade" . $count[$y]};
                 for ($x = 0; $x < count($id_grade); $x++) {
                     $ttl_gr += $gr[$x];
+                    $ttl_gr_kuning += $gr_kuning[$x];
                 }
 
                 $data = [
@@ -201,7 +207,8 @@ class ConganController extends Controller
                     'persen_air' => $r->persen_air[$y],
                     'hrga_beli' => $r->hrga_beli[$y],
                     'no_nota' => $urutan,
-                    'gr' => $ttl_gr
+                    'gr' => $ttl_gr,
+                    'gr_kuning' => $ttl_gr_kuning,
                 ];
                 DB::table('invoice_congan')->where('id_invoice_congan', $r->id_invoice_congan[$y])->update($data);
 
@@ -212,12 +219,15 @@ class ConganController extends Controller
                     ];
                     DB::table('grade_congan')->where('id_grade_cong', $id_grade[$x])->update($data);
 
-                    if (!empty($gr[$x])) {
+                    if (!empty($gr[$x]) || !empty($gr_kuning[$x])) {
                         $data  = [
                             'tgl' => $r->tgl[$y],
                             'id_grade' => $id_grade[$x],
                             'gr' => $gr[$x],
                             'hrga' => $harga[$x],
+                            'gr_kuning' => $gr_kuning[$x],
+                            'hrga' => $harga[$x],
+                            'hrga_kuning' => $harga_kuning[$x],
                             'urutan' => $urutan,
                             'no_nota' => $urutan,
                             'ket' => $r->ket[$y],
