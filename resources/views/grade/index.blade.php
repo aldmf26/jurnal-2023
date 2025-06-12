@@ -103,20 +103,8 @@
             @csrf
             <x-theme.modal title="Tambah Data" idModal="tambah" size="modal-lg">
                 <div class="row">
-                    <div class="col-lg-4 ">
+                    <div class="col-lg-4 col-12">
                         <label for="">Kategori</label>
-                    </div>
-                    <div class="col-lg-4">
-                        <label for="">Grade</label>
-                    </div>
-                    <div class="col-lg-3">
-                        <label for="">Urutan</label>
-                    </div>
-                    <div class="col-lg-1 col-1">
-                        <label for="">Aksi</label>
-                    </div>
-                    <div class="col-lg-4 col-4 mb-2">
-
                         <select name="kategori[]" class="form-control" id="">
                             <option value="">-Pilih Katgeori-</option>
                             @foreach ($kategori as $k)
@@ -124,18 +112,34 @@
                             @endforeach
                         </select>
                     </div>
-                    <div class="col-lg-4 col-4 mb-2">
-
-                        <input type="text" class="form-control" name="nm_grade[]">
+                    <div class="col-lg-4 col-12">
+                        <label for="">Grade</label>
+                        <textarea name="nm_grade[]" id="" cols="8" rows="2" class="form-control">
+                            </textarea>
                     </div>
-                    <div class="col-lg-3 col-3 mb-2">
-
+                    <div class="col-lg-4 col-12">
+                        <label for="">Urutan</label>
                         <input type="text" class="form-control" name="urutan[]">
                     </div>
+                    {{-- <div class="col-lg-1 col-1">
+                        <label for="">Aksi</label>
+                    </div> --}}
+                    {{-- <div class="col-lg-4 col-12 mb-2">
+
+
+                    </div>
+                    <div class="col-lg-4 col-12 mb-2">
+
+
+                    </div>
+                    <div class="col-lg-3 col-12 mb-2">
+
+
+                    </div> --}}
 
 
                 </div>
-                <div class="load_row">
+                {{-- <div class="load_row">
 
                 </div>
 
@@ -143,7 +147,7 @@
                     <div class="col-lg-12 mt-2">
                         <button type="button" class="btn btn-success float-end tambah_row">Tambah Baris</button>
                     </div>
-                </div>
+                </div> --}}
 
             </x-theme.modal>
         </form>

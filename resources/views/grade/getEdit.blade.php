@@ -1,14 +1,6 @@
 <div class="row">
-    <div class="col-lg-4 ">
+    <div class="col-lg-4 col-12">
         <label for="">Kategori</label>
-    </div>
-    <div class="col-lg-4">
-        <label for="">Grade</label>
-    </div>
-    <div class="col-lg-3">
-        <label for="">Urutan</label>
-    </div>
-    <div class="col-lg-4 col-4 mb-2">
         <input type="hidden" name="id" value="{{ $id }}">
         <select name="kategori" class="form-control" id="">
             <option value="">-Pilih Katgeori-</option>
@@ -17,14 +9,18 @@
             @endforeach
         </select>
     </div>
-    <div class="col-lg-4 col-4 mb-2">
+    <div class="col-lg-4 col-12">
+        <label for="">Grade</label>
 
-        <input type="text" class="form-control" name="nm_grade" value="{{ $grade->nm_grade }}">
+        <textarea name="nm_grade" id="" cols="8" rows="2" class="form-control">
+            {{ $grade->nm_grade }}
+                            </textarea>
     </div>
-    <div class="col-lg-3 col-3 mb-2">
-
+    <div class="col-lg-4 col-12">
+        <label for="">Urutan</label>
         <input type="text" class="form-control" name="urutan" value="{{ $grade->urutan }}">
     </div>
+
 
 
 </div>
