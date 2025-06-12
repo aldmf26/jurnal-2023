@@ -128,7 +128,8 @@
                                                 value="{{ $g->id_grade_cong }}">
                                             <td>
                                                 @if ($posisi_id == 1)
-                                                    <input type="text"
+                                                    {{ $g->nm_grade }}
+                                                    <input type="hidden"
                                                         class="form-control  inputan2 nm_grade nm_grade{{ $g->id_grade_cong }}"
                                                         id_grade="{{ $g->id_grade_cong }}"
                                                         name="nm_grade{{ $no }}[]"
