@@ -26,7 +26,7 @@
                 }
 
                 .inputan2 {
-                    width: 170px !important;
+                    width: 220px !important;
                 }
             }
         </style>
