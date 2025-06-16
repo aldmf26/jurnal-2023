@@ -133,7 +133,7 @@
                                             $nomor += 1;
 
                                         @endphp
-                                        @if ($prevKelompok !== null && $prevKelompok != $g->kelompok)
+                                        {{-- @if ($prevKelompok !== null && $prevKelompok != $g->kelompok)
                                             <tr>
                                                 <td>
                                                     <h6>Total Gram </h6>
@@ -213,7 +213,7 @@
                                                 $sub_gr_kuning = 0;
                                                 $sub_total_rp = 0;
                                             @endphp
-                                        @endif
+                                        @endif --}}
 
                                         @php $prevKelompok = $g->kelompok; @endphp
                                         <style>
@@ -280,8 +280,8 @@
 
                                                 <input type="text"
                                                     class="form-control inputan text-end gr_kuning{{ $no }} gr_kuning{{ $no }}{{ $letter }}"
-                                                    count="{{ $no }}"
-                                                    name="gr_kuning{{ $no }}[]" hruf="{{ $letter }}"
+                                                    count="{{ $no }}" name="gr_kuning{{ $no }}[]"
+                                                    hruf="{{ $letter }}"
                                                     value="{{ empty($persen->gr_kuning) ? '0' : $persen->gr_kuning }}">
                                             </td>
                                             @if ($posisi_id == 1)
@@ -334,7 +334,7 @@
                                             $sub_total_rp += $gram * $hgra + $gram_kuning * $hgra_kuning;
                                         @endphp
                                     @endforeach
-                                    @if ($prevKelompok !== null)
+                                    {{-- @if ($prevKelompok !== null)
                                         <tr>
                                             <td>
                                                 <h6>Total Gram </h6>
@@ -404,7 +404,7 @@
                                         <tr>
                                             <td colspan="8">&nbsp;</td>
                                         </tr>
-                                    @endif
+                                    @endif --}}
                                 </tbody>
 
                             </table>
