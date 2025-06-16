@@ -212,6 +212,8 @@ class ConganController extends Controller
                 ];
                 DB::table('invoice_congan')->where('id_invoice_congan', $r->id_invoice_congan[$y])->update($data);
 
+                $congan_selesai = DB::table('invoice_congan')->where('id_invoice_congan', $r->id_invoice_congan[$y])->first();
+
                 for ($x = 0; $x < count($id_grade); $x++) {
 
                     $data = [
@@ -224,10 +226,9 @@ class ConganController extends Controller
                             'tgl' => $r->tgl[$y],
                             'id_grade' => $id_grade[$x],
                             'gr' => $gr[$x],
-                            'hrga' => $harga[$x],
+                            'hrga' => $congan_selesai->selesai == 'Y' ? $harga[$x] : 0,
                             'gr_kuning' => $gr_kuning[$x],
-                            'hrga' => $harga[$x],
-                            'hrga_kuning' => $harga_kuning[$x],
+                            'hrga_kuning' => $congan_selesai->selesai == 'Y' ? $harga_kuning[$x] : 0,
                             'urutan' => $urutan,
                             'no_nota' => $urutan,
                             'ket' => $r->ket[$y],
