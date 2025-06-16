@@ -146,7 +146,7 @@
                                                 @else
                                                     <td colspan="2"></td>
                                                     <td colspan="2">
-                                                        <h6>Total Gram <br>(1 - {{ $nomor }})</h6>
+                                                        <h6>Total Gram <br>(1 - {{ $nomor - 1 }})</h6>
                                                     </td>
                                                     <td colspan="2">
                                                         <input type="text" class="form-control " readonly
@@ -170,7 +170,7 @@
                                                     <td colspan="2"></td>
                                                     <td colspan="2">
                                                         <h6>Harga({{ 100 - $c->persen_air }}%) <br> (1 -
-                                                            {{ $nomor }})
+                                                            {{ $nomor - 1 }})
                                                             &nbsp;</h6>
                                                     </td>
                                                     <td colspan="2">
@@ -193,7 +193,7 @@
                                                 @else
                                                     <td colspan="2"></td>
                                                     <td colspan="2">
-                                                        <h6>Harga(100%) <br>(1 - {{ $nomor }}) </h6>
+                                                        <h6>Harga(100%) <br>(1 - {{ $nomor - 1 }}) </h6>
                                                     </td>
                                                     <td colspan="2"><input type="text" class="form-control"
                                                             value="Rp. {{ number_format($total_rp / $gr, 0) }}"
