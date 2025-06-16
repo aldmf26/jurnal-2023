@@ -101,6 +101,15 @@
                                         $sub_gr = 0;
                                         $sub_gr_kuning = 0;
                                         $sub_total_rp = 0;
+
+                                        $total_kelompok1_gr = 0;
+                                        $total_kelompok1_gr_kuning = 0;
+                                        $total_kelompok1_total_rp = 0;
+
+                                        $akumulasi_gr = 0;
+                                        $akumulasi_gr_kuning = 0;
+                                        $akumulasi_total_rp = 0;
+                                        $nomor = 0;
                                     @endphp
                                     @foreach ($grade as $key => $g)
                                         @php
@@ -121,6 +130,7 @@
                                                 ->where('hrga_kuning', '!=', 0)
                                                 ->orderBy('no_nota', 'desc')
                                                 ->first();
+                                            $nomor += 1;
 
                                         @endphp
                                         @if ($prevKelompok !== null && $prevKelompok != $g->kelompok)
@@ -132,17 +142,45 @@
                                                     <input type="text" class="form-control " readonly
                                                         value="{{ $sub_gr + $sub_gr_kuning }}">
                                                 </td>
+                                                @if ($prevKelompok == 1)
+                                                @else
+                                                    <td colspan="2"></td>
+                                                    <td colspan="2">
+                                                        <h6>Total Gram <br>(1 - {{ $nomor }})</h6>
+                                                    </td>
+                                                    <td colspan="2">
+                                                        <input type="text" class="form-control " readonly
+                                                            value="{{ $gr }}">
+                                                    </td>
+                                                @endif
+
                                             </tr>
 
                                             <tr>
                                                 <td>
-                                                    <h6>Harga({{ 100 - $c->persen_air }}%) &nbsp;</h6>
+                                                    <h6>Harga({{ 100 - $c->persen_air }}%) &nbsp;
+                                                    </h6>
                                                 </td>
                                                 <td>
                                                     <input type="text" class="form-control" readonly
                                                         value="Rp. {{ number_format(($sub_total_rp / ($sub_gr + $sub_gr_kuning)) * ((100 - $c->persen_air) / 100), 0) }}">
                                                 </td>
+                                                @if ($prevKelompok == 1)
+                                                @else
+                                                    <td colspan="2"></td>
+                                                    <td colspan="2">
+                                                        <h6>Harga({{ 100 - $c->persen_air }}%) <br> (1 -
+                                                            {{ $nomor }})
+                                                            &nbsp;</h6>
+                                                    </td>
+                                                    <td colspan="2">
+                                                        <input type="text" class="form-control" readonly
+                                                            value="Rp. {{ number_format(($total_rp / $gr) * ((100 - $c->persen_air) / 100), 0) }}">
+                                                    </td>
+                                                @endif
+
                                             </tr>
+
                                             <tr>
                                                 <td>
                                                     <h6>Harga(100%) </h6>
@@ -151,6 +189,18 @@
                                                         value="Rp. {{ number_format($sub_total_rp / ($sub_gr + $sub_gr_kuning), 0) }}"
                                                         readonly>
                                                 </td>
+                                                @if ($prevKelompok == 1)
+                                                @else
+                                                    <td colspan="2"></td>
+                                                    <td colspan="2">
+                                                        <h6>Harga(100%) <br>(1 - {{ $nomor }}) </h6>
+                                                    </td>
+                                                    <td colspan="2"><input type="text" class="form-control"
+                                                            value="Rp. {{ number_format($total_rp / $gr, 0) }}"
+                                                            readonly>
+                                                    </td>
+                                                @endif
+
                                             </tr>
                                             <tr style="background: #e0e0e0; font-weight: bold;">
                                                 <td colspan="8">&nbsp;</td>
@@ -158,8 +208,6 @@
                                             <tr>
                                                 <td colspan="8">&nbsp;</td>
                                             </tr>
-
-
                                             @php
                                                 $sub_gr = 0;
                                                 $sub_gr_kuning = 0;
@@ -295,6 +343,17 @@
                                                 <input type="text" class="form-control " readonly
                                                     value="{{ $sub_gr + $sub_gr_kuning }}">
                                             </td>
+                                            @if ($prevKelompok == 1)
+                                            @else
+                                                <td colspan="2"></td>
+                                                <td colspan="2">
+                                                    <h6>Total Gram <br>(1 - {{ $nomor }})</h6>
+                                                </td>
+                                                <td colspan="2">
+                                                    <input type="text" class="form-control " readonly
+                                                        value="{{ $gr }}">
+                                                </td>
+                                            @endif
                                         </tr>
 
                                         <tr>
@@ -305,6 +364,20 @@
                                                 <input type="text" class="form-control" readonly
                                                     value="Rp. {{ $sub_gr + $sub_gr_kuning == 0 ? 0 : number_format(($sub_total_rp / ($sub_gr + $sub_gr_kuning)) * ((100 - $c->persen_air) / 100), 0) }}">
                                             </td>
+                                            @if ($prevKelompok == 1)
+                                            @else
+                                                <td colspan="2"></td>
+                                                <td colspan="2">
+                                                    <h6>Harga({{ 100 - $c->persen_air }}%) <br> (1 -
+                                                        {{ $nomor }})
+                                                        &nbsp;</h6>
+                                                </td>
+                                                <td colspan="2">
+                                                    <input type="text" class="form-control" readonly
+                                                        value="Rp. {{ number_format(($total_rp / $gr) * ((100 - $c->persen_air) / 100), 0) }}">
+                                                </td>
+                                            @endif
+
                                         </tr>
                                         <tr>
                                             <td>
@@ -314,6 +387,16 @@
                                                     value="Rp. {{ $sub_gr + $sub_gr_kuning == 0 ? 0 : number_format($sub_total_rp / ($sub_gr + $sub_gr_kuning), 0) }}"
                                                     readonly>
                                             </td>
+                                            @if ($prevKelompok == 1)
+                                            @else
+                                                <td colspan="2"></td>
+                                                <td colspan="2">
+                                                    <h6>Harga(100%) <br>(1 - {{ $nomor }}) </h6>
+                                                </td>
+                                                <td colspan="2"><input type="text" class="form-control"
+                                                        value="Rp. {{ number_format($total_rp / $gr, 0) }}" readonly>
+                                                </td>
+                                            @endif
                                         </tr>
                                         <tr style="background: #e0e0e0; font-weight: bold;">
                                             <td colspan="8">&nbsp;</td>
