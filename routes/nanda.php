@@ -427,6 +427,7 @@ Route::middleware('auth')->group(function () {
             Route::post('/add_congan', 'add_congan')->name('add_congan');
             Route::get('/load_row', 'load_row')->name('load_row');
             Route::get('/detail_nota', 'detail_nota')->name('detail_nota');
+            Route::get('/harga_fix', 'harga_fix')->name('harga_fix');
             Route::post('/edit_congan', 'edit_congan')->name('edit_congan');
             Route::get('/buat_nota', 'buat_nota')->name('buat_nota');
             Route::post('/save_pembelian_bk', 'save_pembelian_bk')->name('save_pembelian_bk');

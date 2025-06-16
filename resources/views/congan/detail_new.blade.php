@@ -117,8 +117,14 @@
                                                 ->first();
 
                                         @endphp
-                                        <tr>
-                                            <td>
+                                        <style>
+                                            .bg-gr_isi {
+                                                background-color: #A2D0FA
+                                            }
+                                        </style>
+                                        <tr
+                                            class="{{ !empty($persen->gr) || !empty($persen->gr_kuning) ? 'bg-gr_isi text-white' : '' }}">
+                                            <td class="bg-white text-black">
                                                 @if ($g->nm_kategori !== $prevKategori)
                                                     {{ $g->nm_kategori }}
                                                     @php $prevKategori = $g->nm_kategori; @endphp
@@ -167,12 +173,6 @@
                                                 </td>
                                             @else
                                             @endif
-
-
-                                            {{-- <td class="text-end tl_harga{{ $no }}{{ $letter }}">
-                                                Rp
-                                                {{ number_format(($persen->gr ?? 0) * ($persen->hrga ?? 0), 0, ',', '.') }}
-                                            </td> --}}
                                             <td class="text-end">
                                                 {{ empty($persen->gr) ? 0 : number_format(($persen->gr / ($c->gr + $c->gr_kuning)) * 100, 0) }}
                                                 %
@@ -216,9 +216,17 @@
                                         </tr>
                                         @php
                                             $gr += ($persen->gr ?? 0) + ($persen->gr_kuning ?? 0);
+                                            $prsen_hrga =
+                                                empty($persen->hrga) || $persen->hrga == 0
+                                                    ? $hrga_dlu->hrga ?? 0
+                                                    : $persen->hrga;
+                                            $prsen_hrga_kuning =
+                                                empty($persen->hrga_kuning) || $persen->hrga_kuning == 0
+                                                    ? $hrga_dlu->hrga_kuning ?? 0
+                                                    : $persen->hrga_kuning;
                                             $total_rp +=
-                                                ($persen->gr ?? 0) * ($persen->hrga ?? 0) +
-                                                ($persen->gr_kuning ?? 0) * ($persen->hrga_kuning ?? 0);
+                                                ($persen->gr ?? 0) * $prsen_hrga +
+                                                ($persen->gr_kuning ?? 0) * $prsen_hrga_kuning;
                                         @endphp
                                     @endforeach
                                 </tbody>
@@ -228,7 +236,7 @@
 
                     </div>
                     <div class="row">
-                        <div class="col-lg-3">
+                        <div class="col-lg-5">
                             <table style="padding: 10px">
                                 {{-- <tr>
                                     <td>
@@ -265,9 +273,24 @@
                                     </td>
                                     <td>
 
-                                        <input type="text" class="form-control hrga_beli{{ $no }}"
+                                        <input type="text"
+                                            class="form-control harga_ambil hrga_beli{{ $no }}"
                                             name="hrga_beli[]" value="{{ $c->hrga_beli }}" required>
 
+                                    </td>
+                                    <td>
+
+
+                                        @if ($c->selesai == 'Y')
+                                            <span class="ms-4 badge bg-success">Harga sudah fix</span>
+                                        @else
+                                            <a href="javascript:void(0);" class="btn btn-primary ms-4 harga_fix"
+                                                no_nota="{{ $no_nota }}">Harga
+                                                fix</a>
+                                            <span class="badge ms-4 bg-success harga_selsai_muncul"
+                                                style="display: none">Harga sudah
+                                                fix</span>
+                                        @endif
                                     </td>
                                 </tr>
                                 <tr>
@@ -282,7 +305,7 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <h6>Harga(%) &nbsp; {{ $total_rp }}</h6>
+                                        <h6>Harga(100%) </h6>
                                     </td>
                                     <td><input type="text" class="form-control hrga_persen{{ $no }}"
                                             value="Rp. {{ number_format($total_rp / $gr, 0) }}" readonly></td>
@@ -343,6 +366,52 @@
 
                     $('.nm_grade' + id_grade).val(nm_grade);
                 });
+                $(".harga_fix").on("click", function(e) {
+                    var no_nota = $(this).attr('no_nota');
+                    var hrga = $('.harga_ambil').val();
+
+                    if (hrga === '0' || hrga === '') {
+                        Toastify({
+                            text: "Harga tidak boleh kosong",
+                            duration: 3000,
+                            style: {
+                                background: "#FCEDE9",
+                                color: "#7F8B8B"
+                            },
+                            close: true,
+                            avatar: "https://cdn-icons-png.flaticon.com/512/564/564619.png"
+                        }).showToast();
+                    } else {
+                        $.ajax({
+                            type: "get",
+                            url: "{{ route('congan.harga_fix') }}",
+                            data: {
+                                no_nota: no_nota
+                            },
+                            success: function(data) {
+                                $('.harga_fix').hide();
+                                $('.harga_selsai_muncul').show();
+
+
+
+                                Toastify({
+                                    text: "Harga berhasil di simpan",
+                                    duration: 3000,
+                                    style: {
+                                        background: "#EAF7EE",
+                                        color: "#7F8B8B"
+                                    },
+                                    close: true,
+                                    avatar: "https://cdn-icons-png.flaticon.com/512/190/190411.png"
+                                }).showToast();
+                            }
+
+                        })
+                    }
+
+                });
+
+
             });
         </script>
     @endsection

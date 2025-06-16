@@ -519,4 +519,12 @@ class ConganController extends Controller
 
         return redirect()->route('congan.index')->with('sukses', 'Data berhasil dihapus');
     }
+
+    public function harga_fix(Request $r)
+    {
+        $data = [
+            'selesai' => 'Y',
+        ];
+        DB::table('invoice_congan')->where('no_nota', $r->no_nota)->update($data);
+    }
 }
