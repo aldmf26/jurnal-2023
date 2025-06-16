@@ -150,7 +150,7 @@
                             <tr>
                                 <th class="dhead">Kategori</th>
                                 <th class="dhead">Grade</th>
-                                <th class="dhead text-end" width="15%">Putih Gr</th>
+                                <th class="dhead text-end" width="15%">Putih / Beras Gr</th>
                                 <th class="dhead text-end" width="15%">Kuning Gr</th>
                                 {{-- <th class="dhead text-end" width="15%">Harga</th> --}}
                                 {{-- <th class="dhead text-end">Putih Comp</th>

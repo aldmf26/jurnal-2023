@@ -85,7 +85,7 @@ class ConganController extends Controller
             'no_nota' => $r->no_nota,
             'grade' => DB::table('grade_congan')
                 ->leftJoin('kategori', 'kategori.id', '=', 'grade_congan.kategori_id')
-                ->where('aktif', 'Y')->orderBy('kategori.id', 'ASC')->orderBy('grade_congan.urutan', 'ASC')->get(),
+                ->where('aktif', 'Y')->orderBy('kategori.kelompok', 'ASC')->orderBy('kategori.urutan', 'ASC')->orderBy('kategori.id', 'ASC')->orderBy('grade_congan.urutan', 'ASC')->get(),
             'congan' => DB::select("SELECT a.*
             FROM invoice_congan as a
             where a.no_nota = '$r->no_nota'
