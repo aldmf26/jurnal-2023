@@ -157,18 +157,26 @@
                         </select>
                     </div>
                     <div class="col-lg-2">
+                        <label for="">No Kendaraan</label>
+                        <input type="text" class="form-control" name="no_kendaraan[]">
+                    </div>
+                    <div class="col-lg-2">
+                        <label for="">Pengemudi</label>
+                        <input type="text" class="form-control" name="pengemudi[]">
+                    </div>
+                    <div class="col-lg-2">
                         <label for="">Pcs</label>
                         <input type="text" class="form-control" name="pcs[]">
                     </div>
-                    <div class="col-lg-2">
+                    <div class="col-lg-2 mt-2">
                         <label for="">Gr</label>
                         <input type="text" class="form-control" name="gr[]">
                     </div>
-                    <div class="col-lg-2">
+                    <div class="col-lg-2 mt-2">
                         <label for="">Rp/Gr</label>
                         <input type="text" class="form-control" name="rp_gram[]">
                     </div>
-                    <div class="col-lg-1">
+                    <div class="col-lg-1 mt-2">
                         <label for="">Lot</label>
                         <input type="text" class="form-control" name="lot[]">
                     </div>

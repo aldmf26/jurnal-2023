@@ -131,6 +131,9 @@ class GudangNewController extends Controller
                     'no_invoice' => date('d', strtotime($r->tgl[$x])) . '-' . date('mY', strtotime($r->tgl[$x])) . '-' . $kode_rwb . '-' . date('m', strtotime($r->tgl[$x] . ' +6 months')) . '-' . date('Y', strtotime($r->tgl[$x] . ' +6 months')),
                     'pcs' => $r->pcs[$x],
                     'kg' => $r->gr[$x] / 1000,
+                    'no_kendaraan' => $r->no_kendaraan[$x],
+                    'pengemudi' => $r->pengemudi[$x],
+                    'tgl' => $r->tgl[$x],
 
 
                 ]
