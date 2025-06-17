@@ -83,6 +83,15 @@ class GudangNewController extends Controller
     public function save_gudang_bk(Request $r)
     {
         for ($x = 0; $x < count($r->ket2); $x++) {
+            $id = $r->grade[$x];
+            $grade = Http::get("https://ptagrikagatyaarum.com/api/apikodesbw/detail_grade_sbw?id=$id");
+            $grade = json_decode($grade, TRUE);
+
+            $rwb_id = $r->rwb[$x];
+            $rwb = Http::get("https://ptagrikagatyaarum.com/api/apikodesbw/detail_rumah_walet?id=$rwb_id");
+            $rwb = json_decode($rwb, TRUE);
+
+
             DB::table('buku_campur')->insert([
                 'no_lot' => $r->lot[$x],
                 'id_grade' => '1',
@@ -102,7 +111,7 @@ class GudangNewController extends Controller
                 'buku' => '',
                 'suplier_awal' => ' ',
                 'tgl' => $r->tgl[$x],
-                'nm_grade' => $r->grade[$x],
+                'nm_grade' => $grade['data']['grade']['nama'],
                 'pcs' => $r->pcs[$x],
                 'gr' => $r->gr[$x],
                 'rupiah' => $r->rp_gram[$x],
@@ -112,6 +121,20 @@ class GudangNewController extends Controller
                 'lok_tgl' => '',
                 'gudang' => $r->gudang,
             ]);
+
+            $kode_rwb = $rwb['data']['rumah_walet']['kode'];
+            DB::table('sbw_kotor')->insert(
+                [
+                    'grade_id' => $id,
+                    'rwb_id' => $r->rwb[$x],
+                    'nm_partai' => $r->ket2[$x],
+                    'no_invoice' => date('d', strtotime($r->tgl[$x])) . '-' . date('mY', strtotime($r->tgl[$x])) . '-' . $kode_rwb . '-' . date('m', strtotime($r->tgl[$x] . ' +6 months')) . '-' . date('Y', strtotime($r->tgl[$x] . ' +6 months')),
+                    'pcs' => $r->pcs[$x],
+                    'kg' => $r->gr[$x] / 1000,
+
+
+                ]
+            );
         }
 
         if ($r->lokasi == 'herry') {
@@ -138,10 +161,23 @@ class GudangNewController extends Controller
             DB::table('bk_timbang_ulang')->insert($data);
         }
         $gudang = GudangBkModel::g_p_kerja();
+
+        $grade = Http::get("https://ptagrikagatyaarum.com/api/apikodesbw/grade_sbw");
+        $grade = json_decode($grade, TRUE);
+
+        $rbw = Http::get("https://ptagrikagatyaarum.com/api/apikodesbw/rumah_walet");
+        $rbw = json_decode($rbw, TRUE);
+
+
+
+
         $data =  [
             'title' => 'Gudang Partai Kerja',
             'gudang' => $gudang,
             'linkApi' => $this->linkApi,
+            'grade' => $grade['data']['grade'],
+            'rbw' => $rbw['data']['rumah_walet'],
+
         ];
         return view('gudangnew.p_kerja', $data);
     }

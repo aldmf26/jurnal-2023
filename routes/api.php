@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\SbwController;
 use App\Http\Controllers\ApiWipController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -34,4 +35,10 @@ Route::controller(ApiWipController::class)
         Route::get('/bkSortirApi', 'bkSortirApi')->name('bkSortirApi');
         Route::get('/partai', 'partai')->name('partai');
         Route::get('/sum_partai', 'sum_partai')->name('sum_partai');
+    });
+Route::controller(SbwController::class)
+    ->prefix('sbw')
+    ->name('sbw.')
+    ->group(function () {
+        Route::get('/sbw_kotor', 'sbw_kotor')->name('sbw_kotor');
     });

@@ -138,9 +138,23 @@
                         <label for="">Date</label>
                         <input type="date" class="form-control" name="tgl[]">
                     </div>
-                    <div class="col-lg-1">
+                    <div class="col-lg-2">
                         <label for="">Grade</label>
-                        <input type="text" class="form-control" name="grade[]">
+                        <select name="grade[]" id="" class="form-control">
+                            <option value="">Pilih Grade</option>
+                            @foreach ($grade as $g)
+                                <option value="{{ $g['id'] }}">{{ $g['nama'] }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-lg-2">
+                        <label for="">Rumah burung walet</label>
+                        <select name="rwb[]" id="" class="form-control">
+                            <option value="">Pilih RBW</option>
+                            @foreach ($rbw as $g)
+                                <option value="{{ $g['id'] }}">{{ $g['nama'] }}</option>
+                            @endforeach
+                        </select>
                     </div>
                     <div class="col-lg-2">
                         <label for="">Pcs</label>
@@ -169,13 +183,13 @@
                     </div>
 
                 </div>
-                <div class="tambah-data"></div>
+                {{-- <div class="tambah-data"></div>
                 <div class="col-lg-12 mt-2">
                     <button type="button" class="btn btn-block btn-lg tbh_baris"
                         style="background-color: #F4F7F9; color: #8FA8BD; font-size: 14px; padding: 13px;">
                         <i class="fas fa-plus"></i> Tambah Baris Baru
                     </button>
-                </div>
+                </div> --}}
 
             </x-theme.modal>
         </form>
