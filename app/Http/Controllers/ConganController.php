@@ -653,11 +653,13 @@ class ConganController extends Controller
         $sheet1->setCellValue('K5', 'Harga Beli');
         $sheet1->setCellValue('K6', 'Harga' . 100 - $invoice->persen_air . '%');
         $sheet1->setCellValue('K7', 'Harga' . 100 . '%');
+        $sheet1->setCellValue('K8', 'Harga FIx');
 
         $sheet1->setCellValue('L4', $ttl_gr);
         $sheet1->setCellValue('L5', $invoice->hrga_beli);
         $sheet1->setCellValue('L6', round(($total_rp / $ttl_gr) * ((100 - $invoice->persen_air) / 100), 0));
         $sheet1->setCellValue('L7', round($total_rp / $ttl_gr, 0));
+        $sheet1->setCellValue('L8', $invoice->selesai);
 
 
         $namafile = "Data Congan.xlsx";
@@ -703,6 +705,7 @@ class ConganController extends Controller
                 $persen_air = $currentSheet->getCell('E2')->getValue();
                 $harga_beli = $currentSheet->getCell('L5')->getValue();
                 $no_nota = $currentSheet->getCell('A2')->getValue();
+                $hrga_fix = $currentSheet->getCell('L8')->getValue();
 
 
                 $gr = 0;
@@ -745,7 +748,8 @@ class ConganController extends Controller
                     'hrga_beli' => $harga_beli,
                     'no_nota' => $no_nota,
                     'gr' => $gr,
-                    'gr_kuning' => $gr_kuning
+                    'gr_kuning' => $gr_kuning,
+                    'selesai' => $hrga_fix
                 ];
                 DB::table('invoice_congan')->where('no_nota', $no_nota)->update($data);
             }
