@@ -123,12 +123,13 @@ class GudangNewController extends Controller
             ]);
 
             $kode_rwb = $rwb['data']['rumah_walet']['kode'];
+            $kode_brg =  $grade['data']['grade']['kode'];
             DB::table('sbw_kotor')->insert(
                 [
                     'grade_id' => $id,
                     'rwb_id' => $r->rwb[$x],
                     'nm_partai' => $r->ket2[$x],
-                    'no_invoice' => date('d', strtotime($r->tgl[$x])) . '-' . date('mY', strtotime($r->tgl[$x])) . '-' . $kode_rwb . '-' . date('m', strtotime($r->tgl[$x] . ' +6 months')) . '-' . date('Y', strtotime($r->tgl[$x] . ' +6 months')),
+                    'no_invoice' => date('d', strtotime($r->tgl[$x])) . '-' . date('mY', strtotime($r->tgl[$x])) . '-' . $kode_brg .  $kode_rwb . '-' . date('m', strtotime($r->tgl[$x] . ' +6 months')) . '-' . date('Y', strtotime($r->tgl[$x] . ' +6 months')),
                     'pcs' => $r->pcs[$x],
                     'kg' => $r->gr[$x] / 1000,
                     'no_kendaraan' => $r->no_kendaraan[$x],
