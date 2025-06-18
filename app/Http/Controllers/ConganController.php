@@ -707,6 +707,11 @@ class ConganController extends Controller
                 $no_nota = $currentSheet->getCell('A2')->getValue();
                 $hrga_fix = $currentSheet->getCell('L8')->getValue();
 
+                $data = [
+                    'selesai' => $hrga_fix
+                ];
+                DB::table('invoice_congan')->where('no_nota', $no_nota)->update($data);
+
 
                 $gr = 0;
                 $gr_kuning = 0;
