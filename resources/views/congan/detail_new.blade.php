@@ -38,6 +38,15 @@
                 <br>
             @endif --}}
         <section class="row">
+            <div class="col-lg-8">
+                <a href="{{ route('congan.export_congan', ['no_nota' => $no_nota]) }}"
+                    class="btn  btn-success float-end me-2 "><i class="fas fa-file-excel"></i>
+                    Export</a>
+                <a href="#" data-bs-toggle="modal" data-bs-target="#import"
+                    class="btn  btn-primary float-end me-2 "><i class="fas fa-file-import"></i>
+                    Import</a>
+            </div>
+
             @php
                 $posisi_id = Auth::user()->posisi_id;
             @endphp
@@ -280,8 +289,8 @@
 
                                                 <input type="text"
                                                     class="form-control inputan text-end gr_kuning{{ $no }} gr_kuning{{ $no }}{{ $letter }}"
-                                                    count="{{ $no }}" name="gr_kuning{{ $no }}[]"
-                                                    hruf="{{ $letter }}"
+                                                    count="{{ $no }}"
+                                                    name="gr_kuning{{ $no }}[]" hruf="{{ $letter }}"
                                                     value="{{ empty($persen->gr_kuning) ? '0' : $persen->gr_kuning }}">
                                             </td>
                                             @if ($posisi_id == 1)
@@ -509,7 +518,24 @@
                     </div>
                 </div>
             </form>
+
+
+            <form action="{{ route('congan.import_congan') }}" method="post" enctype="multipart/form-data">
+                @csrf
+                <x-theme.modal title="Congan" idModal="import" btnSave="Y">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <label for="">File</label>
+                            <input type="file" class="form-control" name="file">
+                            <input type="hidden" name="no_nota" value="{{ $no_nota }}" id="">
+                        </div>
+                    </div>
+
+                </x-theme.modal>
+            </form>
         </section>
+
+
 
 
 

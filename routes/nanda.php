@@ -433,6 +433,8 @@ Route::middleware('auth')->group(function () {
             Route::post('/save_pembelian_bk', 'save_pembelian_bk')->name('save_pembelian_bk');
             Route::get('/export', 'export')->name('export');
             Route::get('/delete_nota', 'delete_nota')->name('delete_nota');
+            Route::get('/export_congan', 'export_congan')->name('export_congan');
+            Route::post('/import_congan', 'import_congan')->name('import_congan');
         });
     Route::controller(HalawalGudangController::class)
         ->prefix('halawal')

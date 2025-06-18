@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 use Throwable;
 
 class ConganController extends Controller
@@ -527,5 +528,237 @@ class ConganController extends Controller
             'selesai' => 'Y',
         ];
         DB::table('invoice_congan')->where('no_nota', $r->no_nota)->update($data);
+    }
+
+    public function export_congan(Request $r)
+    {
+        $style_atas = array(
+            'font' => [
+                'bold' => true, // Mengatur teks menjadi tebal
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+            ],
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN
+                ]
+            ],
+        );
+
+        $style = [
+            'borders' => [
+                'alignment' => [
+                    'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                    'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+                ],
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN
+                ],
+            ],
+        ];
+        $spreadsheet = new Spreadsheet();
+
+
+        $spreadsheet->setActiveSheetIndex(0);
+        $sheet1 = $spreadsheet->getActiveSheet();
+        $sheet1->setTitle('Congan');
+
+        $invoice = DB::table('invoice_congan')->where('no_nota', $r->no_nota)->first();
+
+        $sheet1->getStyle("A1:E2")->applyFromArray($style_atas);
+        $sheet1->getStyle("A4:I4")->applyFromArray($style_atas);
+
+        $sheet1->setCellValue('A1', 'No Nota');
+        $sheet1->setCellValue('A2', $r->no_nota);
+
+        $sheet1->setCellValue('B1', 'Tanggal');
+        $sheet1->setCellValue('B2', $invoice->tgl);
+
+        $sheet1->setCellValue('C1', 'Pemilik');
+        $sheet1->setCellValue('C2', $invoice->pemilik);
+
+
+        $sheet1->setCellValue('D1', 'Keterangan');
+        $sheet1->setCellValue('D2', $invoice->ket);
+
+        $sheet1->setCellValue('E1', 'Persen Air');
+        $sheet1->setCellValue('E2', $invoice->persen_air);
+
+
+        $sheet1->setCellValue('A4', 'Kategori');
+        $sheet1->setCellValue('B4', 'ID Grade');
+        $sheet1->setCellValue('C4', 'Grade');
+        $sheet1->setCellValue('D4', 'Putih / Beras Gr');
+        $sheet1->setCellValue('E4', 'Putih / Beras Rp/gr');
+        $sheet1->setCellValue('F4', 'Comp');
+        $sheet1->setCellValue('G4', 'Kuning Gr');
+        $sheet1->setCellValue('H4', 'Kuning Rp/gr');
+        $sheet1->setCellValue('I4', 'Comp');
+
+
+
+        $grade = DB::table('grade_congan')
+            ->leftJoin('kategori', 'kategori.id', '=', 'grade_congan.kategori_id')
+            ->where('aktif', 'Y')->orderBy('kategori.kelompok', 'ASC')->orderBy('kategori.urutan', 'ASC')->orderBy('kategori.id', 'ASC')->orderBy('grade_congan.urutan', 'ASC')->get();
+
+        $kolom = 5;
+        $prevKategori = null;
+        $ttl_gr = 0;
+        $total_rp = 0;
+        foreach ($grade as $c) {
+
+            $persen = DB::selectOne(
+                "SELECT a.gr, a.hrga, a.gr_kuning, a.hrga_kuning  FROM tb_cong as a where a.no_nota = '$r->no_nota' and a.id_grade = '$c->id_grade_cong' ",
+            );
+
+            $hrga_dlu = DB::table('tb_cong')
+                ->where('id_grade', $c->id_grade_cong)
+                ->where('no_nota', '!=', $r->no_nota)
+                ->where('hrga', '!=', 0)
+                ->orderBy('no_nota', 'desc')
+                ->first();
+            $hrga_dlu_kuning = DB::table('tb_cong')
+                ->where('id_grade', $c->id_grade_cong)
+                ->where('no_nota', '!=', $r->no_nota)
+                ->where('hrga_kuning', '!=', 0)
+                ->orderBy('no_nota', 'desc')
+                ->first();
+            $ttl_gr += ($persen->gr ?? 0) + ($persen->gr_kuning ?? 0);
+            $hgra =
+                empty($persen->hrga) || $persen->hrga == 0
+                ? $hrga_dlu->hrga ?? 0
+                : $persen->hrga;
+            $hgra_kuning =
+                empty($persen->hrga_kuning) || $persen->hrga_kuning == 0
+                ? $hrga_dlu->hrga_kuning ?? 0
+                : $persen->hrga_kuning;
+            $total_rp += ($persen->gr ?? 0) * $hgra + ($persen->gr_kuning ?? 0) * $hgra_kuning;
+            $sheet1->setCellValue('A' . $kolom, $c->nm_kategori);
+            $sheet1->setCellValue('B' . $kolom, $c->id_grade_cong);
+            $sheet1->setCellValue('C' . $kolom, $c->nm_grade);
+            $sheet1->setCellValue('D' . $kolom, $persen->gr ?? 0);
+            $sheet1->setCellValue('E' . $kolom, empty($persen->hrga) || $persen->hrga == 0 ? $hrga_dlu->hrga ?? 0 : $persen->hrga);
+            $sheet1->setCellValue('F' . $kolom, empty($persen->gr) ? 0 : ($persen->gr / ($invoice->gr + $invoice->gr_kuning)) * 100);
+            $sheet1->setCellValue('G' . $kolom, $persen->gr_kuning ?? 0);
+            $sheet1->setCellValue('H' . $kolom, empty($persen->hrga_kuning) || $persen->hrga_kuning == 0 ? $hrga_dlu_kuning->hrga ?? 0 : $persen->hrga_kuning);
+            $sheet1->setCellValue('I' . $kolom, empty($persen->gr_kuning) ? 0 : ($persen->gr_kuning / ($invoice->gr + $invoice->gr_kuning)) * 100);
+
+            $kolom++;
+        }
+        $sheet1->getStyle('A5:I' . $kolom - 1)->applyFromArray($style);
+
+        $sheet1->setCellValue('K4', 'Total Gram');
+        $sheet1->setCellValue('K5', 'Harga Beli');
+        $sheet1->setCellValue('K6', 'Harga' . 100 - $invoice->persen_air . '%');
+        $sheet1->setCellValue('K7', 'Harga' . 100 . '%');
+
+        $sheet1->setCellValue('L4', $ttl_gr);
+        $sheet1->setCellValue('L5', $invoice->hrga_beli);
+        $sheet1->setCellValue('L6', round(($total_rp / $ttl_gr) * ((100 - $invoice->persen_air) / 100), 0));
+        $sheet1->setCellValue('L7', round($total_rp / $ttl_gr, 0));
+
+
+        $namafile = "Data Congan.xlsx";
+
+        $writer = new Xlsx($spreadsheet);
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename=' . $namafile);
+        header('Cache-Control: max-age=0');
+
+
+        $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $writer->save('php://output');
+        exit();
+    }
+
+    public function import_congan(Request $r)
+    {
+        $hasError = false;
+
+        if ($r->hasFile('file')) {
+            $file = $r->file('file');
+            $filePath = $file->storeAs('temp', 'imported_file.xlsx');
+
+
+            $spreadsheet = IOFactory::load(storage_path("app/{$filePath}"));
+            $sheetNames = $spreadsheet->getSheetNames();
+
+            foreach ($sheetNames as $sheetName) {
+                $currentSheet = $spreadsheet->getSheetByName($sheetName);
+                $title = $currentSheet->getTitle();
+
+
+                if ($title === 'Congan') {
+                    DB::table('tb_cong')->where('no_nota', $r->no_nota)->delete();
+                } else {
+                    // Nama sheet tidak cocok
+                    $hasError = true;
+                }
+
+                $tgl = $currentSheet->getCell('B2')->getValue();
+                $pemilik = $currentSheet->getCell('C2')->getValue();
+                $ket = $currentSheet->getCell('D2')->getValue();
+                $persen_air = $currentSheet->getCell('E2')->getValue();
+                $harga_beli = $currentSheet->getCell('L5')->getValue();
+                $no_nota = $currentSheet->getCell('A2')->getValue();
+
+
+                $gr = 0;
+                $gr_kuning = 0;
+                $congan_selesai = DB::table('invoice_congan')->where('no_nota', $no_nota)->first();
+                foreach ($currentSheet->getRowIterator() as $rowIndex => $row) {
+                    if ($rowIndex >= 1 && $rowIndex <= 4) {
+                        continue;
+                    }
+                    $rowData = [];
+                    $cellIterator = $row->getCellIterator();
+
+                    foreach ($cellIterator as $cell) {
+                        $rowData[] = $cell->getValue();
+                    }
+
+                    if ($rowData[3] != '0' || $rowData[6] != '0') {
+                        $data  = [
+                            'tgl' => $tgl,
+                            'id_grade' => $rowData[1],
+                            'gr' => $rowData[3],
+                            'hrga' => $congan_selesai->selesai == 'Y' ? $rowData[4] : 0,
+                            'gr_kuning' => $rowData[6],
+                            'hrga_kuning' => $congan_selesai->selesai == 'Y' ? $rowData[7] : 0,
+                            'urutan' => $no_nota,
+                            'no_nota' => $no_nota,
+                            'ket' => $ket,
+                            'id_invoice_congan' => $congan_selesai->id_invoice_congan
+                        ];
+                        DB::table('tb_cong')->insert($data);
+                    }
+                    $gr += $rowData[3];
+                    $gr_kuning += $rowData[6];
+                }
+                $data = [
+                    'tgl' => $tgl,
+                    'pemilik' => $pemilik,
+                    'ket' => $ket,
+                    'persen_air' => $persen_air,
+                    'hrga_beli' => $harga_beli,
+                    'no_nota' => $no_nota,
+                    'gr' => $gr,
+                    'gr_kuning' => $gr_kuning
+                ];
+                DB::table('invoice_congan')->where('no_nota', $no_nota)->update($data);
+            }
+
+
+            // Hapus file sementara
+            unlink(storage_path("app/{$filePath}"));
+
+            if ($hasError) {
+                return redirect()->back()->with('error', 'Nama sheet yg diimport tidak sesuai');
+            }
+        }
+
+        return redirect()->route('congan.detail_nota', ['no_nota' => $r->no_nota])->with('sukses', 'Data berhasil diimport');
     }
 }
