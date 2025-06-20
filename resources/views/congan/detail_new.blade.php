@@ -464,17 +464,12 @@
 
                                     </td>
                                     <td>
-
-
                                         @if ($c->selesai == 'Y')
-                                            <span class="ms-4 badge bg-success">Harga sudah fix</span>
+                                            <button type="submit" name="selesai" value="Y"
+                                                class="btn btn-warning ms-4 ">Harga Unfix</button>
                                         @else
-                                            <a href="javascript:void(0);" class="btn btn-primary ms-4 harga_fix"
-                                                no_nota="{{ $no_nota }}">Harga
-                                                fix</a>
-                                            <span class="badge ms-4 bg-success harga_selsai_muncul"
-                                                style="display: none">Harga sudah
-                                                fix</span>
+                                            <button type="submit" name="selesai" class="btn btn-primary ms-4"
+                                                value="T" no_nota="{{ $no_nota }}">Harga fix</button>
                                         @endif
                                     </td>
                                 </tr>
@@ -592,10 +587,7 @@
                             },
                             success: function(data) {
                                 $('.harga_fix').hide();
-                                $('.harga_selsai_muncul').show();
-
-
-
+                                $('.harga_unfix').show();
                                 Toastify({
                                     text: "Harga berhasil di simpan",
                                     duration: 3000,
@@ -610,6 +602,34 @@
 
                         })
                     }
+
+                });
+                $(".harga_unfix").on("click", function(e) {
+                    var no_nota = $(this).attr('no_nota');
+                    var hrga = $('.harga_ambil').val();
+                    $.ajax({
+                        type: "get",
+                        url: "{{ route('congan.harga_unfix') }}",
+                        data: {
+                            no_nota: no_nota
+                        },
+                        success: function(data) {
+                            $('.harga_unfix').hide();
+                            $('.harga_fix').show();
+                            Toastify({
+                                text: "Harga berhasil di simpan",
+                                duration: 3000,
+                                style: {
+                                    background: "#EAF7EE",
+                                    color: "#7F8B8B"
+                                },
+                                close: true,
+                                avatar: "https://cdn-icons-png.flaticon.com/512/190/190411.png"
+                            }).showToast();
+                        }
+
+                    })
+
 
                 });
 

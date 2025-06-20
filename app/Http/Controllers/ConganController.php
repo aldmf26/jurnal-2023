@@ -200,6 +200,9 @@ class ConganController extends Controller
                     $ttl_gr += $gr[$x];
                     $ttl_gr_kuning += $gr_kuning[$x];
                 }
+                $congan_selesai = DB::table('invoice_congan')->where('id_invoice_congan', $r->id_invoice_congan[$y])->first();
+
+                $selesai = empty($r->selesai) ? $congan_selesai->selesai : $r->selesai;
 
                 $data = [
                     'tgl' => $r->tgl[$y],
@@ -210,10 +213,12 @@ class ConganController extends Controller
                     'no_nota' => $urutan,
                     'gr' => $ttl_gr,
                     'gr_kuning' => $ttl_gr_kuning,
+                    'selesai' => $selesai,
+
                 ];
                 DB::table('invoice_congan')->where('id_invoice_congan', $r->id_invoice_congan[$y])->update($data);
 
-                $congan_selesai = DB::table('invoice_congan')->where('id_invoice_congan', $r->id_invoice_congan[$y])->first();
+
 
                 for ($x = 0; $x < count($id_grade); $x++) {
 
@@ -227,9 +232,9 @@ class ConganController extends Controller
                             'tgl' => $r->tgl[$y],
                             'id_grade' => $id_grade[$x],
                             'gr' => $gr[$x],
-                            'hrga' => $congan_selesai->selesai == 'Y' ? $harga[$x] : 0,
+                            'hrga' => $selesai == 'Y' ? $harga[$x] : 0,
                             'gr_kuning' => $gr_kuning[$x],
-                            'hrga_kuning' => $congan_selesai->selesai == 'Y' ? $harga_kuning[$x] : 0,
+                            'hrga_kuning' => $selesai == 'Y' ? $harga_kuning[$x] : 0,
                             'urutan' => $urutan,
                             'no_nota' => $urutan,
                             'ket' => $r->ket[$y],
@@ -528,6 +533,15 @@ class ConganController extends Controller
             'selesai' => 'Y',
         ];
         DB::table('invoice_congan')->where('no_nota', $r->no_nota)->update($data);
+    }
+    public function harga_unfix(Request $r)
+    {
+        $data = [
+            'selesai' => 'T',
+        ];
+        DB::table('invoice_congan')->where('no_nota', $r->no_nota)->update($data);
+
+        DB::table('tb_cong')->where('no_nota', $r->no_nota)->update(['hrga' => 0, 'hrga_kuning' => 0]);
     }
 
     public function export_congan(Request $r)
