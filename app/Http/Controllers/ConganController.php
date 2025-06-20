@@ -204,6 +204,8 @@ class ConganController extends Controller
 
                 $selesai = empty($r->selesai) ? $congan_selesai->selesai : $r->selesai;
 
+
+
                 $data = [
                     'tgl' => $r->tgl[$y],
                     'pemilik' => $r->pemilik[$y],
@@ -246,10 +248,10 @@ class ConganController extends Controller
             }
 
             DB::commit();
-            return redirect()->route('congan.index')->with('sukses', 'Data berhasil disimpan');
+            return redirect()->route('congan.detail_nota', ['no_nota' => $urutan])->with('sukses', 'Data berhasil disimpan');
         } catch (Throwable $e) {
             DB::rollBack();
-            return redirect()->route('congan.index')->with('error', 'Gagal menyimpan data. Data lama telah dikembalikan.');
+            return redirect()->route('congan.detail_nota', ['no_nota' => $urutan])->with('error', 'Gagal menyimpan data. Data lama telah dikembalikan.');
         }
     }
 

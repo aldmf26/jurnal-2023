@@ -465,11 +465,11 @@
                                     </td>
                                     <td>
                                         @if ($c->selesai == 'Y')
-                                            <button type="submit" name="selesai" value="Y"
+                                            <button type="submit" name="selesai" value="T"
                                                 class="btn btn-warning ms-4 ">Harga Unfix</button>
                                         @else
                                             <button type="submit" name="selesai" class="btn btn-primary ms-4"
-                                                value="T" no_nota="{{ $no_nota }}">Harga fix</button>
+                                                value="Y" no_nota="{{ $no_nota }}">Harga fix</button>
                                         @endif
                                     </td>
                                 </tr>
