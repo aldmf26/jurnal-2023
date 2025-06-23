@@ -14,7 +14,7 @@
 
         <section class="row">
 
-            <div class="col-lg-6">
+            <div class="col-lg-8">
                 <form action="{{ route('grade.non') }}" method="post">
                     @csrf
                     <div class="row">
@@ -47,11 +47,13 @@
                                     <th class="text-center">Grade</th>
                                     <th class="text-center">Urutan</th>
                                     <th class="text-center">Aktif</th>
+                                    <th class="text-center">Putih beras</th>
+                                    <th class="text-center">Kuning</th>
                                     <th class="text-center">Aksi</th>
-                                    <th class="text-center">
+                                    {{-- <th class="text-center">
                                         nonaktifkan <br>
                                         <input type="checkbox" class="checkAll" name="" id="">
-                                    </th>
+                                    </th> --}}
 
                                 </tr>
                             </thead>
@@ -73,14 +75,28 @@
                                             @endif
                                         </td>
                                         <td class="text-center">
+                                            @if ($g->putih == 'Y')
+                                                <span class="badge bg-success">Aktif</span>
+                                            @else
+                                                <span class="badge bg-danger">Tidak Aktif</span>
+                                            @endif
+                                        </td>
+                                        <td class="text-center">
+                                            @if ($g->kuning == 'Y')
+                                                <span class="badge bg-success">Aktif</span>
+                                            @else
+                                                <span class="badge bg-danger">Tidak Aktif</span>
+                                            @endif
+                                        </td>
+                                        <td class="text-center">
                                             <a href="#" data-bs-toggle="modal" data-bs-target="#edit"
                                                 data-id="{{ $g->id_grade_cong }}" class="btn btn-warning btn-sm edit"><i
                                                     class="fas fa-edit"></i></a>
                                         </td>
-                                        <td>
+                                        {{-- <td>
                                             <input type="checkbox" class="checkbox-item" name="id[]"
                                                 value="{{ $g->id_grade_cong }}">
-                                        </td>
+                                        </td> --}}
                                     </tr>
                                 @endforeach
 
@@ -120,6 +136,20 @@
                     <div class="col-lg-4 col-12">
                         <label for="">Urutan</label>
                         <input type="text" class="form-control" name="urutan[]">
+                    </div>
+                    <div class="col-lg-4 col-12 mt-2">
+                        <label for="">Putih beras</label>
+                        <select name="putih[]" class="form-control" id="">
+                            <option value="Y">Aktif</option>
+                            <option value="T">Tidak Aktif</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-4 col-12 mt-2">
+                        <label for="">Kuning</label>
+                        <select name="kuning[]" class="form-control" id="">
+                            <option value="Y">Aktif</option>
+                            <option value="T">Tidak Aktif</option>
+                        </select>
                     </div>
                     {{-- <div class="col-lg-1 col-1">
                         <label for="">Aksi</label>

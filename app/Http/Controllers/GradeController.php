@@ -41,7 +41,9 @@ class GradeController extends Controller
                 'kategori_id' => $r->kategori[$i],
                 'nm_grade' => $r->nm_grade[$i],
                 'urutan' => $r->urutan[$i],
-                'aktif' => 'Y'
+                'aktif' => 'Y',
+                'putih' => $r->putih[$i],
+                'kuning' => $r->kuning[$i],
             ];
             DB::table('grade_congan')->insert($data);
         }
@@ -76,6 +78,9 @@ class GradeController extends Controller
             'kategori_id' => $r->kategori,
             'nm_grade' => $r->nm_grade,
             'urutan' => $r->urutan,
+            'aktif' => $r->aktif,
+            'putih' => $r->putih,
+            'kuning' => $r->kuning,
         ];
         DB::table('grade_congan')->where('id_grade_cong', $r->id)->update($data);
         return redirect()->route('grade.index')->with('sukses', 'Data Berhasil Diubah');
@@ -116,15 +121,17 @@ class GradeController extends Controller
         $sheet1 = $spreadsheet->getActiveSheet();
         $sheet1->setTitle('Grade aktif');
 
-        $sheet1->getStyle("A1:D1")->applyFromArray($style_atas);
-        $sheet1->getStyle("G1:H1")->applyFromArray($style_atas);
+        $sheet1->getStyle("A1:F1")->applyFromArray($style_atas);
+        $sheet1->getStyle("H1:I1")->applyFromArray($style_atas);
         $sheet1->setCellValue('A1', 'ID');
         $sheet1->setCellValue('B1', 'Kategori ID');
         $sheet1->setCellValue('C1', 'Grade');
         $sheet1->setCellValue('D1', 'Urutan');
+        $sheet1->setCellValue('E1', 'Putih beras');
+        $sheet1->setCellValue('F1', 'Kuning');
 
-        $sheet1->setCellValue('G1', 'ID');
-        $sheet1->setCellValue('H1', 'Kategori');
+        $sheet1->setCellValue('H1', 'ID');
+        $sheet1->setCellValue('I1', 'Kategori');
         $kolom = 2;
         $grade = DB::table('grade_congan')->where('aktif', 'Y')->orderBy('kategori_id', 'ASC')->orderBy('urutan', 'ASC')->get();
         foreach ($grade as $d) {
@@ -132,19 +139,21 @@ class GradeController extends Controller
             $sheet1->setCellValue('B' . $kolom, $d->kategori_id);
             $sheet1->setCellValue('C' . $kolom, $d->nm_grade);
             $sheet1->setCellValue('D' . $kolom, $d->urutan);
+            $sheet1->setCellValue('E' . $kolom, $d->putih);
+            $sheet1->setCellValue('F' . $kolom, $d->kuning);
             $kolom++;
         }
-        $sheet1->getStyle('A2:D' . $kolom - 1)->applyFromArray($style);
+        $sheet1->getStyle('A2:F' . $kolom - 1)->applyFromArray($style);
         $kolom = 2;
         $kategori = DB::table('kategori')->get();
         foreach ($kategori as $d) {
-            $sheet1->setCellValue('G' . $kolom, $d->id);
-            $sheet1->setCellValue('H' . $kolom, $d->nm_kategori);
+            $sheet1->setCellValue('H' . $kolom, $d->id);
+            $sheet1->setCellValue('I' . $kolom, $d->nm_kategori);
             $kolom++;
         }
 
 
-        $sheet1->getStyle('G2:H' . $kolom - 1)->applyFromArray($style);
+        $sheet1->getStyle('H2:I' . $kolom - 1)->applyFromArray($style);
 
 
 
@@ -158,9 +167,8 @@ class GradeController extends Controller
         $sheet3->setCellValue('B1', 'Kategori ID');
         $sheet3->setCellValue('C1', 'Grade');
         $sheet3->setCellValue('D1', 'Urutan');
-
-
-
+        $sheet3->setCellValue('E1', 'Putih beras');
+        $sheet3->setCellValue('F1', 'Kuning');
 
         $kolom = 2;
         $grade2 = DB::table('grade_congan')->where('aktif', 'T')->orderBy('kategori_id', 'ASC')->orderBy('urutan', 'ASC')->get();
@@ -169,11 +177,13 @@ class GradeController extends Controller
             $sheet3->setCellValue('B' . $kolom, $d->kategori_id);
             $sheet3->setCellValue('C' . $kolom, $d->nm_grade);
             $sheet3->setCellValue('D' . $kolom, $d->urutan);
+            $sheet3->setCellValue('E' . $kolom, $d->putih);
+            $sheet3->setCellValue('F' . $kolom, $d->kuning);
 
             $kolom++;
         }
 
-        $sheet3->getStyle('A2:D' . $kolom - 1)->applyFromArray($style);
+        $sheet3->getStyle('A2:F' . $kolom - 1)->applyFromArray($style);
 
 
 
@@ -234,6 +244,8 @@ class GradeController extends Controller
                         $kategori_id = $rowData[1] ?? null;
                         $nm_grade = $rowData[2] ?? null;
                         $urutan = $rowData[3] ?? null;
+                        $putih = $rowData[4] ?? 'T';
+                        $kuning = $rowData[5] ?? 'T';
 
                         if (!empty($kategori_id) && !empty($nm_grade)) {
                             if (empty($id)) {
@@ -242,6 +254,8 @@ class GradeController extends Controller
                                     'nm_grade' => $nm_grade,
                                     'urutan' => $urutan,
                                     'aktif' => $aktif,
+                                    'putih' => $putih,
+                                    'kuning' => $kuning,
                                 ]);
                             } else {
                                 DB::table('grade_congan')->updateOrInsert(
@@ -251,6 +265,8 @@ class GradeController extends Controller
                                         'nm_grade' => $nm_grade,
                                         'urutan' => $urutan,
                                         'aktif' => $aktif,
+                                        'putih' => $putih,
+                                        'kuning' => $kuning,
                                     ]
                                 );
                             }

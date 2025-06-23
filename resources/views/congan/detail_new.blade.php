@@ -252,22 +252,41 @@
                                                     {{ $g->nm_grade }}
                                                 @endif
                                             </td>
-                                            <td class="text-end {{ !empty($persen->gr) ? 'bg-gr_isi' : '' }}">
+                                            <td
+                                                class="text-end {{ !empty($persen->gr) && $g->putih == 'Y' ? 'bg-gr_isi' : '' }}">
+                                                @if ($g->putih == 'Y')
+                                                    <input type="text"
+                                                        class="form-control inputan text-end gr{{ $no }} gr{{ $no }}{{ $letter }}"
+                                                        count="{{ $no }}" name="gr{{ $no }}[]"
+                                                        hruf="{{ $letter }}"
+                                                        value="{{ empty($persen->gr) ? '0' : $persen->gr }}">
+                                                @else
+                                                    <input type="hidden"
+                                                        class="form-control inputan text-end gr{{ $no }} gr{{ $no }}{{ $letter }}"
+                                                        count="{{ $no }}" name="gr{{ $no }}[]"
+                                                        hruf="{{ $letter }}"
+                                                        value="{{ empty($persen->gr) ? '0' : $persen->gr }}">
+                                                @endif
 
-                                                <input type="text"
-                                                    class="form-control inputan text-end gr{{ $no }} gr{{ $no }}{{ $letter }}"
-                                                    count="{{ $no }}" name="gr{{ $no }}[]"
-                                                    hruf="{{ $letter }}"
-                                                    value="{{ empty($persen->gr) ? '0' : $persen->gr }}">
                                             </td>
 
                                             @if ($posisi_id == 1)
-                                                <td class="text-end {{ !empty($persen->gr) ? 'bg-gr_isi' : '' }}">
-                                                    <input type="text"
-                                                        class="form-control text-end inputan harga harga{{ $no }}{{ $letter }}"
-                                                        count="{{ $no }}" hruf="{{ $letter }}"
-                                                        value="{{ empty($persen->hrga) || $persen->hrga == 0 ? $hrga_dlu->hrga ?? 0 : $persen->hrga }}"
-                                                        name="harga{{ $no }}[]">
+                                                <td
+                                                    class="text-end {{ !empty($persen->gr) && $g->putih == 'Y' ? 'bg-gr_isi' : '' }}">
+                                                    @if ($g->putih == 'Y')
+                                                        <input type="text"
+                                                            class="form-control text-end inputan harga harga{{ $no }}{{ $letter }}"
+                                                            count="{{ $no }}" hruf="{{ $letter }}"
+                                                            value="{{ empty($persen->hrga) || $persen->hrga == 0 ? $hrga_dlu->hrga ?? 0 : $persen->hrga }}"
+                                                            name="harga{{ $no }}[]">
+                                                    @else
+                                                        <input type="hidden"
+                                                            class="form-control text-end inputan harga harga{{ $no }}{{ $letter }}"
+                                                            count="{{ $no }}" hruf="{{ $letter }}"
+                                                            value="{{ empty($persen->hrga) || $persen->hrga == 0 ? $hrga_dlu->hrga ?? 0 : $persen->hrga }}"
+                                                            name="harga{{ $no }}[]">
+                                                    @endif
+
                                                     @php
                                                         $gram = empty($persen->gr) ? '0' : $persen->gr;
                                                         $hgra =
@@ -281,27 +300,52 @@
                                                 </td>
                                             @else
                                             @endif
-                                            <td class="text-end {{ !empty($persen->gr) ? 'bg-gr_isi' : '' }}">
-                                                {{ empty($persen->gr) ? 0 : number_format(($persen->gr / ($c->gr + $c->gr_kuning)) * 100, 0) }}
-                                                %
-                                            </td>
-                                            <td class="text-end {{ !empty($persen->gr_kuning) ? 'bg-gr_isi' : '' }}">
+                                            <td
+                                                class="text-end {{ !empty($persen->gr) && $g->putih == 'Y' ? 'bg-gr_isi' : '' }}">
+                                                @if ($g->putih == 'Y')
+                                                    {{ empty($persen->gr) ? 0 : number_format(($persen->gr / ($c->gr + $c->gr_kuning)) * 100, 0) }}
+                                                    %
+                                                @else
+                                                @endif
 
-                                                <input type="text"
-                                                    class="form-control inputan text-end gr_kuning{{ $no }} gr_kuning{{ $no }}{{ $letter }}"
-                                                    count="{{ $no }}"
-                                                    name="gr_kuning{{ $no }}[]" hruf="{{ $letter }}"
-                                                    value="{{ empty($persen->gr_kuning) ? '0' : $persen->gr_kuning }}">
+                                            </td>
+                                            <td
+                                                class="text-end {{ !empty($persen->gr_kuning) && $g->kuning == 'Y' ? 'bg-gr_isi' : '' }}">
+                                                @if ($g->kuning == 'Y')
+                                                    <input type="text"
+                                                        class="form-control inputan text-end gr_kuning{{ $no }} gr_kuning{{ $no }}{{ $letter }}"
+                                                        count="{{ $no }}"
+                                                        name="gr_kuning{{ $no }}[]"
+                                                        hruf="{{ $letter }}"
+                                                        value="{{ empty($persen->gr_kuning) ? '0' : $persen->gr_kuning }}">
+                                                @else
+                                                    <input type="hidden"
+                                                        class="form-control inputan text-end gr_kuning{{ $no }} gr_kuning{{ $no }}{{ $letter }}"
+                                                        count="{{ $no }}"
+                                                        name="gr_kuning{{ $no }}[]"
+                                                        hruf="{{ $letter }}"
+                                                        value="{{ empty($persen->gr_kuning) ? '0' : $persen->gr_kuning }}">
+                                                @endif
+
                                             </td>
                                             @if ($posisi_id == 1)
                                                 <td
-                                                    class="text-end {{ !empty($persen->gr_kuning) ? 'bg-gr_isi' : '' }}">
+                                                    class="text-end {{ !empty($persen->gr_kuning) && $g->kuning == 'Y' ? 'bg-gr_isi' : '' }}">
+                                                    @if ($g->kuning == 'Y')
+                                                        <input type="text"
+                                                            class="form-control text-end inputan harga_kuning harga_kuning{{ $no }}{{ $letter }}"
+                                                            count="{{ $no }}" hruf="{{ $letter }}"
+                                                            value="{{ empty($persen->hrga_kuning) || $persen->hrga_kuning == 0 ? $hrga_dlu->hrga_kuning ?? 0 : $persen->hrga_kuning }}"
+                                                            name="harga_kuning{{ $no }}[]">
+                                                    @else
+                                                        <input type="hidden"
+                                                            class="form-control text-end inputan harga_kuning harga_kuning{{ $no }}{{ $letter }}"
+                                                            count="{{ $no }}" hruf="{{ $letter }}"
+                                                            value="{{ empty($persen->hrga_kuning) || $persen->hrga_kuning == 0 ? $hrga_dlu->hrga_kuning ?? 0 : $persen->hrga_kuning }}"
+                                                            name="harga_kuning{{ $no }}[]">
+                                                    @endif
 
-                                                    <input type="text"
-                                                        class="form-control text-end inputan harga_kuning harga_kuning{{ $no }}{{ $letter }}"
-                                                        count="{{ $no }}" hruf="{{ $letter }}"
-                                                        value="{{ empty($persen->hrga_kuning) || $persen->hrga_kuning == 0 ? $hrga_dlu->hrga_kuning ?? 0 : $persen->hrga_kuning }}"
-                                                        name="harga_kuning{{ $no }}[]">
+
                                                     @php
                                                         $gram_kuning = empty($persen->gr_kuning)
                                                             ? '0'
@@ -317,9 +361,14 @@
                                                 </td>
                                             @else
                                             @endif
-                                            <td class="text-end {{ !empty($persen->gr_kuning) ? 'bg-gr_isi' : '' }}">
-                                                {{ empty($persen->gr_kuning) ? 0 : number_format(($persen->gr_kuning / ($c->gr + $c->gr_kuning)) * 100, 0) }}
-                                                %
+                                            <td
+                                                class="text-end {{ !empty($persen->gr_kuning) && $g->kuning == 'Y' ? 'bg-gr_isi' : '' }}">
+                                                @if ($g->kuning == 'Y')
+                                                    {{ empty($persen->gr_kuning) ? 0 : number_format(($persen->gr_kuning / ($c->gr + $c->gr_kuning)) * 100, 0) }}
+                                                    %
+                                                @else
+                                                @endif
+
                                             </td>
 
                                         </tr>

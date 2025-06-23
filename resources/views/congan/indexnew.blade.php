@@ -172,12 +172,24 @@
                                     <input type="hidden" name="id_grade1[]" value="{{ $g->id_grade_cong }}">
                                     <td>{{ $g->nm_grade }}</td>
                                     <td class="text-end">
-                                        <input type="text" class="form-control inputan gr gr1" count="1"
-                                            value="0" name="gr1[]">
+                                        @if ($g->putih == 'Y')
+                                            <input type="text" class="form-control inputan gr gr1" count="1"
+                                                value="0" name="gr1[]">
+                                        @else
+                                            <input type="hidden" class="form-control inputan gr gr1" count="1"
+                                                value="0" name="gr1[]">
+                                        @endif
+
                                     </td>
                                     <td class="text-end">
-                                        <input type="text" class="form-control inputan gr_kuning gr_kuning1"
-                                            count="1" value="0" name="gr_kuning1[]">
+                                        @if ($g->kuning == 'Y')
+                                            <input type="text" class="form-control inputan gr_kuning gr_kuning1"
+                                                count="1" value="0" name="gr_kuning1[]">
+                                        @else
+                                            <input type="hidden" class="form-control inputan gr_kuning gr_kuning1"
+                                                count="1" value="0" name="gr_kuning1[]">
+                                        @endif
+
                                     </td>
                                     {{-- <td class="text-end">
                                         0
