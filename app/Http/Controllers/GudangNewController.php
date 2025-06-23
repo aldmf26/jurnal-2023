@@ -91,6 +91,8 @@ class GudangNewController extends Controller
             $rwb = Http::get("https://ptagrikagatyaarum.com/api/apikodesbw/detail_rumah_walet?id=$rwb_id");
             $rwb = json_decode($rwb, TRUE);
 
+            dd($rwb);
+
 
             DB::table('buku_campur')->insert([
                 'no_lot' => $r->lot[$x],
@@ -123,6 +125,8 @@ class GudangNewController extends Controller
             ]);
 
             $kode_rwb = $rwb['data']['rumah_walet']['kode'];
+
+
             $kode_brg =  $grade['data']['grade']['kode'];
             DB::table('sbw_kotor')->insert(
                 [

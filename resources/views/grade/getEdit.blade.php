@@ -30,14 +30,14 @@
 
     <div class="col-lg-4 col-12 mt-2">
         <label for="">Putih beras</label>
-        <select name="putih[]" class="form-control" id="">
+        <select name="putih" class="form-control" id="">
             <option value="Y" @selected($grade->putih == 'Y')>Aktif</option>
             <option value="T" @selected($grade->putih == 'T')>Tidak Aktif</option>
         </select>
     </div>
     <div class="col-lg-4 col-12 mt-2">
         <label for="">Kuning</label>
-        <select name="kuning[]" class="form-control" id="">
+        <select name="kuning" class="form-control" id="">
             <option value="Y" @selected($grade->kuning == 'Y')>Aktif</option>
             <option value="T" @selected($grade->kuning == 'T')>Tidak Aktif</option>
         </select>
