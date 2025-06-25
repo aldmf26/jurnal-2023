@@ -91,7 +91,7 @@ class GudangNewController extends Controller
             $rwb = Http::get("https://ptagrikagatyaarum.com/api/apikodesbw/detail_rumah_walet?id=$rwb_id");
             $rwb = json_decode($rwb, TRUE);
 
-            dd($rwb);
+
 
 
             DB::table('buku_campur')->insert([
@@ -133,7 +133,7 @@ class GudangNewController extends Controller
                     'grade_id' => $id,
                     'rwb_id' => $r->rwb[$x],
                     'nm_partai' => $r->ket2[$x],
-                    'no_invoice' => date('d', strtotime($r->tgl[$x])) . '-' . date('mY', strtotime($r->tgl[$x])) . '-' . $kode_brg .  $kode_rwb . '-' . date('m', strtotime($r->tgl[$x] . ' +6 months')) . '-' . date('y', strtotime($r->tgl[$x] . ' +6 months')),
+                    'no_invoice' => date('d', strtotime($r->tgl[$x])) . '-' . date('mY', strtotime($r->tgl[$x])) . '-' . $kode_brg . '.' .  $kode_rwb . '-' . date('m', strtotime($r->tgl[$x] . ' +6 months')) . '-' . date('y', strtotime($r->tgl[$x] . ' +6 months')),
                     'pcs' => $r->pcs[$x],
                     'kg' => $r->gr[$x] / 1000,
                     'no_kendaraan' => $r->no_kendaraan[$x],
