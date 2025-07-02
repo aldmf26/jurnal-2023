@@ -229,21 +229,20 @@ class ConganController extends Controller
                     ];
                     DB::table('grade_congan')->where('id_grade_cong', $id_grade[$x])->update($data);
 
-                    if (!empty($gr[$x]) || !empty($gr_kuning[$x])) {
-                        $data  = [
-                            'tgl' => $r->tgl[$y],
-                            'id_grade' => $id_grade[$x],
-                            'gr' => $gr[$x],
-                            'hrga' => $selesai == 'Y' ? $harga[$x] : 0,
-                            'gr_kuning' => $gr_kuning[$x],
-                            'hrga_kuning' => $selesai == 'Y' ? $harga_kuning[$x] : 0,
-                            'urutan' => $urutan,
-                            'no_nota' => $urutan,
-                            'ket' => $r->ket[$y],
-                            'id_invoice_congan' => $r->id_invoice_congan[$y]
-                        ];
-                        DB::table('tb_cong')->insert($data);
-                    }
+
+                    $data  = [
+                        'tgl' => $r->tgl[$y],
+                        'id_grade' => $id_grade[$x],
+                        'gr' => $gr[$x],
+                        'hrga' => $selesai == 'Y' ? $harga[$x] : 0,
+                        'gr_kuning' => $gr_kuning[$x],
+                        'hrga_kuning' => $selesai == 'Y' ? $harga_kuning[$x] : 0,
+                        'urutan' => $urutan,
+                        'no_nota' => $urutan,
+                        'ket' => $r->ket[$y],
+                        'id_invoice_congan' => $r->id_invoice_congan[$y]
+                    ];
+                    DB::table('tb_cong')->insert($data);
                 }
             }
 
@@ -743,21 +742,21 @@ class ConganController extends Controller
                         $rowData[] = $cell->getValue();
                     }
 
-                    if ($rowData[3] != '0' || $rowData[6] != '0') {
-                        $data  = [
-                            'tgl' => $tgl,
-                            'id_grade' => $rowData[1],
-                            'gr' => $rowData[3],
-                            'hrga' => $congan_selesai->selesai == 'Y' ? $rowData[4] : 0,
-                            'gr_kuning' => $rowData[6],
-                            'hrga_kuning' => $congan_selesai->selesai == 'Y' ? $rowData[7] : 0,
-                            'urutan' => $no_nota,
-                            'no_nota' => $no_nota,
-                            'ket' => $ket,
-                            'id_invoice_congan' => $congan_selesai->id_invoice_congan
-                        ];
-                        DB::table('tb_cong')->insert($data);
-                    }
+
+                    $data  = [
+                        'tgl' => $tgl,
+                        'id_grade' => $rowData[1],
+                        'gr' => $rowData[3],
+                        'hrga' => $congan_selesai->selesai == 'Y' ? $rowData[4] : 0,
+                        'gr_kuning' => $rowData[6],
+                        'hrga_kuning' => $congan_selesai->selesai == 'Y' ? $rowData[7] : 0,
+                        'urutan' => $no_nota,
+                        'no_nota' => $no_nota,
+                        'ket' => $ket,
+                        'id_invoice_congan' => $congan_selesai->id_invoice_congan
+                    ];
+                    DB::table('tb_cong')->insert($data);
+
                     $gr += $rowData[3];
                     $gr_kuning += $rowData[6];
                 }
