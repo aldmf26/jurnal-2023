@@ -241,13 +241,12 @@
                                             <input type="hidden" name="id_grade{{ $no }}[]"
                                                 value="{{ $g->id_grade_cong }}">
                                             <td>
+                                                <input type="hidden"
+                                                    class="form-control  inputan2 nm_grade nm_grade{{ $g->id_grade_cong }}"
+                                                    id_grade="{{ $g->id_grade_cong }}"
+                                                    name="nm_grade{{ $no }}[]" value="{{ $g->nm_grade }}">
                                                 @if ($posisi_id == 1)
                                                     {{ $g->nm_grade }}
-                                                    <input type="hidden"
-                                                        class="form-control  inputan2 nm_grade nm_grade{{ $g->id_grade_cong }}"
-                                                        id_grade="{{ $g->id_grade_cong }}"
-                                                        name="nm_grade{{ $no }}[]"
-                                                        value="{{ $g->nm_grade }}">
                                                 @else
                                                     {{ $g->nm_grade }}
                                                 @endif
@@ -299,6 +298,21 @@
                                                         value="{{ $gram * $hgra }}">
                                                 </td>
                                             @else
+                                                <input type="hidden"
+                                                    class="form-control text-end inputan harga harga{{ $no }}{{ $letter }}"
+                                                    count="{{ $no }}" hruf="{{ $letter }}"
+                                                    value="{{ empty($persen->hrga) || $persen->hrga == 0 ? $hrga_dlu->hrga ?? 0 : $persen->hrga }}"
+                                                    name="harga{{ $no }}[]">
+                                                @php
+                                                    $gram = empty($persen->gr) ? '0' : $persen->gr;
+                                                    $hgra =
+                                                        empty($persen->hrga) || $persen->hrga == 0
+                                                            ? '0'
+                                                            : $persen->hrga;
+                                                @endphp
+                                                <input type="hidden"
+                                                    class="ttl_hrga{{ $no }} ttl_hrga{{ $no }}{{ $letter }}"
+                                                    value="{{ $gram * $hgra }}">
                                             @endif
                                             <td
                                                 class="text-end {{ !empty($persen->gr) && $g->putih == 'Y' ? 'bg-gr_isi' : '' }}">
@@ -360,6 +374,24 @@
                                                         value="{{ $gram_kuning * $hgra_kuning }}">
                                                 </td>
                                             @else
+                                                <input type="hidden"
+                                                    class="form-control text-end inputan harga_kuning harga_kuning{{ $no }}{{ $letter }}"
+                                                    count="{{ $no }}" hruf="{{ $letter }}"
+                                                    value="{{ empty($persen->hrga_kuning) || $persen->hrga_kuning == 0 ? $hrga_dlu->hrga_kuning ?? 0 : $persen->hrga_kuning }}"
+                                                    name="harga_kuning{{ $no }}[]">
+
+
+
+                                                @php
+                                                    $gram_kuning = empty($persen->gr_kuning) ? '0' : $persen->gr_kuning;
+                                                    $hgra_kuning =
+                                                        empty($persen->hrga_kuning) || $persen->hrga_kuning == 0
+                                                            ? '0'
+                                                            : $persen->hrga_kuning;
+                                                @endphp
+                                                <input type="hidden"
+                                                    class="ttl_hrga_kuning{{ $no }} ttl_hrga_kuning{{ $no }}{{ $letter }}"
+                                                    value="{{ $gram_kuning * $hgra_kuning }}">
                                             @endif
                                             <td
                                                 class="text-end {{ !empty($persen->gr_kuning) && $g->kuning == 'Y' ? 'bg-gr_isi' : '' }}">
@@ -513,13 +545,17 @@
 
                                     </td>
                                     <td>
-                                        @if ($c->selesai == 'Y')
-                                            <button type="submit" name="selesai" value="T"
-                                                class="btn btn-warning ms-4 ">Harga Unfix</button>
+                                        @if ($posisi_id == 1)
+                                            @if ($c->selesai == 'Y')
+                                                <button type="submit" name="selesai" value="T"
+                                                    class="btn btn-warning ms-4 ">Harga Unfix</button>
+                                            @else
+                                                <button type="submit" name="selesai" class="btn btn-primary ms-4"
+                                                    value="Y" no_nota="{{ $no_nota }}">Harga fix</button>
+                                            @endif
                                         @else
-                                            <button type="submit" name="selesai" class="btn btn-primary ms-4"
-                                                value="Y" no_nota="{{ $no_nota }}">Harga fix</button>
                                         @endif
+
                                     </td>
                                 </tr>
                                 <tr>
@@ -547,15 +583,13 @@
                 @endforeach
                 <div class="row">
                     <div class="col-lg-12">
-                        @if ($posisi_id == 1)
-                            <button type="submit" class="float-end btn btn-primary button-save">Simpan</button>
-                            <button class="float-end btn btn-primary btn_save_loading" type="button" disabled hidden>
-                                <span class="spinner-border spinner-border-sm " role="status"
-                                    aria-hidden="true"></span>
-                                Loading...
-                            </button>
-                        @else
-                        @endif
+
+                        <button type="submit" class="float-end btn btn-primary button-save">Simpan</button>
+                        <button class="float-end btn btn-primary btn_save_loading" type="button" disabled hidden>
+                            <span class="spinner-border spinner-border-sm " role="status" aria-hidden="true"></span>
+                            Loading...
+                        </button>
+
 
                         <a href="{{ route('congan.index') }}"
                             class="float-end btn btn-outline-primary me-2">Batal</a>
