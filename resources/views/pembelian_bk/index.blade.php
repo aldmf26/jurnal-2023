@@ -55,7 +55,7 @@
                         <a class="nav-link {{ $page == 'sudah_grading' ? 'active' : '' }}"
                             href="{{ route('pembelian_bk', ['page' => 'sudah_grading', 'period' => 'costume', 'tgl1' => $tgl1, 'tgl2' => $tgl2]) }}"
                             type="button" role="tab" aria-controls="pills-home" aria-selected="true">Sudah
-                            grading belum harga</a>
+                            grading sudah harga</a>
                     </li>
 
 
