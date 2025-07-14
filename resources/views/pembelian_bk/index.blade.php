@@ -46,10 +46,16 @@
                             Grading</a>
                     </li>
                     <li class="nav-item" role="presentation">
+                        <a class="nav-link {{ $page == 'belum_harga' ? 'active' : '' }}"
+                            href="{{ route('pembelian_bk', ['page' => 'belum_harga', 'period' => 'costume', 'tgl1' => $tgl1, 'tgl2' => $tgl2]) }}"
+                            type="button" role="tab" aria-controls="pills-home" aria-selected="true">Sudah
+                            grading belum harga</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
                         <a class="nav-link {{ $page == 'sudah_grading' ? 'active' : '' }}"
                             href="{{ route('pembelian_bk', ['page' => 'sudah_grading', 'period' => 'costume', 'tgl1' => $tgl1, 'tgl2' => $tgl2]) }}"
                             type="button" role="tab" aria-controls="pills-home" aria-selected="true">Sudah
-                            grading</a>
+                            grading belum harga</a>
                     </li>
 
 
@@ -117,7 +123,7 @@
                             @foreach ($pembelian as $no => $p)
                                 <tr>
                                     <td class="text-center">{{ $no + 1 }}</td>
-                                    <td class="text-center">{{ tanggal($p->tgl) }}</td>
+                                    <td class="text-center">{{ tanggal($p->tgl) }} / {{ $p->approve }}</td>
                                     <td class="text-center">{{ $p->no_nota }}</td>
                                     <td class="text-center">{{ $p->no_lot }}</td>
                                     <td class="text-center">{{ ucwords(strtolower($p->nm_suplier)) }}</td>

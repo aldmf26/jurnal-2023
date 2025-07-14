@@ -67,8 +67,10 @@ class PembelianBahanBakuController extends Controller
             $where = "";
         } elseif ($page == 'belum_grading') {
             $where = "AND d.no_nota IS NULL";
+        } elseif ($page == 'belum_harga') {
+            $where = "AND d.no_nota IS NOT NULL and e.approve = 'T'";
         } else {
-            $where = "AND d.no_nota IS NOT NULL";
+            $where = "AND d.no_nota IS NOT NULL and e.approve = 'Y'";
         }
         $pembelian = DB::select("SELECT a.id_invoice_bk, a.no_lot, a.tgl, a.no_nota, a.suplier_akhir, a.total_harga, a.lunas, c.kredit, c.debit, a.approve, d.no_nota as nota_grading, if(e.approve = 'Y',f.rupiah_approve,e.rupiah) as rupiah , e.no_nota as nota_bk_campur, e.approve, f.rupiah_approve, b.nm_suplier
         FROM invoice_bk as a 
