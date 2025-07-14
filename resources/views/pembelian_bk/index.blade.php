@@ -123,7 +123,7 @@
                             @foreach ($pembelian as $no => $p)
                                 <tr>
                                     <td class="text-center">{{ $no + 1 }}</td>
-                                    <td class="text-center">{{ tanggal($p->tgl) }} / {{ $p->approve }}</td>
+                                    <td class="text-center">{{ tanggal($p->tgl) }} </td>
                                     <td class="text-center">{{ $p->no_nota }}</td>
                                     <td class="text-center">{{ $p->no_lot }}</td>
                                     <td class="text-center">{{ ucwords(strtolower($p->nm_suplier)) }}</td>
@@ -163,13 +163,8 @@
                                             <input type="checkbox" name="ceknota_excel[]" id=""
                                                 value="{{ $p->no_nota }}" hidden>
                                         @else
-                                            @if ($p->approve == 'Y')
-                                                <i class="fas fa-check text-primary"></i>
-                                            @else
-                                                <input type="checkbox" name="ceknota_excel[]"
-                                                    class="checkbox-item-excel" id=""
-                                                    value="{{ $p->no_nota }}">
-                                            @endif
+                                            <input type="checkbox" name="ceknota_excel[]" class="checkbox-item-excel"
+                                                id="" value="{{ $p->no_nota }}">
                                         @endif
                                     </td>
                                     <td align="center">
