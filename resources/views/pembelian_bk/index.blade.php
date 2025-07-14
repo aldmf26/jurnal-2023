@@ -157,8 +157,13 @@
                                             <input type="checkbox" name="ceknota_excel[]" id=""
                                                 value="{{ $p->no_nota }}" hidden>
                                         @else
-                                            <input type="checkbox" name="ceknota_excel[]" class="checkbox-item-excel"
-                                                id="" value="{{ $p->no_nota }}">
+                                            @if ($p->approve == 'Y')
+                                                <i class="fas fa-check text-primary"></i>
+                                            @else
+                                                <input type="checkbox" name="ceknota_excel[]"
+                                                    class="checkbox-item-excel" id=""
+                                                    value="{{ $p->no_nota }}">
+                                            @endif
                                         @endif
                                     </td>
                                     <td align="center">
@@ -169,6 +174,8 @@
                                                 {!! empty($p->rupiah) ? 'Harga ?' : 'Harga <i class="fas fa-check"></i>' !!}
                                             </span>
                                         @endif
+
+
                                     </td>
                                     <td style="text-align: center">
                                         @if (!empty($approve))
