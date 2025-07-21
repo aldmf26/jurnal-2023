@@ -135,12 +135,10 @@ class GudangNewController extends Controller
                     'nm_partai' => $r->ket2[$x],
                     'no_invoice' => date('d', strtotime($r->tgl[$x])) . '-' . date('mY', strtotime($r->tgl[$x])) . '-' . $kode_brg . '.' .  $kode_rwb . '-' . date('m', strtotime($r->tgl[$x] . ' +6 months')) . '-' . date('y', strtotime($r->tgl[$x] . ' +6 months')),
                     'pcs' => $r->pcs[$x],
-                    'kg' => $r->gr[$x] / 1000,
+                    'kg' => $r->gr[$x],
                     'no_kendaraan' => $r->no_kendaraan[$x],
                     'pengemudi' => $r->pengemudi[$x],
                     'tgl' => $r->tgl[$x],
-
-
                 ]
             );
         }
