@@ -82,7 +82,8 @@ class ConganController extends Controller
             $notaKetString = implode(',', $notaKets);
 
             // Query sekali untuk semua data
-            $gradeResults = DB::select("SELECT 
+            $gradeResults = DB::select("
+            SELECT 
                 CONCAT(a.no_nota, '_', a.ket) as nota_ket_key,
                 a.id_grade,
                 (COALESCE(a.gr,0) + COALESCE(a.gr_kuning,0)) as gr
