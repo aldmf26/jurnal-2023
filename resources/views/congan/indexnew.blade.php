@@ -51,6 +51,10 @@
                 </thead>
                 <tbody>
                     @foreach ($congan as $no => $c)
+                        @php
+                            $notaKetKey = $c->no_nota . '_' . $c->ket;
+                            $totalGr = $c->gr + $c->gr_kuning;
+                        @endphp
                         <tr style="text-align: center">
                             <td>{{ $no + 1 }}</td>
                             <td>
@@ -61,23 +65,21 @@
                             <td>{{ date('d M Y', strtotime($c->tgl)) }}</td>
                             <td>{{ $c->pemilik }}</td>
                             <td>{{ number_format($c->hrga_beli, 0) }}</td>
-                            <td>{{ empty($c->gr) && empty($c->gr_kuning) ? 0 : number_format(($c->ttl / ($c->gr + $c->gr_kuning)) * ((100 - $c->persen_air) / 100)) }}
+                            <td>{{ empty($totalGr) ? 0 : number_format(($c->ttl / $totalGr) * ((100 - $c->persen_air) / 100)) }}
                             </td>
-                            <td>{{ empty($c->gr) && empty($c->gr_kuning) ? 0 : number_format($c->ttl / ($c->gr + $c->gr_kuning)) }}
+                            <td>{{ empty($totalGr) ? 0 : number_format($c->ttl / $totalGr) }}
                             </td>
+                            <td>{{ number_format($totalGr, 0) }}</td>
 
-
-
-                            <td>{{ number_format($c->gr + $c->gr_kuning, 0) }}</td>
+                            {{-- ⭐ PERBAIKAN: Tidak ada query di dalam loop --}}
                             @foreach ($grade as $g)
                                 @php
-                                    $persen = DB::selectOne(
-                                        "SELECT (COALESCE(a.gr,0) + COALESCE(a.gr_kuning,0)) as gr  FROM tb_cong as a where a.no_nota = '$c->no_nota' and a.id_grade = '$g->id_grade_cong' and a.ket = '$c->ket'",
-                                    );
+                                    $gradeGr = $gradeData[$notaKetKey][$g->id_grade_cong] ?? 0;
+                                    $persen = empty($gradeGr) || empty($totalGr) ? 0 : ($gradeGr / $totalGr) * 100;
                                 @endphp
-                                <td>{{ empty($persen->gr) || empty($c->gr) ? '0' : number_format(($persen->gr / ($c->gr + $c->gr_kuning)) * 100, 2) }}
-                                </td>
+                                <td>{{ $persen == 0 ? '0' : number_format($persen, 2) }}</td>
                             @endforeach
+
                             <td>{{ 100 - $c->persen_air }}</td>
                             <td style="white-space: nowrap">
                                 @if (empty($c->no_invoice_bk))
