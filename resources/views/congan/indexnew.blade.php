@@ -50,50 +50,52 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($congan as $no => $c)
-                        <tr style="text-align: center">
-                            <td>{{ $no + 1 }}</td>
-                            <td>
-                                <a href="{{ route('congan.detail_nota', ['no_nota' => $c->no_nota]) }}">
-                                    {{ $c->no_nota }}-{{ $c->ket }}
-                                </a>
-                            </td>
-                            <td>{{ date('d M Y', strtotime($c->tgl)) }}</td>
-                            <td>{{ $c->pemilik }}</td>
-                            <td>{{ number_format($c->hrga_beli, 0) }}</td>
-                            <td>{{ empty($c->gr) && empty($c->gr_kuning) ? 0 : number_format(($c->ttl / ($c->gr + $c->gr_kuning)) * ((100 - $c->persen_air) / 100)) }}
-                            </td>
-                            <td>{{ empty($c->gr) && empty($c->gr_kuning) ? 0 : number_format($c->ttl / ($c->gr + $c->gr_kuning)) }}
-                            </td>
-
-
-
-                            <td>{{ number_format($c->gr + $c->gr_kuning, 0) }}</td>
-                            @foreach ($grade as $g)
-                                @php
-                                    $persen = DB::selectOne(
-                                        "SELECT (COALESCE(a.gr,0) + COALESCE(a.gr_kuning,0)) as gr  FROM tb_cong as a where a.no_nota = '$c->no_nota' and a.id_grade = '$g->id_grade_cong' and a.ket = '$c->ket'",
-                                    );
-                                @endphp
-                                <td>{{ empty($persen->gr) || empty($c->gr) ? '0' : number_format(($persen->gr / ($c->gr + $c->gr_kuning)) * 100, 2) }}
-                                </td>
-                            @endforeach
-                            <td>{{ 100 - $c->persen_air }}</td>
-                            <td style="white-space: nowrap">
-                                @if (empty($c->no_invoice_bk))
-                                    <a href="{{ route('congan.buat_nota', ['no_nota' => $c->no_nota]) }}"
-                                        class="btn btn-sm btn-primary"><i class="fas fa-plus"></i> Nota</a>
-                                @else
-                                    <a href="{{ route('print_bk', ['no_nota' => $c->no_invoice_bk]) }}"
-                                        class="btn btn-sm btn-success"><i class="fas fa-print"></i></a>
-                                @endif
-                                <a href="#" class="btn btn-sm btn-danger delete_nota"
-                                    id_invoice_congan="{{ $c->id_invoice_congan }}" data-bs-toggle="modal"
-                                    data-bs-target="#delete"><i class="fas fa-trash"></i></a>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
+    @foreach ($congan as $no => $c)
+        @php
+            $notaKetKey = $c->no_nota . '_' . $c->ket;
+            $totalGr = $c->gr + $c->gr_kuning;
+        @endphp
+        <tr style="text-align: center">
+            <td>{{ $no + 1 }}</td>
+            <td>
+                <a href="{{ route('congan.detail_nota', ['no_nota' => $c->no_nota]) }}">
+                    {{ $c->no_nota }}-{{ $c->ket }}
+                </a>
+            </td>
+            <td>{{ date('d M Y', strtotime($c->tgl)) }}</td>
+            <td>{{ $c->pemilik }}</td>
+            <td>{{ number_format($c->hrga_beli, 0) }}</td>
+            <td>{{ empty($totalGr) ? 0 : number_format(($c->ttl / $totalGr) * ((100 - $c->persen_air) / 100)) }}
+            </td>
+            <td>{{ empty($totalGr) ? 0 : number_format($c->ttl / $totalGr) }}
+            </td>
+            <td>{{ number_format($totalGr, 0) }}</td>
+            
+            {{-- ⭐ PERBAIKAN: Tidak ada query di dalam loop --}}
+            @foreach ($grade as $g)
+                @php
+                    $gradeGr = $gradeData[$notaKetKey][$g->id_grade_cong] ?? 0;
+                    $persen = empty($gradeGr) || empty($totalGr) ? 0 : ($gradeGr / $totalGr) * 100;
+                @endphp
+                <td>{{ $persen == 0 ? '0' : number_format($persen, 2) }}</td>
+            @endforeach
+            
+            <td>{{ 100 - $c->persen_air }}</td>
+            <td style="white-space: nowrap">
+                @if (empty($c->no_invoice_bk))
+                    <a href="{{ route('congan.buat_nota', ['no_nota' => $c->no_nota]) }}"
+                        class="btn btn-sm btn-primary"><i class="fas fa-plus"></i> Nota</a>
+                @else
+                    <a href="{{ route('print_bk', ['no_nota' => $c->no_invoice_bk]) }}"
+                        class="btn btn-sm btn-success"><i class="fas fa-print"></i></a>
+                @endif
+                <a href="#" class="btn btn-sm btn-danger delete_nota"
+                    id_invoice_congan="{{ $c->id_invoice_congan }}" data-bs-toggle="modal"
+                    data-bs-target="#delete"><i class="fas fa-trash"></i></a>
+            </td>
+        </tr>
+    @endforeach
+</tbody>
             </table>
         </section>
 

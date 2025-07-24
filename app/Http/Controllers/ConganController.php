@@ -48,24 +48,61 @@ class ConganController extends Controller
     {
         $tgl1 =  $this->tgl1;
         $tgl2 =  $this->tgl2;
+
+        // Ambil grade data
+    $grade = DB::table('grade_congan')
+        ->leftJoin('kategori', 'kategori.id', '=', 'grade_congan.kategori_id')
+        ->where('aktif', 'Y')
+        ->orderBy('kategori.id', 'ASC')
+        ->orderBy('grade_congan.urutan', 'ASC')
+        ->get();
+
+        // Ambil congan data
+    $congan = DB::select("SELECT a.*, b.ttl
+        FROM invoice_congan as a
+        LEFT JOIN (
+            SELECT b.no_nota, b.ket, 
+                   SUM((COALESCE(b.gr,0) * COALESCE(b.hrga,0)) + (COALESCE(b.gr_kuning,0) * COALESCE(b.hrga_kuning,0))) as ttl
+            FROM tb_cong as b 
+            GROUP BY b.no_nota, b.ket
+        ) as b ON b.no_nota = a.no_nota AND b.ket = a.ket
+        WHERE a.tgl BETWEEN '$tgl1' AND '$tgl2'
+        GROUP BY a.no_nota, a.ket
+        ORDER BY a.no_nota DESC
+    ");
+
+    // ⭐ PERBAIKAN: Ambil semua data grade dalam 1 query
+    $gradeData = [];
+    if (!empty($congan)) {
+        // Buat array untuk IN clause
+        $notaKets = [];
+        foreach ($congan as $c) {
+            $notaKets[] = "'{$c->no_nota}_{$c->ket}'";
+        }
+        $notaKetString = implode(',', $notaKets);
+
+        // Query sekali untuk semua data
+        $gradeResults = DB::select("
+            SELECT 
+                CONCAT(a.no_nota, '_', a.ket) as nota_ket_key,
+                a.id_grade,
+                (COALESCE(a.gr,0) + COALESCE(a.gr_kuning,0)) as gr
+            FROM tb_cong as a 
+            WHERE CONCAT(a.no_nota, '_', a.ket) IN ($notaKetString)
+        ");
+
+        // Reorganisasi data menjadi nested array
+        foreach ($gradeResults as $result) {
+            $gradeData[$result->nota_ket_key][$result->id_grade] = $result->gr;
+        }
+    }
         $data = [
             'title' => 'Cong-congan',
-            'grade' => DB::table('grade_congan')
-                ->leftJoin('kategori', 'kategori.id', '=', 'grade_congan.kategori_id')
-                ->where('aktif', 'Y')->orderBy('kategori.id', 'ASC')->orderBy('grade_congan.urutan', 'ASC')->get(),
-            'congan' => DB::select("SELECT a.*, b.ttl
-            FROM invoice_congan as a
-            left JOIN (
-            SELECT b.no_nota, b.ket, sum((COALESCE(b.gr,0) * COALESCE(b.hrga,0)) + (COALESCE(b.gr_kuning,0) * COALESCE(b.hrga_kuning,0))) as ttl
-                FROM tb_cong as b 
-                GROUP by b.no_nota, b.ket
-            ) as b on b.no_nota = a.no_nota and b.ket = a.ket
-            where a.tgl between '$tgl1' and '$tgl2'
-            group by a.no_nota, a.ket
-            order by a.no_nota DESC;
-            "),
-            'tgl1' => $tgl1,
-            'tgl2' => $tgl2
+            'grade' => $grade,
+        'congan' => $congan,
+        'gradeData' => $gradeData, // ⭐ Tambahkan data grade
+        'tgl1' => $tgl1,
+        'tgl2' => $tgl2
         ];
         return view('congan.indexnew', $data);
     }
