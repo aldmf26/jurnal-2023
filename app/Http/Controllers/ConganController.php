@@ -694,7 +694,7 @@ class ConganController extends Controller
             $sheet1->setCellValue('E' . $kolom, empty($persen->hrga) || $persen->hrga == 0 ? $hrga_dlu->hrga ?? 0 : $persen->hrga);
             $sheet1->setCellValue('F' . $kolom, empty($persen->gr) ? 0 : ($persen->gr / ($invoice->gr + $invoice->gr_kuning)) * 100);
             $sheet1->setCellValue('G' . $kolom, $persen->gr_kuning ?? 0);
-            $sheet1->setCellValue('H' . $kolom, empty($persen->hrga_kuning) || $persen->hrga_kuning == 0 ? $hrga_dlu_kuning->hrga ?? 0 : $persen->hrga_kuning);
+            $sheet1->setCellValue('H' . $kolom, empty($persen->hrga_kuning) || $persen->hrga_kuning == 0 ? $hrga_dlu_kuning->hrga_kuning ?? 0 : $persen->hrga_kuning);
             $sheet1->setCellValue('I' . $kolom, empty($persen->gr_kuning) ? 0 : ($persen->gr_kuning / ($invoice->gr + $invoice->gr_kuning)) * 100);
 
             $kolom++;
