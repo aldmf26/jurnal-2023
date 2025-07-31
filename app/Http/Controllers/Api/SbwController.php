@@ -10,7 +10,9 @@ class SbwController extends Controller
 {
     function sbw_kotor(Request $r)
     {
-        $sbw = DB::table('sbw_kotor')->get();
+        $sbw = DB::table('sbw_kotor')
+            ->join('table_susut', 'sbw_kotor.nm_partai', '=', 'table_susut.ket')
+            ->get();
         $response = [
             'status' => 'success',
             'message' => 'Data Sarang berhasil diambil',
