@@ -12,6 +12,7 @@ class SbwController extends Controller
     {
         $sbw = DB::table('sbw_kotor')
             ->join('table_susut', 'sbw_kotor.nm_partai', '=', 'table_susut.ket')
+            ->select('sbw_kotor.*')
             ->get();
         $response = [
             'status' => 'success',
