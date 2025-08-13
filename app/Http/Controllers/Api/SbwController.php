@@ -11,7 +11,7 @@ class SbwController extends Controller
     function sbw_kotor(Request $r)
     {
         $sbw = DB::table('sbw_kotor')
-            ->join('table_susut', 'sbw_kotor.nm_partai', '=', 'table_susut.ket')
+
             ->select('sbw_kotor.*')
             ->get();
         $response = [
