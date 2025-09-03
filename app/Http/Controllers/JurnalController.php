@@ -119,7 +119,7 @@ class JurnalController extends Controller
     {
         $data =  [
             'title' => 'Jurnal Umum',
-            'akun' => Akun::all(),
+            'akun' => Akun::where('is_active', 'Y')->get(),
             'proyek' => proyek::all()
 
         ];
@@ -129,7 +129,7 @@ class JurnalController extends Controller
     {
         $data =  [
             'title' => 'Jurnal Umum',
-            'akun' => Akun::all(),
+            'akun' => Akun::where('is_active', 'Y')->get(),
             'count' => $r->count
 
         ];
@@ -221,7 +221,7 @@ class JurnalController extends Controller
             'title' => 'Edit Jurnal Umum',
             'proyek' => proyek::all(),
             'jurnal' => Jurnal::where('no_nota', $r->no_nota)->get(),
-            'akun' => Akun::all(),
+            'akun' => Akun::where('is_active', 'Y')->get(),
             'no_nota' => $r->no_nota,
             'head_jurnal' => DB::selectOne("SELECT a.tgl, a.id_proyek, a.no_dokumen,a.tgl_dokumen, sum(a.debit) as debit , sum(a.kredit) as kredit FROM jurnal as a where a.no_nota = '$r->no_nota'")
 
