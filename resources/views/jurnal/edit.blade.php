@@ -141,7 +141,7 @@
                                 </tr>
                             @endforeach
 
-                            <input type="text" value="{{ $no + 1 }}" id="count">
+                            <input type="hidden" value="{{ $no + 1 }}" id="count">
                         </tbody>
                         <tbody id="tb_baris">
 
