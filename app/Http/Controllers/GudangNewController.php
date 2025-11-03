@@ -139,6 +139,7 @@ class GudangNewController extends Controller
                     'no_kendaraan' => $r->no_kendaraan[$x],
                     'pengemudi' => $r->pengemudi[$x],
                     'tgl' => $r->tgl[$x],
+                    'grade_haccp' => $r->gradehaccp[$x],
                 ]
             );
         }
