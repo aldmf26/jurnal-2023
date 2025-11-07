@@ -63,9 +63,7 @@
                         <tbody>
                             @foreach ($jurnal as $no => $j)
                                 @php
-                                    $post = DB::table('tb_post_center')
-                                        ->where('id_akun', $j->id_akun)
-                                        ->get();
+                                    $post = DB::table('tb_post_center')->where('id_akun', $j->id_akun)->get();
                                 @endphp
                                 <tr class="baris{{ $no + 1 }}">
                                     <td style="vertical-align: top;">
@@ -115,7 +113,7 @@
                                         <input type="text" class="form-control debit_rupiah text-end"
                                             value="Rp {{ number_format($j->debit, 2, ',', '.') }}"
                                             count="{{ $no + 1 }}">
-                                        <input type="hidden"
+                                        <input type="text"
                                             class="form-control debit_biasa debit_biasa{{ $no + 1 }}"
                                             value="{{ $j->debit }}" name="debit[]">
                                     </td>
@@ -123,7 +121,7 @@
                                         <input type="text" class="form-control kredit_rupiah text-end"
                                             value="Rp {{ number_format($j->kredit, 2, ',', '.') }}"
                                             count="{{ $no + 1 }}">
-                                        <input type="hidden"
+                                        <input type="text"
                                             class="form-control kredit_biasa kredit_biasa{{ $no + 1 }}"
                                             value="{{ $j->kredit }}" name="kredit[]">
                                     </td>
