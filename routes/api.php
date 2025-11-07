@@ -41,4 +41,5 @@ Route::controller(SbwController::class)
     ->name('sbw.')
     ->group(function () {
         Route::get('/sbw_kotor', 'sbw_kotor')->name('sbw_kotor');
+        Route::get('/getPartai', 'getPartai')->name('getPartai');
     });

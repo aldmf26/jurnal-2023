@@ -61,7 +61,10 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($jurnal as $no => $j)
+                            @php
+                                $no = 0;
+                            @endphp
+                            @foreach ($jurnal as $j)
                                 @php
                                     $post = DB::table('tb_post_center')->where('id_akun', $j->id_akun)->get();
                                 @endphp
@@ -71,6 +74,7 @@
                                         class="btn rounded-pill " count="{{ $no + 1 }}"><i class="fas fa-angle-down">
                                         </i>
                                     </button> --}}
+                                        {{ $no + 1 }}
                                     </td>
                                     <td style="vertical-align: top;">
                                         <select name="id_akun[]" id=""
@@ -134,7 +138,7 @@
                                 </tr>
                             @endforeach
 
-
+                            <input type="hidden" value="{{ $no + 1 }}" id="count">
                         </tbody>
                         <tbody id="tb_baris">
 
@@ -245,7 +249,8 @@
                     }
                     $(".selisih").text(selisih_total);
                 });
-                var count = 3;
+                var count = $("#count").val();
+                var count = parseInt(count);
                 $(document).on("click", ".tbh_baris", function() {
                     count = count + 1;
                     $.ajax({

@@ -189,6 +189,10 @@
                         <label for="">Nama Partai Sinta</label>
                         <input type="text" class="form-control" name="ket2[]">
                     </div>
+                    <div class="col-lg-3 mt-2">
+                        <label for="">Grade HACCP</label>
+                        <textarea class="form-control" name="gradehaccp[]" id=""></textarea>
+                    </div>
 
                 </div>
                 {{-- <div class="tambah-data"></div>
