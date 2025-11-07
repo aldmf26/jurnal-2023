@@ -158,8 +158,7 @@
                                                     {{ $g->nm_kategori }}
                                                     @php $prevKategori = $g->nm_kategori; @endphp
                                                 @endif
-                                                /
-                                                {{ $g->id_grade_cong }}
+
                                             </td>
                                             <input type="hidden" name="id_grade{{ $no }}[]"
                                                 value="{{ $g->id_grade_cong }}">
