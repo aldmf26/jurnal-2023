@@ -129,15 +129,10 @@
                                     <td class="text-center">{{ ucwords(strtolower($p->nm_suplier)) }}</td>
                                     <td class="text-center">{{ ucwords(strtolower($p->suplier_akhir)) }}</td>
                                     <td align="right">
-                                        {{-- <a href="javascript:void(0);" class="get_print" no_nota="{{ $p->no_nota }}">
-    
-                                        </a> --}}
                                         <a href="#" class="get_detail" no_nota="{{ $p->no_nota }}"
                                             data-bs-toggle="modal" data-bs-target="#viewdetail">Rp.
                                             {{ number_format($p->total_harga, 0) }}</a>
-
                                     </td>
-
                                     <td align="center">
                                         <span
                                             class="badge {{ $p->lunas == 'D' ? 'bg-warning' : ($p->total_harga + $p->debit - $p->kredit == 0 ? 'bg-success' : 'bg-danger') }}">

@@ -145,7 +145,7 @@
 
 </div>
 <div class="row">
-    <div class="col-lg-6">
+    <div class="col-lg-10">
         <hr>
         <form id="save_grade">
             <div class="row" x-data="{
