@@ -297,7 +297,7 @@ class GudangBkModel extends Model
             left join bk_timbang_ulang as d on d.nm_partai = a.ket2
             WHERE a.gudang = 'wip' and b.gabung = 'T' and a.selesai_2 = 'T'
             GROUP by a.ket2
-            order by a.ket2 ASC
+            order by a.tgl ASC
             ");
         return $result;
     }
