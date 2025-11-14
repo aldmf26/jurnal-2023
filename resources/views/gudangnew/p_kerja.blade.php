@@ -42,6 +42,7 @@
                         <thead>
                             <tr>
                                 <th class="dhead">No</th>
+                                <th class="dhead">Tanggal</th>
                                 <th class="dhead">Ket/Nama Partai</th>
                                 <th class="dhead">Grade</th>
                                 <th class="text-end dhead">Pcs bk</th>
@@ -72,6 +73,7 @@
                                 @endphp
                                 <tr>
                                     <td>{{ $no + 1 }}</td>
+                                    <td>{{ tanggal($g->tgl) }}</td>
                                     <td>{{ $g->ket2 }}</td>
                                     <td>{{ $g->nm_grade }}</td>
                                     <td class="text-end">{{ number_format($g->pcs, 0) }}</td>
