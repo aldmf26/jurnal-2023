@@ -61,10 +61,8 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @php
-                                $no = 0;
-                            @endphp
-                            @foreach ($jurnal as $j)
+
+                            @foreach ($jurnal as $no => $j)
                                 @php
                                     $post = DB::table('tb_post_center')->where('id_akun', $j->id_akun)->get();
                                 @endphp
@@ -266,6 +264,7 @@
 
                 $(document).on("keyup", ".debit_rupiah", function() {
                     var count = $(this).attr("count");
+
                     var input = $(this).val();
                     input = input.replace(/[^\d\,]/g, "");
                     input = input.replace(".", ",");
