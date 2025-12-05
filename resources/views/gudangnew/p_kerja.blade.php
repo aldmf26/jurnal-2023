@@ -30,7 +30,9 @@
                     <table class="float-end">
                         <td>Search :</td>
                         <td><input type="text" id="pencarian" class="form-control float-end"> </td>
-                        <td><button class="btn btn-primary float-end ms-2">Simpan</button></td>
+                        <td>
+                            {{-- <button class="btn btn-primary float-end ms-2">Simpan</button> --}}
+                        </td>
                         <td>
                             <a href="{{ route('gudangnew.export_p_kerja') }}"
                                 class="btn btn-success float-end ms-2 me-2"><i class="fas fa-file-excel"></i> Opname</a>
@@ -42,6 +44,7 @@
                         <thead>
                             <tr>
                                 <th class="dhead">No</th>
+                                <th class="dhead">Tanggal</th>
                                 <th class="dhead">Ket/Nama Partai</th>
                                 <th class="dhead">Grade</th>
                                 <th class="text-end dhead">Pcs bk</th>
@@ -54,7 +57,7 @@
                                 <th class="text-end dhead">Gr Susut</th>
                                 <th class="text-end text-white bg-danger">Pcs Sisa</th>
                                 <th class="text-end text-white bg-danger">Gr Sisa</th>
-                                <th class="text-end dhead" width="200px">Keterangan Opname</th>
+                                {{-- <th class="text-end dhead" width="200px">Keterangan Opname</th> --}}
                             </tr>
                         </thead>
                         <tbody>
@@ -72,6 +75,7 @@
                                 @endphp
                                 <tr>
                                     <td>{{ $no + 1 }}</td>
+                                    <td>{{ tanggal($g->tgl) }}</td>
                                     <td>{{ $g->ket2 }}</td>
                                     <td>{{ $g->nm_grade }}</td>
                                     <td class="text-end">{{ number_format($g->pcs, 0) }}</td>
@@ -94,11 +98,11 @@
                                     </td>
                                     <td class="text-end">{{ number_format($WipSisaPcs, 0) }}</td>
                                     <td class="text-end">{{ number_format($WipSisaGr, 0) }}</td>
-                                    <td>
+                                    {{-- <td>
                                         <input type="hidden" name="partai[]" value="{{ $g->ket2 }}">
                                         <input type="text" class="form-control" name="ket[]"
                                             value="{{ $g->opname_bulan }}">
-                                    </td>
+                                    </td> --}}
 
                                 </tr>
                             @endforeach

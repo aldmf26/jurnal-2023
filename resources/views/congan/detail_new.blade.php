@@ -133,6 +133,7 @@
                                                 ->where('hrga', '!=', 0)
                                                 ->orderBy('no_nota', 'desc')
                                                 ->first();
+
                                             $hrga_dlu_kuning = DB::table('tb_cong')
                                                 ->where('id_grade', $g->id_grade_cong)
                                                 ->where('no_nota', '!=', $no_nota)
@@ -142,87 +143,7 @@
                                             $nomor += 1;
 
                                         @endphp
-                                        {{-- @if ($prevKelompok !== null && $prevKelompok != $g->kelompok)
-                                            <tr>
-                                                <td>
-                                                    <h6>Total Gram </h6>
-                                                </td>
-                                                <td>
-                                                    <input type="text" class="form-control " readonly
-                                                        value="{{ $sub_gr + $sub_gr_kuning }}">
-                                                </td>
-                                                @if ($prevKelompok == 1)
-                                                @else
-                                                    <td colspan="2"></td>
-                                                    <td colspan="2">
-                                                        <h6>Total Gram <br>(1 - {{ $nomor - 1 }})</h6>
-                                                    </td>
-                                                    <td colspan="2">
-                                                        <input type="text" class="form-control " readonly
-                                                            value="{{ $gr }}">
-                                                    </td>
-                                                @endif
 
-                                            </tr>
-
-                                            <tr>
-                                                <td>
-                                                    <h6>Harga({{ 100 - $c->persen_air }}%) &nbsp;
-                                                    </h6>
-                                                </td>
-                                                <td>
-                                                    <input type="text" class="form-control" readonly
-                                                        value="Rp. {{ number_format(($sub_total_rp / ($sub_gr + $sub_gr_kuning)) * ((100 - $c->persen_air) / 100), 0) }}">
-                                                </td>
-                                                @if ($prevKelompok == 1)
-                                                @else
-                                                    <td colspan="2"></td>
-                                                    <td colspan="2">
-                                                        <h6>Harga({{ 100 - $c->persen_air }}%) <br> (1 -
-                                                            {{ $nomor - 1 }})
-                                                            &nbsp;</h6>
-                                                    </td>
-                                                    <td colspan="2">
-                                                        <input type="text" class="form-control" readonly
-                                                            value="Rp. {{ number_format(($total_rp / $gr) * ((100 - $c->persen_air) / 100), 0) }}">
-                                                    </td>
-                                                @endif
-
-                                            </tr>
-
-                                            <tr>
-                                                <td>
-                                                    <h6>Harga(100%) </h6>
-                                                </td>
-                                                <td><input type="text" class="form-control"
-                                                        value="Rp. {{ number_format($sub_total_rp / ($sub_gr + $sub_gr_kuning), 0) }}"
-                                                        readonly>
-                                                </td>
-                                                @if ($prevKelompok == 1)
-                                                @else
-                                                    <td colspan="2"></td>
-                                                    <td colspan="2">
-                                                        <h6>Harga(100%) <br>(1 - {{ $nomor - 1 }}) </h6>
-                                                    </td>
-                                                    <td colspan="2"><input type="text" class="form-control"
-                                                            value="Rp. {{ number_format($total_rp / $gr, 0) }}"
-                                                            readonly>
-                                                    </td>
-                                                @endif
-
-                                            </tr>
-                                            <tr style="background: #e0e0e0; font-weight: bold;">
-                                                <td colspan="8">&nbsp;</td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="8">&nbsp;</td>
-                                            </tr>
-                                            @php
-                                                $sub_gr = 0;
-                                                $sub_gr_kuning = 0;
-                                                $sub_total_rp = 0;
-                                            @endphp
-                                        @endif --}}
 
                                         @php $prevKelompok = $g->kelompok; @endphp
                                         <style>
@@ -237,6 +158,7 @@
                                                     {{ $g->nm_kategori }}
                                                     @php $prevKategori = $g->nm_kategori; @endphp
                                                 @endif
+
                                             </td>
                                             <input type="hidden" name="id_grade{{ $no }}[]"
                                                 value="{{ $g->id_grade_cong }}">
@@ -349,13 +271,13 @@
                                                         <input type="text"
                                                             class="form-control text-end inputan harga_kuning harga_kuning{{ $no }}{{ $letter }}"
                                                             count="{{ $no }}" hruf="{{ $letter }}"
-                                                            value="{{ empty($persen->hrga_kuning) || $persen->hrga_kuning == 0 ? $hrga_dlu->hrga_kuning ?? 0 : $persen->hrga_kuning }}"
+                                                            value="{{ empty($persen->hrga_kuning) || $persen->hrga_kuning == 0 ? $hrga_dlu_kuning->hrga_kuning ?? 0 : $persen->hrga_kuning }}"
                                                             name="harga_kuning{{ $no }}[]">
                                                     @else
                                                         <input type="hidden"
                                                             class="form-control text-end inputan harga_kuning harga_kuning{{ $no }}{{ $letter }}"
                                                             count="{{ $no }}" hruf="{{ $letter }}"
-                                                            value="{{ empty($persen->hrga_kuning) || $persen->hrga_kuning == 0 ? $hrga_dlu->hrga_kuning ?? 0 : $persen->hrga_kuning }}"
+                                                            value="{{ empty($persen->hrga_kuning) || $persen->hrga_kuning == 0 ? $hrga_dlu_kuning->hrga_kuning ?? 0 : $persen->hrga_kuning }}"
                                                             name="harga_kuning{{ $no }}[]">
                                                     @endif
 
@@ -372,12 +294,14 @@
                                                     <input type="hidden"
                                                         class="ttl_hrga_kuning{{ $no }} ttl_hrga_kuning{{ $no }}{{ $letter }}"
                                                         value="{{ $gram_kuning * $hgra_kuning }}">
+
+
                                                 </td>
                                             @else
                                                 <input type="hidden"
                                                     class="form-control text-end inputan harga_kuning harga_kuning{{ $no }}{{ $letter }}"
                                                     count="{{ $no }}" hruf="{{ $letter }}"
-                                                    value="{{ empty($persen->hrga_kuning) || $persen->hrga_kuning == 0 ? $hrga_dlu->hrga_kuning ?? 0 : $persen->hrga_kuning }}"
+                                                    value="{{ empty($persen->hrga_kuning) || $persen->hrga_kuning == 0 ? $hrga_dlu_kuning->hrga_kuning ?? 0 : $persen->hrga_kuning }}"
                                                     name="harga_kuning{{ $no }}[]">
 
 
@@ -413,7 +337,7 @@
                                             $gram_kuning = $persen->gr_kuning ?? 0;
                                             $hgra_kuning =
                                                 empty($persen->hrga_kuning) || $persen->hrga_kuning == 0
-                                                    ? $hrga_dlu->hrga_kuning ?? 0
+                                                    ? $hrga_dlu_kuning->hrga_kuning ?? 0
                                                     : $persen->hrga_kuning;
 
                                             $gr += $gram + $gram_kuning;
