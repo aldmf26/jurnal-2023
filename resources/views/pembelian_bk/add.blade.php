@@ -30,7 +30,7 @@
                         readonly>
                 </div>
                 <div class="col-lg-2 col-6">
-                    <label for="">Suplier Awal</label>
+                    <label for="">Supplier Awal</label>
                     <select name="suplier_awal" id="select2" class="" required>
                         <option value="">Pilih Suplier</option>
                         @foreach ($suplier as $s)
@@ -39,7 +39,7 @@
                     </select>
                 </div>
                 <div class="col-lg-2 col-6">
-                    <label for="">Suplier</label>
+                    <label for="">Supplier</label>
                     <input type="text" class="form-control" name="suplier_akhir" value="" required>
                 </div>
 
