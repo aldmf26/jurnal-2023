@@ -124,20 +124,43 @@ class PembelianBahanBakuController extends Controller
 
     public function add(Request $r)
     {
+        // 1. Logika Nota
         $b = date('m');
         $max = DB::table('pembelian')->whereMonth('tgl', $b)->latest('urutan_nota')->first();
 
-        $year = date("Y");
-        $year = DB::table('tahun')->where('tahun', $year)->first();
         if (empty($max)) {
             $nota_t = '1';
         } else {
             $nota_t = $max->urutan_nota + 1;
         }
-        $date = date('m');
-        $bulan = DB::table('bulan')->where('bulan', $date)->first();
-        $sub_po = "BI$year->kode" . "$bulan->kode" . str_pad($nota_t, 3, '0', STR_PAD_LEFT);
 
+        // 2. Ambil Data Tahun (DIBENERIN DISINI)
+        $currentYear = date("Y");
+        $yearData = DB::table('tahun')->where('tahun', $currentYear)->first();
+
+        // Cek apakah tahun ada di database?
+        if (!$yearData) {
+            // Opsi A: Return error ke user
+            return redirect()->back()->with('error', "Data Tahun $currentYear belum disetting di database 'tahun'.");
+
+            // Opsi B: Debugging (uncomment jika ingin lihat error langsung)
+            // dd("Data tahun $currentYear tidak ditemukan!");
+        }
+
+        // 3. Ambil Data Bulan (DIBENERIN DISINI)
+        $currentMonth = date('m');
+        $bulanData = DB::table('bulan')->where('bulan', $currentMonth)->first();
+
+        // Cek apakah bulan ada di database?
+        if (!$bulanData) {
+            return redirect()->back()->with('error', "Data Bulan $currentMonth belum disetting di database 'bulan'.");
+        }
+
+        // 4. Generate SUB PO (Aman karena sudah dicek)
+        // Menggunakan $yearData dan $bulanData bukan $year/$bulan untuk menghindari konflik nama
+        $sub_po = "BI" . $yearData->kode . $bulanData->kode . str_pad($nota_t, 3, '0', STR_PAD_LEFT);
+
+        // 5. Logika No Lot
         $max_lot = DB::table('pembelian')->latest('no_lot')->first();
 
         if (empty($max_lot->no_lot)) {
@@ -151,12 +174,12 @@ class PembelianBahanBakuController extends Controller
             'suplier' => DB::table('tb_suplier')->get(),
             'nota' => $nota_t,
             'produk' => DB::table('tb_produk')->get(),
-            'bulan' => $bulan,
+            'bulan' => $bulanData, // Pakai variabel yang sudah divalidasi
             'akun' => DB::table('akun')->get(),
             'sub_po' => $sub_po,
             'no_lot' => $max_l
-
         ];
+
         return view('pembelian_bk.add', $data);
     }
 
