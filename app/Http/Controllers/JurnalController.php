@@ -119,7 +119,7 @@ class JurnalController extends Controller
     {
         $data =  [
             'title' => 'Jurnal Umum',
-            'akun' => Akun::where('is_active', 'Y')->get(),
+            'akun' => Akun::where('is_active', 'Y')->OrderBy('urutan', 'ASC')->get(),
             'proyek' => proyek::all()
 
         ];
