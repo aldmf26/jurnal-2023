@@ -45,7 +45,7 @@
                 <div class="col-lg-2 col-6">
                     <label for="">In BK</label>
                     <select name="in_bk" class="form-select" id="">
-                        <option value="Y">Ya (tidak bayar BK)</option>
+                        <option value="Y">Ya (Tidak bayar BK)</option>
                         <option value="T" selected>Tidak (Bayar BK)</option>
                     </select>
                 </div>
