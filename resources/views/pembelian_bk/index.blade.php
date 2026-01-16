@@ -40,6 +40,11 @@
                             type="button" role="tab" aria-controls="pills-home" aria-selected="true">Pembelian</a>
                     </li>
                     <li class="nav-item" role="presentation">
+                        <a class="nav-link {{ $page == 'in_bk' ? 'active' : '' }}"
+                            href="{{ route('pembelian_bk', ['page' => 'in_bk', 'period' => 'costume', 'tgl1' => $tgl1, 'tgl2' => $tgl2]) }}"
+                            type="button" role="tab" aria-controls="pills-home" aria-selected="true">In BK</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
                         <a class="nav-link {{ $page == 'belum_grading' ? 'active' : '' }}"
                             href="{{ route('pembelian_bk', ['page' => 'belum_grading', 'period' => 'costume', 'tgl1' => $tgl1, 'tgl2' => $tgl2]) }}"
                             type="button" role="tab" aria-controls="pills-home" aria-selected="true">Belum
@@ -93,6 +98,7 @@
                                 <th class="dhead text-center" rowspan="2">No Lot</th>
                                 <th class="dhead text-center" rowspan="2">Suplier Awal</th>
                                 <th class="dhead text-center" rowspan="2">Suplier Akhir</th>
+                                <th class="dhead text-center" rowspan="2">In BK</th>
                                 <th class="dhead" rowspan="2" style="text-align: right">Total Harga</th>
                                 <th class="dhead" colspan="5" style="text-align: center">Status</th>
 
@@ -128,6 +134,7 @@
                                     <td class="text-center">{{ $p->no_lot }}</td>
                                     <td class="text-center">{{ ucwords(strtolower($p->nm_suplier)) }}</td>
                                     <td class="text-center">{{ ucwords(strtolower($p->suplier_akhir)) }}</td>
+                                    <td class="text-center">{{ $p->in_bk ?? 'T' }}</td>
                                     <td align="right">
                                         <a href="#" class="get_detail" no_nota="{{ $p->no_nota }}"
                                             data-bs-toggle="modal" data-bs-target="#viewdetail">Rp.

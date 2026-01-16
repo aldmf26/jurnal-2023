@@ -27,88 +27,95 @@
 
             <tbody>
                 @php
-                    $user = DB::table('users')
-                        ->where('nonaktif', 'T')
-                        ->get();
+                    // 👇 Query SEKALI untuk semua user
+                    $users = DB::table('users')->where('nonaktif', 'T')->get();
+
+                    // 👇 Get semua permissions sekali (sudah di-cache di controller)
+                    $allPermissions = SettingHal::getAllPermissions($halaman);
                 @endphp
-                @foreach ($user as $no => $u)
+
+                @foreach ($users as $no => $u)
                     @php
-                        $akses = SettingHal::akses($halaman, $u->id);
-                        $create = SettingHal::btnSetHal($halaman, $u->id, 'create');
-                        
-                        $read = SettingHal::btnSetHal($halaman, $u->id, 'read');
-                        
-                        $update = SettingHal::btnSetHal($halaman, $u->id, 'update');
-                        
-                        $delete = SettingHal::btnSetHal($halaman, $u->id, 'delete');
-                        
+                        // 👇 Ambil dari cache, TIDAK query database lagi
+                        $userPermissions = $allPermissions->get($u->id, collect());
+                        $hasAccess = $userPermissions->isNotEmpty();
+
+                        // Group by jenis
+                        $createPerms = $userPermissions->where('jenis', 'create');
+                        $readPerms = $userPermissions->where('jenis', 'read');
+                        $updatePerms = $userPermissions->where('jenis', 'update');
+                        $deletePerms = $userPermissions->where('jenis', 'delete');
                     @endphp
                     <tr>
                         <td>{{ $no + 1 }}</td>
                         <td>{{ ucwords($u->name) }}</td>
 
                         <td>
-                            <label><input type="checkbox"
+                            <label>
+                                <input type="checkbox"
                                     class="form-check-glow form-check-input form-check-primary akses_h akses_h{{ $u->id }}"
-                                    id_user="{{ $u->id }}" id_user="{{ $u->id }}"
-                                    {{ empty($akses) ? '' : 'Checked' }} />
-                                Akses </label>
+                                    id_user="{{ $u->id }}" {{ $hasAccess ? 'checked' : '' }} />
+                                Akses
+                            </label>
                             <input type="hidden" class="open_check{{ $u->id }}" name="id_user[]"
-                                {{ empty($akses) ? 'disabled' : '' }} value="{{ $u->id }}">
+                                {{ $hasAccess ? '' : 'disabled' }} value="{{ $u->id }}">
                         </td>
+
                         <td>
                             <input type="hidden" name="id_permission_gudang" value="{{ $halaman }}">
+                            @foreach ($createPerms as $perm)
+                                <label>
+                                    <input type="checkbox" name="id_permission{{ $u->id }}[]"
+                                        value="{{ $perm->id_permission_button }}"
+                                        {{ $perm->id_permission_page ? 'checked' : '' }}
+                                        class="form-check-glow form-check-input form-check-primary open_check{{ $u->id }}"
+                                        {{ $hasAccess ? '' : 'disabled' }} />
+                                    {!! $perm->nm_permission_button !!}
+                                </label><br>
+                            @endforeach
+                        </td>
 
-                            @foreach ($create as $c)
-                                <label><input type="checkbox" name="id_permission{{ $u->id }}[]"
-                                        value="{{ $c->id_permission_button }}"
-                                        {{ empty($c->id_permission_page) ? '' : 'Checked' }}
+                        <td>
+                            @foreach ($readPerms as $perm)
+                                <label>
+                                    <input type="checkbox" name="id_permission{{ $u->id }}[]"
+                                        value="{{ $perm->id_permission_button }}"
+                                        {{ $perm->id_permission_page ? 'checked' : '' }}
                                         class="form-check-glow form-check-input form-check-primary open_check{{ $u->id }}"
-                                        {{ empty($akses->id_permission_page) ? 'disabled' : '' }} />
-                                    {!! $c->nm_permission_button !!}</label>
-                                <br>
+                                        {{ $hasAccess ? '' : 'disabled' }} />
+                                    {!! $perm->nm_permission_button !!}
+                                </label><br>
                             @endforeach
                         </td>
-                        <td>
 
-                            @foreach ($read as $r)
-                                <label><input type="checkbox" name="id_permission{{ $u->id }}[]"
-                                        value="{{ $r->id_permission_button }}"
-                                        {{ empty($r->id_permission_page) ? '' : 'Checked' }}
+                        <td>
+                            @foreach ($updatePerms as $perm)
+                                <label>
+                                    <input type="checkbox" name="id_permission{{ $u->id }}[]"
+                                        value="{{ $perm->id_permission_button }}"
+                                        {{ $perm->id_permission_page ? 'checked' : '' }}
                                         class="form-check-glow form-check-input form-check-primary open_check{{ $u->id }}"
-                                        {{ empty($akses->id_permission_page) ? 'disabled' : '' }} />
-                                    {!! $r->nm_permission_button !!}</label> <br>
+                                        {{ $hasAccess ? '' : 'disabled' }} />
+                                    {!! $perm->nm_permission_button !!}
+                                </label><br>
                             @endforeach
                         </td>
+
                         <td>
-                            @foreach ($update as $up)
-                                <label><input type="checkbox" name="id_permission{{ $u->id }}[]"
-                                        value="{{ $up->id_permission_button }}"
-                                        {{ empty($up->id_permission_page) ? '' : 'Checked' }}
+                            @foreach ($deletePerms as $perm)
+                                <label>
+                                    <input type="checkbox" name="id_permission{{ $u->id }}[]"
+                                        value="{{ $perm->id_permission_button }}"
+                                        {{ $perm->id_permission_page ? 'checked' : '' }}
                                         class="form-check-glow form-check-input form-check-primary open_check{{ $u->id }}"
-                                        {{ empty($akses->id_permission_page) ? 'disabled' : '' }} />
-                                    {!! $up->nm_permission_button !!}</label> <br>
-                            @endforeach
-                        </td>
-                        <td>
-                            @foreach ($delete as $d)
-                                <label><input type="checkbox" name="id_permission{{ $u->id }}[]"
-                                        value="{{ $d->id_permission_button }}"
-                                        {{ empty($d->id_permission_page) ? '' : 'Checked' }}
-                                        class="form-check-glow form-check-input form-check-primary open_check{{ $u->id }}"
-                                        {{ empty($akses->id_permission_page) ? 'disabled' : '' }} />
-                                    {!! $d->nm_permission_button !!}</label> <br>
+                                        {{ $hasAccess ? '' : 'disabled' }} />
+                                    {!! $perm->nm_permission_button !!}
+                                </label><br>
                             @endforeach
                         </td>
                     </tr>
                 @endforeach
-
             </tbody>
         </table>
     </x-theme.modal>
 </form>
-    <script>
-        
-    </script>
-
-{{-- end modal setting --}}

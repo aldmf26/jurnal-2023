@@ -52,70 +52,127 @@ class PembelianBahanBakuController extends Controller
     }
     public function index(Request $r)
     {
-        $tgl1 =  $this->tgl1;
-        $tgl2 =  $this->tgl2;
+        $page = $r->page ?? 'pembelian';
+        $tgl1 = $this->tgl1;
+        $tgl2 = $this->tgl2;
 
-        if (empty($r->page)) {
-            $page = 'pembelian';
-        } else {
-            $page = $r->page;
+        // Base Query dengan Query Builder
+        $query = DB::table('invoice_bk as a')
+            ->leftJoin('tb_suplier as b', 'b.id_suplier', '=', 'a.id_suplier')
+            ->leftJoin('grading as d', 'd.no_nota', '=', 'a.no_nota')
+            ->leftJoinSub(
+                DB::table('bayar_bk')
+                    ->select(
+                        'no_nota',
+                        DB::raw('SUM(debit) as debit'),
+                        DB::raw('SUM(kredit) as kredit')
+                    )
+                    ->groupBy('no_nota'),
+                'c',
+                'c.no_nota',
+                '=',
+                'a.no_nota'
+            )
+            ->leftJoinSub(
+                DB::table('buku_campur')
+                    ->select(
+                        'no_nota',
+                        DB::raw('SUM(rupiah) as rupiah'),
+                        'approve'
+                    )
+                    ->groupBy('no_nota'),
+                'e',
+                'e.no_nota',
+                '=',
+                'a.no_nota'
+            )
+            ->leftJoinSub(
+                DB::table('buku_campur_approve')
+                    ->select(
+                        'no_lot',
+                        DB::raw('SUM(rupiah) as rupiah_approve')
+                    )
+                    ->groupBy('no_lot'),
+                'f',
+                'f.no_lot',
+                '=',
+                'a.no_lot'
+            )
+            ->select(
+                'a.id_invoice_bk',
+                'a.no_lot',
+                'a.tgl',
+                'a.no_nota',
+                'a.suplier_akhir',
+                'a.total_harga',
+                'a.lunas',
+                'a.approve',
+                'a.in_bk',
+                'b.nm_suplier',
+                DB::raw('COALESCE(c.kredit, 0) as kredit'),
+                DB::raw('COALESCE(c.debit, 0) as debit'),
+                'd.no_nota as nota_grading',
+                'e.no_nota as nota_bk_campur',
+                'e.approve as bk_approve',
+                DB::raw('IF(e.approve = "Y", f.rupiah_approve, e.rupiah) as rupiah'),
+                'f.rupiah_approve'
+            )
+            ->whereBetween('a.tgl', [$tgl1, $tgl2]);
+
+        // Apply filter
+        switch ($page) {
+            case 'pembelian':
+                $query->where(function ($q) {
+                    $q->where('a.in_bk', 'T')
+                        ->orWhereNull('a.in_bk');
+                });
+                break;
+            case 'in_bk':
+                // No filter
+                break;
+            case 'sebelum_grading':
+                $query->whereNull('d.no_nota');
+                break;
+            case 'sebelum_harga':
+                $query->whereNotNull('d.no_nota')
+                    ->where('e.approve', 'T');
+                break;
+            default: // sudah_grading
+                $query->whereNotNull('d.no_nota')
+                    ->where('e.approve', 'Y');
         }
 
+        $pembelian = $query->orderBy('a.no_nota', 'DESC')->get();
 
+        // 👇 PENTING: Load semua permissions SEKALI untuk halaman ini
+        $halaman = 2;
+        SettingHal::getAllPermissions($halaman); // Warm up cache
 
-        if ($page == 'pembelian') {
-            $where = "";
-        } elseif ($page == 'belum_grading') {
-            $where = "AND d.no_nota IS NULL";
-        } elseif ($page == 'belum_harga') {
-            $where = "AND d.no_nota IS NOT NULL and e.approve = 'T'";
-        } else {
-            $where = "AND d.no_nota IS NOT NULL and e.approve = 'Y'";
-        }
-        $pembelian = DB::select("SELECT a.id_invoice_bk, a.no_lot, a.tgl, a.no_nota, a.suplier_akhir, a.total_harga, a.lunas, c.kredit, c.debit, a.approve, d.no_nota as nota_grading, if(e.approve = 'Y',f.rupiah_approve,e.rupiah) as rupiah , e.no_nota as nota_bk_campur, e.approve, f.rupiah_approve, b.nm_suplier
-        FROM invoice_bk as a 
-        left join tb_suplier as b on b.id_suplier = a.id_suplier
-        left join (
-        SELECT c.no_nota , sum(c.debit) as debit, sum(c.kredit) as kredit  FROM bayar_bk as c
-        group by c.no_nota
-        ) as c on c.no_nota = a.no_nota
-        left join grading as d on d.no_nota = a.no_nota
-        left join (
-            SELECT e.no_nota, sum(e.rupiah) as rupiah, e.approve
-            FROM buku_campur as e
-            group by e.no_nota
-        ) as e on e.no_nota = a.no_nota
-        
-        left join (
-            SELECT e.no_lot, sum(e.rupiah) as rupiah_approve
-            FROM buku_campur_approve as e
-            group by e.no_lot
-        ) as f on f.no_lot = a.no_lot
-        where a.tgl between '$tgl1' and '$tgl2' $where
-        order by a.no_nota DESC;");
+        $id_user = auth()->id();
+        $buttonIds = [8, 9, 10, 11, 12, 13, 14];
+        $userPermissions = DB::table('permission_perpage as a')
+            ->join('permission_button as b', 'b.id_permission_button', '=', 'a.id_permission_button')
+            ->whereIn('a.id_permission_button', $buttonIds)
+            ->where('a.id_user', $id_user)
+            ->get()
+            ->keyBy('id_permission_button');
 
-        $listBulan = DB::table('bulan')->get();
-        $id_user = auth()->user()->id;
-        $data =  [
+        return view('pembelian_bk.index', [
             'title' => 'Pembelian Bahan Baku',
             'pembelian' => $pembelian,
-            'listbulan' => $listBulan,
             'tgl1' => $tgl1,
             'tgl2' => $tgl2,
+            'halaman' => $halaman,
+            'page' => $page,
 
-            'user' => User::where('posisi_id', 1)->get(),
-            'halaman' => 2,
-            'create' => SettingHal::btnHal(9, $id_user),
-            'export' => SettingHal::btnHal(8, $id_user),
-            'approve' => SettingHal::btnHal(10, $id_user),
-            'edit' => SettingHal::btnHal(11, $id_user),
-            'delete' => SettingHal::btnHal(12, $id_user),
-            'print' => SettingHal::btnHal(13, $id_user),
-            'grading' => SettingHal::btnHal(14, $id_user),
-            'page' => $page
-
-        ];
-        return view('pembelian_bk.index', $data);
+            'create' => $userPermissions->has(9),
+            'export' => $userPermissions->has(8),
+            'approve' => $userPermissions->has(10),
+            'edit' => $userPermissions->has(11),
+            'delete' => $userPermissions->has(12),
+            'print' => $userPermissions->has(13),
+            'grading' => $userPermissions->has(14),
+        ]);
     }
     function add_new()
     {
@@ -183,101 +240,126 @@ class PembelianBahanBakuController extends Controller
 
     public function save_pembelian_bk(Request $r)
     {
+        // 1. Validasi Input
+        $r->validate([
+            'tgl' => 'required|date',
+            'suplier_awal' => 'required',
+            'suplier_akhir' => 'required',
+            'id_produk' => 'required|array|min:1',
+            'qty' => 'required|array',
+            'h_satuan' => 'required|array',
+            'total_harga' => 'required|numeric',
+            'in_bk' => 'required|in:Y,T',
+        ]);
+
+        // 2. Extract & Sanitize Variables
         $tgl = $r->tgl;
         $suplier_awal = $r->suplier_awal;
         $suplier_akhir = $r->suplier_akhir;
         $id_produk = $r->id_produk;
         $qty = $r->qty;
-        $id_satuan = $r->id_satuan;
         $h_satuan = $r->h_satuan;
         $total_harga = $r->total_harga;
-
-        $year = date("Y", strtotime($tgl));
-        $b = date('m', strtotime($tgl));
-        $max = DB::table('pembelian')->whereMonth('tgl', $b)->whereYear('tgl', $year)->latest('urutan_nota')->first();
-
-        $year = DB::table('tahun')->where('tahun', $year)->first();
-        if (empty($max)) {
-            $nota_t = '1';
-        } else {
-            $nota_t = $max->urutan_nota + 1;
-        }
-        $bulan = DB::table('bulan')->where('bulan', $b)->first();
-        $sub_po = "BI$year->kode" . "$bulan->kode" . str_pad($nota_t, 3, '0', STR_PAD_LEFT);
-
-        $max_lot = DB::table('pembelian')->latest('no_lot')->first();
-
-        if (empty($max_lot->no_lot)) {
-            $max_l = '1001';
-        } else {
-            $max_l = $max_lot->no_lot + 1;
-        }
-
-        for ($x = 0; $x < count($id_produk); $x++) {
-            $data = [
-                'tgl' => $tgl,
-                'no_nota' => $sub_po,
-                'id_produk' => $id_produk[$x],
-                // 'suplier_awal' => $suplier_awal,
-                // 'suplier_akhir' => $suplier_akhir,
-                'no_lot' => $max_l,
-                'qty' => $qty[$x],
-                'h_satuan' => $h_satuan[$x],
-                'urutan_nota' => $nota_t,
-                'admin' => Auth::user()->name,
-                'ket' => $r->ket[$x]
-            ];
-
-            DB::table('pembelian')->insert($data);
-        }
-
-
+        $in_bk = $r->in_bk; // 👈 Variable yang akan disimpan
         $button = $r->button;
-        if ($button == 'simpan') {
-            $data = [
-                'id_suplier' => $suplier_awal,
-                'tgl' => $tgl,
-                'no_nota' => $sub_po,
-                'no_lot' => $max_l,
-                'suplier_akhir' => $suplier_akhir,
-                'total_harga' => $total_harga,
-                'tgl_bayar' => '0000-00-00',
-                'lunas' => 'T',
-                'admin' => Auth::user()->name,
-            ];
-            DB::table('invoice_bk')->insert($data);
-        } else {
-            $data = [
-                'id_suplier' => $suplier_awal,
-                'tgl' => $tgl,
-                'no_nota' => $sub_po,
-                'no_lot' => $max_l,
-                'suplier_akhir' => $suplier_akhir,
-                'total_harga' => $total_harga,
-                'tgl_bayar' => '0000-00-00',
-                'lunas' => 'D',
-                'admin' => Auth::user()->name,
-            ];
-            DB::table('invoice_bk')->insert($data);
-        }
 
-        if (empty($r->debit_tambahan) || $r->debit_tambahan == '0') {
-            # code...
-        } else {
-            $data_tambahan = [
-                'no_nota' => $sub_po,
-                'debit' => $r->debit_tambahan,
-                'kredit' => 0,
-                'id_akun' => $r->id_akun_lainnya,
+        // 3. Generate No Nota & No Lot (dengan locking untuk avoid race condition)
+        DB::beginTransaction();
+        try {
+            $year = date("Y", strtotime($tgl));
+            $month = date('m', strtotime($tgl));
+
+            // Lock table untuk generate no_nota yang unique
+            $max = DB::table('pembelian')
+                ->whereMonth('tgl', $month)
+                ->whereYear('tgl', $year)
+                ->lockForUpdate() // 👈 Prevent race condition
+                ->latest('urutan_nota')
+                ->first();
+
+            $yearData = DB::table('tahun')->where('tahun', $year)->first();
+            $nota_t = empty($max) ? 1 : $max->urutan_nota + 1;
+
+            $bulan = DB::table('bulan')->where('bulan', $month)->first();
+            $sub_po = "BI{$yearData->kode}{$bulan->kode}" . str_pad($nota_t, 3, '0', STR_PAD_LEFT);
+
+            // Generate No Lot
+            $max_lot = DB::table('pembelian')
+                ->lockForUpdate() // 👈 Prevent race condition
+                ->latest('no_lot')
+                ->first();
+            $max_l = empty($max_lot->no_lot) ? 1001 : $max_lot->no_lot + 1;
+
+            // 4. Insert Detail Pembelian (Loop)
+            $pembelianData = [];
+            for ($x = 0; $x < count($id_produk); $x++) {
+                $pembelianData[] = [
+                    'tgl' => $tgl,
+                    'no_nota' => $sub_po,
+                    'id_produk' => $id_produk[$x],
+                    'no_lot' => $max_l,
+                    'qty' => $qty[$x],
+                    'h_satuan' => $h_satuan[$x],
+                    'urutan_nota' => $nota_t,
+                    'admin' => Auth::user()->name,
+                    'ket' => $r->ket[$x] ?? null,
+                ];
+            }
+
+            // Bulk insert (lebih cepat dari loop insert)
+            DB::table('pembelian')->insert($pembelianData);
+
+            // 5. Insert Invoice BK
+            $invoiceData = [
+                'id_suplier' => $suplier_awal,
                 'tgl' => $tgl,
+                'no_nota' => $sub_po,
+                'no_lot' => $max_l,
+                'suplier_akhir' => $suplier_akhir,
+                'total_harga' => $total_harga,
+                'tgl_bayar' => '0000-00-00', // 👈 Gunakan NULL daripada '0000-00-00'
+                'lunas' => $button == 'simpan' ? 'T' : 'D', // 👈 Simplified
+                'in_bk' => $in_bk, // 👈 SIMPAN in_bk ke database
                 'admin' => Auth::user()->name,
-                'ket' => $r->ket_lainnya
             ];
-            DB::table('bayar_bk')->insert($data_tambahan);
+
+            DB::table('invoice_bk')->insert($invoiceData);
+
+            // 6. Insert Bayar BK (jika ada biaya tambahan)
+            if ($in_bk == 'T') {
+                // Jika in_bk adalah 'Y', tidak
+                if (!empty($r->debit_tambahan) && $r->debit_tambahan != '0') {
+                    DB::table('bayar_bk')->insert([
+                        'no_nota' => $sub_po,
+                        'debit' => $r->debit_tambahan,
+                        'kredit' => 0,
+                        'id_akun' => $r->id_akun_lainnya,
+                        'tgl' => $tgl,
+                        'admin' => Auth::user()->name,
+                        'ket' => $r->ket_lainnya ?? null,
+                    ]);
+                }
+            }
+
+            // 7. Commit Transaction
+            DB::commit();
+
+            // 8. Redirect dengan success message
+            $tgl1 = date('Y-m-01', strtotime($tgl));
+            $tgl2 = date('Y-m-t', strtotime($tgl));
+
+            return redirect()
+                ->route('pembelian_bk', ['period' => 'costume', 'tgl1' => $tgl1, 'tgl2' => $tgl2, 'page' => $in_bk == 'Y' ? 'in_bk' : 'pembelian'])
+                ->with('sukses', 'Data berhasil ditambahkan');
+        } catch (\Exception $e) {
+            // 9. Rollback jika error
+            DB::rollBack();
+
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
-        $tgl1 = date('Y-m-01', strtotime($r->tgl));
-        $tgl2 = date('Y-m-t', strtotime($r->tgl));
-        return redirect()->route('pembelian_bk', ['period' => 'costume', 'tgl1' => $tgl1, 'tgl2' => $tgl2])->with('sukses', 'Data berhasil ditambahkan');
     }
 
 
@@ -348,90 +430,121 @@ class PembelianBahanBakuController extends Controller
     }
 
     public function edit_save(Request $r)
-    {
-        $tgl = $r->tgl;
-        $suplier_awal = $r->suplier_awal;
-        $suplier_akhir = $r->suplier_akhir;
-        $id_produk = $r->id_produk;
-        $qty = $r->qty;
-        $id_satuan = $r->id_satuan;
-        $h_satuan = $r->h_satuan;
-        $total_harga = $r->total_harga;
+{
+    // 1. Validasi Input (sama seperti create)
+    $r->validate([
+        'tgl' => 'required|date',
+        'suplier_awal' => 'required',
+        'suplier_akhir' => 'required',
+        'id_produk' => 'required|array|min:1',
+        'qty' => 'required|array',
+        'h_satuan' => 'required|array',
+        'total_harga' => 'required|numeric',
+        'in_bk' => 'required|in:Y,T',
+        'no_nota' => 'required', // pastikan nota ada
+        'no_lot' => 'required',
+        'urutan_nota' => 'required|integer',
+    ]);
 
-        $nota = $r->no_nota;
-        $urutan_nota = $r->urutan_nota;
+    // 2. Extract & Sanitize Variables
+    $tgl            = $r->tgl;
+    $suplier_awal   = $r->suplier_awal;
+    $suplier_akhir  = $r->suplier_akhir;
+    $id_produk      = $r->id_produk;
+    $qty            = $r->qty;
+    $h_satuan       = $r->h_satuan;
+    $total_harga    = $r->total_harga;
+    $in_bk          = $r->in_bk;         // 👈 penting disimpan
+    $no_nota        = $r->no_nota;
+    $no_lot         = $r->no_lot;
+    $urutan_nota    = $r->urutan_nota;
+    $button         = $r->button;        // simpan / simpan+lunas
 
-        DB::table('pembelian')->where('no_nota', $nota)->delete();
-        // DB::table('invoice_bk')->where('no_nota', $nota)->delete();
-        DB::table('bayar_bk')->where(['no_nota' => $nota, 'bayar' => 'T'])->delete();
+    DB::beginTransaction();
+    try {
+        // 3. Hapus data lama (detail + bayar tambahan)
+        DB::table('pembelian')->where('no_nota', $no_nota)->delete();
+        DB::table('bayar_bk')->where(['no_nota' => $no_nota, 'bayar' => 'T'])->delete();
+        // Note: invoice_bk tetap ada, kita hanya update nanti
 
+        // 4. Insert ulang Detail Pembelian (bulk insert)
+        $pembelianData = [];
         for ($x = 0; $x < count($id_produk); $x++) {
-            $data = [
-                'tgl' => $tgl,
-                'no_nota' => $nota,
-                'id_produk' => $id_produk[$x],
-                'no_lot' => $r->no_lot,
-                // 'suplier_awal' => $suplier_awal,
-                // 'suplier_akhir' => $suplier_akhir,
-                'qty' => $qty[$x],
-                'h_satuan' => $h_satuan[$x],
-                'urutan_nota' => $urutan_nota,
-                'admin' => Auth::user()->name,
+            $pembelianData[] = [
+                'tgl'          => $tgl,
+                'no_nota'      => $no_nota,
+                'id_produk'    => $id_produk[$x],
+                'no_lot'       => $no_lot,
+                'qty'          => $qty[$x],
+                'h_satuan'     => $h_satuan[$x],
+                'urutan_nota'  => $urutan_nota,
+                'admin'        => Auth::user()->name,
+                'ket'          => $r->ket[$x] ?? null,
             ];
-
-            DB::table('pembelian')->insert($data);
         }
 
+        DB::table('pembelian')->insert($pembelianData);
 
-        $button = $r->button;
-        if ($button == 'simpan') {
-            $data = [
-                'id_suplier' => $suplier_awal,
-                'tgl' => $tgl,
-                'no_nota' => $nota,
-                'no_lot' => $r->no_lot,
-                'suplier_akhir' => $suplier_akhir,
-                'total_harga' => $total_harga,
-                'tgl_bayar' => '0000-00-00',
-                'lunas' => 'T',
-                'approve_bk_campur' => $r->approve_bk_campur,
-                'admin' => Auth::user()->name,
-            ];
-            DB::table('invoice_bk')->where('no_nota', $nota)->update($data);
-        } else {
-            $data = [
-                'id_suplier' => $suplier_awal,
-                'tgl' => $tgl,
-                'no_nota' => $nota,
-                'no_lot' => $r->no_lot,
-                'suplier_akhir' => $suplier_akhir,
-                'total_harga' => $total_harga,
-                'tgl_bayar' => '0000-00-00',
-                'lunas' => 'D',
-                'approve_bk_campur' => $r->approve_bk_campur,
-                'admin' => Auth::user()->name,
-            ];
-            DB::table('invoice_bk')->where('no_nota', $nota)->update($data);
-        }
-        if (empty($r->debit_tambahan) || $r->debit_tambahan == '0') {
-            # code...
-        } else {
-            $data_tambahan = [
-                'no_nota' => $nota,
-                'debit' => $r->debit_tambahan,
-                'kredit' => 0,
-                'id_akun' => $r->id_akun_lainnya,
-                'tgl' => $tgl,
-                'admin' => Auth::user()->name,
-                'ket' => $r->ket_lainnya
-            ];
-            DB::table('bayar_bk')->insert($data_tambahan);
+        // 5. Update Invoice BK
+        $invoiceData = [
+            'id_suplier'    => $suplier_awal,
+            'tgl'           => $tgl,
+            'no_nota'       => $no_nota,
+            'no_lot'        => $no_lot,
+            'suplier_akhir' => $suplier_akhir,
+            'total_harga'   => $total_harga,
+            'tgl_bayar'     => '0000-00-00', // sebaiknya diganti NULL di migrasi
+            'lunas'         => $button == 'simpan' ? 'T' : 'D',
+            'in_bk'         => $in_bk,                   // 👈 simpan in_bk
+            'approve_bk_campur' => $r->approve_bk_campur ?? null,
+            'admin'         => Auth::user()->name,
+        ];
+
+        DB::table('invoice_bk')
+            ->where('no_nota', $no_nota)
+            ->update($invoiceData);
+
+        // 6. Insert Bayar BK (biaya tambahan) hanya jika in_bk = 'T'
+        if ($in_bk == 'T') {
+            if (!empty($r->debit_tambahan) && $r->debit_tambahan != '0') {
+                DB::table('bayar_bk')->insert([
+                    'no_nota'   => $no_nota,
+                    'debit'     => $r->debit_tambahan,
+                    'kredit'    => 0,
+                    'id_akun'   => $r->id_akun_lainnya,
+                    'tgl'       => $tgl,
+                    'admin'     => Auth::user()->name,
+                    'ket'       => $r->ket_lainnya ?? null,
+                    'bayar'     => 'T', // pastikan flag ini ada di tabel
+                ]);
+            }
         }
 
-        $tgl1 = date('Y-m-01', strtotime($r->tgl));
-        $tgl2 = date('Y-m-t', strtotime($r->tgl));
-        return redirect()->route('pembelian_bk', ['period' => 'costume', 'tgl1' => $tgl1, 'tgl2' => $tgl2])->with('sukses', 'Data berhasil ditambahkan');
+        // 7. Commit
+        DB::commit();
+
+        // 8. Redirect sesuai in_bk (sama seperti create)
+        $tgl1 = date('Y-m-01', strtotime($tgl));
+        $tgl2 = date('Y-m-t', strtotime($tgl));
+
+        return redirect()
+            ->route('pembelian_bk', [
+                'period' => 'costume',
+                'tgl1'   => $tgl1,
+                'tgl2'   => $tgl2,
+                'page'   => $in_bk == 'Y' ? 'in_bk' : 'pembelian'
+            ])
+            ->with('sukses', 'Data berhasil diupdate');
+
+    } catch (\Exception $e) {
+        DB::rollBack();
+
+        return redirect()
+            ->back()
+            ->withInput()
+            ->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
     }
+}
 
     public function grading(Request $r)
     {

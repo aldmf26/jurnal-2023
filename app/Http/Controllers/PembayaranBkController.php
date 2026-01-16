@@ -46,107 +46,84 @@ class PembayaranBkController extends Controller
 
     public function index(Request $r)
     {
-        $tgl1 =  $this->tgl1;
-        $tgl2 =  $this->tgl2;
-        $tipe = $r->tipe;
+        $tgl1 = $this->tgl1;
+        $tgl2 = $this->tgl2;
+        $tipe = $r->tipe; // D, Y, T, atau kosong = all
+
+        // Query dasar yang sama untuk semua kondisi (lebih aman & konsisten)
+        $baseQuery = "
+        SELECT 
+            a.tgl,
+            a.admin,
+            a.no_nota,
+            a.suplier_akhir,
+            a.total_harga,
+            a.lunas,
+            a.in_bk,
+            b.nm_suplier,
+            COALESCE(c.debit, 0) as debit,
+            COALESCE(c.kredit, 0) as kredit
+        FROM invoice_bk as a 
+        LEFT JOIN tb_suplier as b ON b.id_suplier = a.id_suplier
+        LEFT JOIN (
+            SELECT 
+                no_nota, 
+                SUM(debit) as debit, 
+                SUM(kredit) as kredit  
+            FROM bayar_bk 
+            GROUP BY no_nota
+        ) as c ON c.no_nota = a.no_nota
+        WHERE a.in_bk = 'T' OR a.in_bk IS NULL AND a.tgl BETWEEN ? AND ?
+    ";
+
+        // 1. Ambil data untuk tabel utama berdasarkan $tipe
         if ($tipe == 'D') {
-            $pembelian = DB::select("SELECT a.tgl,a.admin, a.no_nota, a.suplier_akhir, a.total_harga, a.lunas, c.kredit, c.debit
-            FROM invoice_bk as a 
-            left join tb_suplier as b on b.id_suplier = a.id_suplier
-            left join (
-            SELECT c.no_nota , sum(c.debit) as debit, sum(c.kredit) as kredit  FROM bayar_bk as c
-            group by c.no_nota
-            ) as c on c.no_nota = a.no_nota
-            where a.lunas = '$tipe' and a.tgl between '$tgl1' and '$tgl2'
-            order by a.id_invoice_bk ASC
-            ");
-        } elseif (empty($tipe)) {
-            $pembelian = DB::select("SELECT a.tgl,a.admin, a.no_nota, a.suplier_akhir, a.total_harga, a.lunas, c.kredit, c.debit, b.nm_suplier
-            FROM invoice_bk as a 
-            left join tb_suplier as b on b.id_suplier = a.id_suplier
-            left join (
-            SELECT c.no_nota , sum(c.debit) as debit, sum(c.kredit) as kredit  FROM bayar_bk as c
-            group by c.no_nota
-            ) as c on c.no_nota = a.no_nota
-            where  a.tgl between '$tgl1' and '$tgl2'
-            order by a.id_invoice_bk ASC
-            ");
+            // Draft
+            $pembelian = DB::select($baseQuery . " AND a.lunas = 'D' ORDER BY a.id_invoice_bk ASC", [$tgl1, $tgl2]);
         } elseif ($tipe == 'Y') {
-            $pembelian = DB::select("SELECT a.tgl,a.admin, a.no_nota, a.suplier_akhir, a.total_harga, a.lunas, c.kredit, c.debit,b.nm_suplier
-            FROM invoice_bk as a 
-            left join tb_suplier as b on b.id_suplier = a.id_suplier
-            left join (
-            SELECT c.no_nota , sum(c.debit) as debit, sum(c.kredit) as kredit  FROM bayar_bk as c
-            group by c.no_nota
-            ) as c on c.no_nota = a.no_nota
-            where a.total_harga + c.debit - c.kredit = '0' and a.tgl between '$tgl1' and '$tgl2'
-            order by a.id_invoice_bk ASC
-            ");
+            // Paid (sisa = 0)
+            $pembelian = DB::select($baseQuery . " AND (a.total_harga + COALESCE(c.debit, 0) - COALESCE(c.kredit, 0)) = 0 ORDER BY a.id_invoice_bk ASC", [$tgl1, $tgl2]);
         } elseif ($tipe == 'T') {
-            $pembelian = DB::select("SELECT a.tgl,a.admin, a.no_nota, a.suplier_akhir, a.total_harga, a.lunas, c.kredit, c.debit,b.nm_suplier
-            FROM invoice_bk as a
-            left join tb_suplier as b on b.id_suplier = a.id_suplier
-            left join (
-            SELECT c.no_nota , sum(c.debit) as debit, sum(c.kredit) as kredit  FROM bayar_bk as c
-            group by c.no_nota
-            ) as c on c.no_nota = a.no_nota
-            where a.total_harga + if(c.debit is null , 0,c.debit) - if(c.kredit is null , 0 ,c.kredit) != '0' and a.tgl between '$tgl1' and '$tgl2'
-            order by a.id_invoice_bk ASC
-            ");
+            // Unpaid (sisa ≠ 0)
+            $pembelian = DB::select($baseQuery . " AND (a.total_harga + COALESCE(c.debit, 0) - COALESCE(c.kredit, 0)) != 0 ORDER BY a.id_invoice_bk ASC", [$tgl1, $tgl2]);
+        } else {
+            // All (default)
+            $pembelian = DB::select($baseQuery . " ORDER BY a.id_invoice_bk ASC", [$tgl1, $tgl2]);
         }
 
+        // 2. Ambil data summary untuk tab (tetap sama seperti sebelumnya)
+        $draft = DB::select($baseQuery . " AND a.lunas = 'D' ORDER BY a.id_invoice_bk ASC", [$tgl1, $tgl2]);
 
-        $draft = DB::select("SELECT a.tgl, a.no_nota, a.suplier_akhir, a.total_harga, a.lunas, c.kredit, c.debit,b.nm_suplier
-        FROM invoice_bk as a 
-        left join tb_suplier as b on b.id_suplier = a.id_suplier
-        left join (
-        SELECT c.no_nota , sum(c.debit) as debit, sum(c.kredit) as kredit  FROM bayar_bk as c
-        group by c.no_nota
-        ) as c on c.no_nota = a.no_nota
-        where a.lunas = 'D'
-        order by a.id_invoice_bk ASC
-        ");
+        $paid = DB::select($baseQuery . " AND (a.total_harga + COALESCE(c.debit, 0) - COALESCE(c.kredit, 0)) = 0 ORDER BY a.id_invoice_bk ASC", [$tgl1, $tgl2]);
 
-        $paid =  DB::select("SELECT a.tgl, a.no_nota, a.suplier_akhir, a.total_harga, a.lunas, c.kredit, c.debit,b.nm_suplier
-        FROM invoice_bk as a 
-        left join tb_suplier as b on b.id_suplier = a.id_suplier
-        left join (
-        SELECT c.no_nota , sum(c.debit) as debit, sum(c.kredit) as kredit  FROM bayar_bk as c
-        group by c.no_nota
-        ) as c on c.no_nota = a.no_nota
-        where round(a.total_harga) + round(c.debit) - round(c.kredit) = '0'
-        order by a.id_invoice_bk ASC
-        ");
+        $unpaid = DB::select($baseQuery . " AND (a.total_harga + COALESCE(c.debit, 0) - COALESCE(c.kredit, 0)) != 0 ORDER BY a.id_invoice_bk ASC", [$tgl1, $tgl2]);
 
-        $unpaid = DB::select("SELECT a.tgl, a.no_nota, a.suplier_akhir, a.total_harga, a.lunas, if(c.kredit is null , 0 ,c.kredit) as kredit, if(c.debit is null , 0,c.debit) as debit,b.nm_suplier
-        FROM invoice_bk as a 
-        left join tb_suplier as b on b.id_suplier = a.id_suplier
-        left join (
-        SELECT c.no_nota , sum(if(c.debit is null , 0, c.debit)) as debit, sum(c.kredit) as kredit  FROM bayar_bk as c
-        group by c.no_nota
-        ) as c on c.no_nota = a.no_nota
-        where a.total_harga + if(c.debit is null , 0,c.debit) - if(c.kredit is null , 0 ,c.kredit) != '0'
-        order by a.id_invoice_bk ASC;
-        ");
+        // 3. Permissions (tetap sama)
         $id_user = auth()->user()->id;
+        $buttonIds = [15,16,17];
+        $userPermissions = DB::table('permission_perpage as a')
+            ->join('permission_button as b', 'b.id_permission_button', '=', 'a.id_permission_button')
+            ->whereIn('a.id_permission_button', $buttonIds)
+            ->where('a.id_user', $id_user)
+            ->get()
+            ->keyBy('id_permission_button');
 
-        $data =  [
-            'title' => 'Pembayaran Bahan Baku',
+        $data = [
+            'title'     => 'Pembayaran Bahan Baku',
             'pembelian' => $pembelian,
-
-            'tipe' => $tipe,
-            'draft' => $draft,
-            'paid' => $paid,
-            'unpaid' => $unpaid,
-            'tgl1' =>  $tgl1,
-            'tgl2' =>  $tgl2,
-
-            'user' => User::where('posisi_id', 1)->get(),
-            'halaman' => 3,
-            'export' => SettingHal::btnHal(15, $id_user),
-            'edit' => SettingHal::btnHal(16, $id_user),
-            'bayar' => SettingHal::btnHal(17, $id_user),
+            'tipe'      => $tipe,
+            'draft'     => $draft,
+            'paid'      => $paid,
+            'unpaid'    => $unpaid,
+            'tgl1'      => $tgl1,
+            'tgl2'      => $tgl2,
+            'user'      => User::where('posisi_id', 1)->get(),
+            'halaman'   => 3,
+            'export'    => $userPermissions->has(15),
+            'edit'      => $userPermissions->has(16),
+            'bayar'     => $userPermissions->has(17),
         ];
+
         return view('pembayaran_bk.index', $data);
     }
 

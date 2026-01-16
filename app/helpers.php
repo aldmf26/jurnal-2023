@@ -100,34 +100,75 @@ class Nonaktif
 
 class SettingHal
 {
+    // Cache untuk menghindari query berulang
+    private static $permissionCache = [];
 
-    public static function akses($halaman, $id_user)
+    /**
+     * Get all permissions untuk semua user sekaligus (Eager Loading)
+     */
+    public static function getAllPermissions($halaman)
     {
-        return DB::selectOne("SELECT a.*, b.id_permission_page FROM permission_button
-        AS
-        a
-        LEFT JOIN (
-        SELECT b.id_user, b.id_permission_button, b.id_permission_page FROM permission_perpage AS b
-        WHERE b.id_user ='$id_user' AND b.permission_id = '$halaman'
-        ) AS b ON b.id_permission_button = a.id_permission_button WHERE b.id_user = '$id_user'");
+        $cacheKey = "permissions_page_{$halaman}";
+
+        if (isset(self::$permissionCache[$cacheKey])) {
+            return self::$permissionCache[$cacheKey];
+        }
+
+        // Query SEKALI untuk semua user
+        $permissions = DB::table('permission_perpage as pp')
+            ->join('permission_button as pb', 'pb.id_permission_button', '=', 'pp.id_permission_button')
+            ->join('users as u', 'u.id', '=', 'pp.id_user')
+            ->where('pp.permission_id', $halaman)
+            ->select(
+                'pp.id_user',
+                'pp.id_permission_page',
+                'pb.id_permission_button',
+                'pb.nm_permission_button',
+                'pb.jenis'
+            )
+            ->get()
+            ->groupBy('id_user'); // Group by user_id
+
+        self::$permissionCache[$cacheKey] = $permissions;
+        return $permissions;
     }
 
+    /**
+     * Get permissions untuk 1 user dari cache
+     */
+    public static function getUserPermissions($halaman, $id_user)
+    {
+        $allPermissions = self::getAllPermissions($halaman);
+        return $allPermissions->get($id_user, collect());
+    }
+
+    /**
+     * Check akses halaman user
+     */
+    public static function akses($halaman, $id_user)
+    {
+        $permissions = self::getUserPermissions($halaman, $id_user);
+        return $permissions->isNotEmpty() ? $permissions->first() : null;
+    }
+
+    /**
+     * Get specific permission button untuk user
+     */
     public static function btnHal($whereId, $id_user)
     {
         return DB::table('permission_perpage as a')
-            ->join('permission_button as b', 'b.id_permission_button', 'a.id_permission_button')
-            ->where([['a.id_permission_button', $whereId], ['a.id_user', $id_user]])
+            ->join('permission_button as b', 'b.id_permission_button', '=', 'a.id_permission_button')
+            ->where('a.id_permission_button', $whereId)
+            ->where('a.id_user', $id_user)
             ->first();
     }
 
+    /**
+     * Get permissions by jenis (create, read, update, delete)
+     */
     public static function btnSetHal($halaman, $id_user, $jenis)
     {
-        return DB::select("SELECT a.*, b.id_permission_page FROM permission_button AS
-        a
-        LEFT JOIN (
-        SELECT b.id_permission_button, b.id_permission_page FROM permission_perpage AS b
-        WHERE b.id_user ='$id_user'
-        ) AS b ON b.id_permission_button = a.id_permission_button
-        WHERE a.jenis = '$jenis' AND a.permission_id = '$halaman'");
+        $permissions = self::getUserPermissions($halaman, $id_user);
+        return $permissions->where('jenis', $jenis)->values();
     }
 }

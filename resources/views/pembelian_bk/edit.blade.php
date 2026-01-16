@@ -47,6 +47,13 @@
                     <input type="text" class="form-control" name="suplier_akhir"
                         value="{{ $invoice->suplier_akhir }}">
                 </div>
+                <div class="col-lg-2 col-6">
+                    <label for="">In BK</label>
+                    <select name="in_bk" class="form-select" id="">
+                        <option @selected($invoice->in_bk == 'Y') value="Y">Ya (Tidak bayar BK)</option>
+                        <option @selected($invoice->in_bk == 'T') value="T">Tidak (Bayar BK)</option>
+                    </select>
+                </div>
 
                 <div class="col-lg-12">
                     <hr style="border: 1px solid black">

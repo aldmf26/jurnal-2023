@@ -42,6 +42,13 @@
                     <label for="">Supplier</label>
                     <input type="text" class="form-control" name="suplier_akhir" value="" required>
                 </div>
+                <div class="col-lg-2 col-6">
+                    <label for="">In BK</label>
+                    <select name="in_bk" class="form-select" id="">
+                        <option value="Y">Ya (tidak bayar BK)</option>
+                        <option value="T" selected>Tidak (Bayar BK)</option>
+                    </select>
+                </div>
 
                 <div class="col-lg-12">
                     <hr style="border: 1px solid black">
