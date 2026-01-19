@@ -93,7 +93,7 @@ class PembayaranBkController extends Controller
             SELECT c.no_nota , sum(c.debit) as debit, sum(c.kredit) as kredit  FROM bayar_bk as c
             group by c.no_nota
             ) as c on c.no_nota = a.no_nota
-            where a.total_harga + if(c.debit is null , 0,c.debit) - if(c.kredit is null , 0 ,c.kredit) != '0' and a.tgl between '$tgl1' and '$tgl2'
+            where round(a.total_harga) + if(c.debit is null , 0,c.debit) - if(c.kredit is null , 0 ,c.kredit) ! = 0 and a.tgl between '$tgl1' and '$tgl2'
             order by a.id_invoice_bk ASC
             ");
         }
@@ -128,7 +128,7 @@ class PembayaranBkController extends Controller
         SELECT c.no_nota , sum(if(c.debit is null , 0, c.debit)) as debit, sum(c.kredit) as kredit  FROM bayar_bk as c
         group by c.no_nota
         ) as c on c.no_nota = a.no_nota
-        where a.total_harga + if(c.debit is null , 0,c.debit) - if(c.kredit is null , 0 ,c.kredit) != '0'
+        where round(a.total_harga) + if(c.debit is null , 0,c.debit) - if(c.kredit is null , 0 ,c.kredit) != 0
         order by a.id_invoice_bk ASC;
         ");
         $id_user = auth()->user()->id;
