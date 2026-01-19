@@ -49,6 +49,9 @@ class PembayaranBkController extends Controller
         $tgl1 =  $this->tgl1;
         $tgl2 =  $this->tgl2;
         $tipe = $r->tipe;
+
+        $queryInBk = "a.in_bk = 'T' OR a.in_bk IS NULL";
+
         if ($tipe == 'D') {
             $pembelian = DB::select("SELECT a.tgl,a.admin, a.no_nota, a.suplier_akhir, a.total_harga, a.lunas, c.kredit, c.debit
             FROM invoice_bk as a 
@@ -57,7 +60,7 @@ class PembayaranBkController extends Controller
             SELECT c.no_nota , sum(c.debit) as debit, sum(c.kredit) as kredit  FROM bayar_bk as c
             group by c.no_nota
             ) as c on c.no_nota = a.no_nota
-            where a.lunas = '$tipe' and a.tgl between '$tgl1' and '$tgl2'
+            where $queryInBk and a.lunas = '$tipe' and a.tgl between '$tgl1' and '$tgl2'
             order by a.id_invoice_bk ASC
             ");
         } elseif (empty($tipe)) {
@@ -68,7 +71,7 @@ class PembayaranBkController extends Controller
             SELECT c.no_nota , sum(c.debit) as debit, sum(c.kredit) as kredit  FROM bayar_bk as c
             group by c.no_nota
             ) as c on c.no_nota = a.no_nota
-            where  a.tgl between '$tgl1' and '$tgl2'
+            where $queryInBk and a.tgl between '$tgl1' and '$tgl2'
             order by a.id_invoice_bk ASC
             ");
         } elseif ($tipe == 'Y') {
@@ -79,7 +82,7 @@ class PembayaranBkController extends Controller
             SELECT c.no_nota , sum(c.debit) as debit, sum(c.kredit) as kredit  FROM bayar_bk as c
             group by c.no_nota
             ) as c on c.no_nota = a.no_nota
-            where a.total_harga + c.debit - c.kredit = '0' and a.tgl between '$tgl1' and '$tgl2'
+            where $queryInBk and a.total_harga + c.debit - c.kredit = '0' and a.tgl between '$tgl1' and '$tgl2'
             order by a.id_invoice_bk ASC
             ");
         } elseif ($tipe == 'T') {
@@ -90,7 +93,7 @@ class PembayaranBkController extends Controller
             SELECT c.no_nota , sum(c.debit) as debit, sum(c.kredit) as kredit  FROM bayar_bk as c
             group by c.no_nota
             ) as c on c.no_nota = a.no_nota
-            where a.total_harga + if(c.debit is null , 0,c.debit) - if(c.kredit is null , 0 ,c.kredit) != '0' and a.tgl between '$tgl1' and '$tgl2'
+            where  $queryInBk and a.total_harga + if(c.debit is null , 0,c.debit) - if(c.kredit is null , 0 ,c.kredit) != '0' and a.tgl between '$tgl1' and '$tgl2'
             order by a.id_invoice_bk ASC
             ");
         }
@@ -103,7 +106,7 @@ class PembayaranBkController extends Controller
         SELECT c.no_nota , sum(c.debit) as debit, sum(c.kredit) as kredit  FROM bayar_bk as c
         group by c.no_nota
         ) as c on c.no_nota = a.no_nota
-        where a.lunas = 'D'
+        where $queryInBk and a.lunas = 'D'
         order by a.id_invoice_bk ASC
         ");
 
@@ -114,7 +117,7 @@ class PembayaranBkController extends Controller
         SELECT c.no_nota , sum(c.debit) as debit, sum(c.kredit) as kredit  FROM bayar_bk as c
         group by c.no_nota
         ) as c on c.no_nota = a.no_nota
-        where round(a.total_harga) + round(c.debit) - round(c.kredit) = '0'
+        where $queryInBk and round(a.total_harga) + round(c.debit) - round(c.kredit) = '0'
         order by a.id_invoice_bk ASC
         ");
 
@@ -125,10 +128,17 @@ class PembayaranBkController extends Controller
         SELECT c.no_nota , sum(if(c.debit is null , 0, c.debit)) as debit, sum(c.kredit) as kredit  FROM bayar_bk as c
         group by c.no_nota
         ) as c on c.no_nota = a.no_nota
-        where a.total_harga + if(c.debit is null , 0,c.debit) - if(c.kredit is null , 0 ,c.kredit) != '0'
+        where $queryInBk and a.total_harga + if(c.debit is null , 0,c.debit) - if(c.kredit is null , 0 ,c.kredit) != '0'
         order by a.id_invoice_bk ASC;
         ");
         $id_user = auth()->user()->id;
+        $buttonIds = [15,16,17];
+        $userPermissions = DB::table('permission_perpage as a')
+            ->join('permission_button as b', 'b.id_permission_button', '=', 'a.id_permission_button')
+            ->whereIn('a.id_permission_button', $buttonIds)
+            ->where('a.id_user', $id_user)
+            ->get()
+            ->keyBy('id_permission_button');
 
         $data =  [
             'title' => 'Pembayaran Bahan Baku',
@@ -143,9 +153,9 @@ class PembayaranBkController extends Controller
 
             'user' => User::where('posisi_id', 1)->get(),
             'halaman' => 3,
-            'export' => SettingHal::btnHal(15, $id_user),
-            'edit' => SettingHal::btnHal(16, $id_user),
-            'bayar' => SettingHal::btnHal(17, $id_user),
+            'export' => $userPermissions->has(15),
+            'edit' => $userPermissions->has(16),
+            'bayar' => $userPermissions->has(17),
         ];
         return view('pembayaran_bk.index', $data);
     }
