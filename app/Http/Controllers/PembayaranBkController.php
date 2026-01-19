@@ -50,7 +50,7 @@ class PembayaranBkController extends Controller
         $tgl2 =  $this->tgl2;
         $tipe = $r->tipe;
 
-        $queryInBk = "a.in_bk = 'T' OR a.in_bk IS NULL";
+        
 
         if ($tipe == 'D') {
             $pembelian = DB::select("SELECT a.tgl,a.admin, a.no_nota, a.suplier_akhir, a.total_harga, a.lunas, c.kredit, c.debit
@@ -60,7 +60,7 @@ class PembayaranBkController extends Controller
             SELECT c.no_nota , sum(c.debit) as debit, sum(c.kredit) as kredit  FROM bayar_bk as c
             group by c.no_nota
             ) as c on c.no_nota = a.no_nota
-            where $queryInBk and a.lunas = '$tipe' and a.tgl between '$tgl1' and '$tgl2'
+            where a.lunas = '$tipe' and a.tgl between '$tgl1' and '$tgl2'
             order by a.id_invoice_bk ASC
             ");
         } elseif (empty($tipe)) {
@@ -71,7 +71,7 @@ class PembayaranBkController extends Controller
             SELECT c.no_nota , sum(c.debit) as debit, sum(c.kredit) as kredit  FROM bayar_bk as c
             group by c.no_nota
             ) as c on c.no_nota = a.no_nota
-            where $queryInBk and a.tgl between '$tgl1' and '$tgl2'
+            where  a.tgl between '$tgl1' and '$tgl2'
             order by a.id_invoice_bk ASC
             ");
         } elseif ($tipe == 'Y') {
@@ -82,7 +82,7 @@ class PembayaranBkController extends Controller
             SELECT c.no_nota , sum(c.debit) as debit, sum(c.kredit) as kredit  FROM bayar_bk as c
             group by c.no_nota
             ) as c on c.no_nota = a.no_nota
-            where $queryInBk and a.total_harga + c.debit - c.kredit = '0' and a.tgl between '$tgl1' and '$tgl2'
+            where a.total_harga + c.debit - c.kredit = '0' and a.tgl between '$tgl1' and '$tgl2'
             order by a.id_invoice_bk ASC
             ");
         } elseif ($tipe == 'T') {
@@ -93,7 +93,7 @@ class PembayaranBkController extends Controller
             SELECT c.no_nota , sum(c.debit) as debit, sum(c.kredit) as kredit  FROM bayar_bk as c
             group by c.no_nota
             ) as c on c.no_nota = a.no_nota
-            where  $queryInBk and a.total_harga + if(c.debit is null , 0,c.debit) - if(c.kredit is null , 0 ,c.kredit) != '0' and a.tgl between '$tgl1' and '$tgl2'
+            where a.total_harga + if(c.debit is null , 0,c.debit) - if(c.kredit is null , 0 ,c.kredit) != '0' and a.tgl between '$tgl1' and '$tgl2'
             order by a.id_invoice_bk ASC
             ");
         }
@@ -106,7 +106,7 @@ class PembayaranBkController extends Controller
         SELECT c.no_nota , sum(c.debit) as debit, sum(c.kredit) as kredit  FROM bayar_bk as c
         group by c.no_nota
         ) as c on c.no_nota = a.no_nota
-        where $queryInBk and a.lunas = 'D'
+        where a.lunas = 'D'
         order by a.id_invoice_bk ASC
         ");
 
@@ -117,7 +117,7 @@ class PembayaranBkController extends Controller
         SELECT c.no_nota , sum(c.debit) as debit, sum(c.kredit) as kredit  FROM bayar_bk as c
         group by c.no_nota
         ) as c on c.no_nota = a.no_nota
-        where $queryInBk and round(a.total_harga) + round(c.debit) - round(c.kredit) = '0'
+        where round(a.total_harga) + round(c.debit) - round(c.kredit) = '0'
         order by a.id_invoice_bk ASC
         ");
 
@@ -128,7 +128,7 @@ class PembayaranBkController extends Controller
         SELECT c.no_nota , sum(if(c.debit is null , 0, c.debit)) as debit, sum(c.kredit) as kredit  FROM bayar_bk as c
         group by c.no_nota
         ) as c on c.no_nota = a.no_nota
-        where $queryInBk and a.total_harga + if(c.debit is null , 0,c.debit) - if(c.kredit is null , 0 ,c.kredit) != '0'
+        where a.total_harga + if(c.debit is null , 0,c.debit) - if(c.kredit is null , 0 ,c.kredit) != '0'
         order by a.id_invoice_bk ASC;
         ");
         $id_user = auth()->user()->id;
