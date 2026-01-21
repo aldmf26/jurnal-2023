@@ -57,7 +57,8 @@
                                 <td>Pembayaran BKIN {{ $p->no_nota }}</td>
                                 <td>{{ $p->nm_suplier }}</td>
                                 <td>{{ $p->suplier_akhir }}</td>
-                                <td align="right">Rp. {{ number_format($p->total_harga, 0) }}</td>
+                                <td align="right">Rp. {{ number_format($p->total_harga, 0) }} - {{ $p->total_harga }}
+                                </td>
                                 <td align="right">0</td>
                                 <td></td>
                             </tr>
