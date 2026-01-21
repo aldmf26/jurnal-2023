@@ -86,7 +86,7 @@
                             <input type="hidden" class="debit" value="{{ $p->total_harga + $total_debit }}">
                             <tr class="baris1">
                                 <td><input type="date" class="form-control" name="tgl_pembayaran[]"
-                                        value="{{ date('Y-m-d') }}"></td>
+                                        value="{{ $b->tgl }}"></td>
                                 <td>
                                     <select name="id_akun[]" id="" class="select2_add" required>
                                         <option value="">Pilih Akun Pembayaran</option>
