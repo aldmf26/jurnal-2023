@@ -93,7 +93,7 @@
                                 <td>
                                     <select name="id_akun[]" id="" class="select2_add" required>
                                         <option value="">Pilih Akun Pembayaran</option>
-                                        <option value="4">KAS BESAR</option>
+                                        <option selected value="4">KAS BESAR</option>
                                         <option value="10">BANK MANDIRI NO.REK 031-00-5108889-9</option>
                                         <option value="30">Bca No. Rek 0513020888 (untuk Hutang)</option>
                                         <option value="6">BANK BCA NO. REK 0511780062</option>
@@ -115,7 +115,7 @@
                                 <td align="right">
                                     <input type="text" class="form-control bayar bayar1 text-end" count="1">
                                     <input type="hidden" name="kredit[]" class="form-control bayarbiasa bayarbiasa1"
-                                        value="0">
+                                        value="10000">
                                 </td>
                                 <td>
                                     <button type="button" class="btn rounded-pill remove_baris" count="1"><i
