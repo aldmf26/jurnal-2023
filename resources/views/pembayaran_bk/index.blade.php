@@ -165,7 +165,7 @@
                                                             {{-- <a href="#" class="dropdown-item text-primary  disabled"><i
                                                     class="fas fa-money-bill-wave me-2"></i>Bayar</a> --}}
                                                         @else
-                                                            <a href="{{ route('pembayaranbk.add', ['nota' => $p->no_nota]) }}"
+                                                            <a href="{{ route('pembayaranbk.add', ['nota' => $p->no_nota, 'period' => Request::get('period'), 'bulan' => Request::get('bulan'), 'tahun' => Request::get('tahun')]) }}"
                                                                 class="dropdown-item text-success  "><i
                                                                     class="fas fa-money-bill-wave me-2"></i>Bayar</a>
                                                         @endif

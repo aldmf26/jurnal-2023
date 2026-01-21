@@ -300,7 +300,11 @@ class PembayaranBkController extends Controller
             }
         }
 
-        return redirect()->route('pembayaranbk')->with('sukses', 'Data berhasil ditambahkan');
+        return redirect()->route('pembayaranbk', [
+            'period' => $r->period,
+            'bulan' => $r->bulan,
+            'tahun' => $r->tahun,
+        ])->with('sukses', 'Data berhasil ditambahkan');
     }
 
     public function tambah(Request $r)

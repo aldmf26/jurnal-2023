@@ -22,7 +22,9 @@
         </style>
         <form action="{{ route('pembayaranbk.save_pembayaran') }}" method="post" class="save_jurnal">
             @csrf
-
+            <input type="hidden" name="period" value="{{ request('period') }}"> <input type="hidden" name="bulan"
+                value="{{ request('bulan') }}">
+            <input type="hidden" name="tahun" value="{{ request('tahun') }}">
             <section class="row justify-content-center">
 
                 <div class="col-lg-3 col-6">
