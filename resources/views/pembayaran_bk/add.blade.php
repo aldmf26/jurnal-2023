@@ -115,7 +115,7 @@
                                 <td align="right">
                                     <input type="text" class="form-control bayar bayar1 text-end" count="1">
                                     <input type="hidden" name="kredit[]" class="form-control bayarbiasa bayarbiasa1"
-                                        value="10000">
+                                        value="0">
                                 </td>
                                 <td>
                                     <button type="button" class="btn rounded-pill remove_baris" count="1"><i
