@@ -478,7 +478,7 @@ class PembayaranBkController extends Controller
     {
         $tgl1 =  $r->tgl1;
         $tgl2 =  $r->tgl2;
-        $total = DB::selectOne("SELECT count(a.id_invoice_bk) as jumlah FROM invoice_bk as a where a.tgl between '$tgl1' and '$tgl2' ");
+        $total = DB::selectOne("SELECT count(a.id_invoice_bk) as jumlah FROM invoice_bk as a where a.tgl between '$tgl1' and '$tgl2' and a.in_bk = 'T' ");
 
         $totalrow = $total->jumlah;
 
