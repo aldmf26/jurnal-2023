@@ -62,7 +62,7 @@
                             @php
                                 $total = 0;
                                 $total_debit = 0;
-                                $tgl = $bayar[0]->tgl;
+                                $tgl = $p->tgl;
                             @endphp
                             @foreach ($bayar as $b)
                                 @php
