@@ -304,6 +304,7 @@ class PembayaranBkController extends Controller
             'period' => $r->period,
             'bulan' => $r->bulan,
             'tahun' => $r->tahun,
+            'tipe' => 'T'
         ])->with('sukses', 'Data berhasil ditambahkan');
     }
 
