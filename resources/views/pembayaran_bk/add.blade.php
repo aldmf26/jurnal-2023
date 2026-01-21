@@ -62,13 +62,13 @@
                             @php
                                 $total = 0;
                                 $total_debit = 0;
-
+                                $tgl = date('Y-m-d');
                             @endphp
                             @foreach ($bayar as $b)
                                 @php
                                     $total += $b->kredit;
                                     $total_debit = $b->debit;
-                                    $tgl = $b->tgl;
+                                    $tgl = date('Y-m-d', strtotime($b->tgl));
 
                                 @endphp
                                 <tr>
