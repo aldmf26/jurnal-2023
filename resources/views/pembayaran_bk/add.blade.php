@@ -62,11 +62,14 @@
                             @php
                                 $total = 0;
                                 $total_debit = 0;
+                                $tgl = 0;
                             @endphp
                             @foreach ($bayar as $b)
                                 @php
                                     $total += $b->kredit;
                                     $total_debit = $b->debit;
+                                    $tgl = $b->tgl;
+
                                 @endphp
                                 <tr>
                                     <td>{{ date('d-m-Y', strtotime($b->tgl)) }}</td>
@@ -86,7 +89,7 @@
                             <input type="hidden" class="debit" value="{{ $p->total_harga + $total_debit }}">
                             <tr class="baris1">
                                 <td><input type="date" class="form-control" name="tgl_pembayaran[]"
-                                        value="{{ $b->tgl }}"></td>
+                                        value="{{ $tgl }}"></td>
                                 <td>
                                     <select name="id_akun[]" id="" class="select2_add" required>
                                         <option value="">Pilih Akun Pembayaran</option>
