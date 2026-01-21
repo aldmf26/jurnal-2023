@@ -31,7 +31,7 @@ class ExportbayarBK implements FromView, WithEvents
         SELECT c.no_nota , sum(c.qty) as qty  FROM pembelian as c
         group by c.no_nota
         ) as c on c.no_nota = a.no_nota
-        where  a.tgl between '$this->tgl1' and '$this->tgl2'
+        where  a.tgl between '$this->tgl1' and '$this->tgl2' and a.in_bk = 'T'
         order by a.no_nota ASC;");
 
 
