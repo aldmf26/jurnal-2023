@@ -197,7 +197,6 @@ class PembayaranBkController extends Controller
         $id_akun = $r->id_akun;
         $kredit = $r->kredit;
         $debit = $r->debit;
-        dd($debit, $kredit);
         $tgl = $r->tgl_pembayaran;
         $keterangan = $r->ket;
 
