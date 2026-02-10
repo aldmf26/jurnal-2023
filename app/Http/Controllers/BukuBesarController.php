@@ -126,7 +126,7 @@ class BukuBesarController extends Controller
         $spreadsheet = new Spreadsheet();
         foreach ($akun as $i => $r) {
 
-            $detail = DB::select("SELECT f.nm_post, d.no_cfm, d.ket as ket2, a.ket, a.tgl,a.id_akun, d.nm_akun, a.no_nota, a.debit, a.kredit, a.saldo,e.suplier_akhir, a.admin
+            $detail = DB::select("SELECT d.nm_post, d.no_cfm, d.ket as ket2, a.ket, a.tgl,a.id_akun, d.nm_akun, a.no_nota, a.debit, a.kredit, a.saldo,e.suplier_akhir, a.admin
             FROM `jurnal` as a
                     LEFT JOIN (
                         SELECT c.nm_post,j.no_nota, j.id_akun,  GROUP_CONCAT(DISTINCT j.ket SEPARATOR ', ') as ket, GROUP_CONCAT(DISTINCT j.no_urut SEPARATOR ', ') as no_cfm, GROUP_CONCAT(DISTINCT b.nm_akun SEPARATOR ', ') as nm_akun 
