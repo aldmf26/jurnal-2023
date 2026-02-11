@@ -135,6 +135,7 @@ class PembelianBahanBakuController extends Controller
                 break;
             case 'belum_harga':
                 $query->whereNotNull('d.no_nota')
+                ->selectRaw(DB::raw('IFNULL(SUM(rupiah), 0, SUM(rupiah)) as rupiah'))
                     ->where('e.approve', 'T');
                 break;
             default: // sudah_grading
