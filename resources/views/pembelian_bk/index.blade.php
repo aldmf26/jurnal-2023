@@ -173,12 +173,15 @@
                                         @if (empty($p->nota_grading) || empty($p->nota_bk_campur))
                                             <i class="fas fa-times text-danger"></i>
                                         @else
+                                            @if ($page == 'belum_harga' && !empty($p->rupiah))
+                                                @php
+                                                    continue;
+                                                @endphp
+                                            @endif
                                             <span class="badge {{ empty($p->rupiah) ? 'bg-danger' : 'bg-success' }}">
                                                 {!! empty($p->rupiah) ? 'Harga ?' : 'Harga <i class="fas fa-check"></i>' !!}
                                             </span>
                                         @endif
-
-
                                     </td>
                                     <td style="text-align: center">
                                         @if (!empty($approve))
