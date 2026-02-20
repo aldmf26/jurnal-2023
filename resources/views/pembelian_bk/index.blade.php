@@ -127,6 +127,11 @@
                         </thead>
                         <tbody>
                             @foreach ($pembelian as $no => $p)
+                            @if ($page == 'belum_harga' && !empty($p->rupiah))
+                                                @php
+                                                    continue;
+                                                @endphp
+                                            @endif
                                 <tr>
                                     <td class="text-center">{{ $no + 1 }}</td>
                                     <td class="text-center">{{ tanggal($p->tgl) }} </td>
@@ -173,12 +178,11 @@
                                         @if (empty($p->nota_grading) || empty($p->nota_bk_campur))
                                             <i class="fas fa-times text-danger"></i>
                                         @else
+                                            
                                             <span class="badge {{ empty($p->rupiah) ? 'bg-danger' : 'bg-success' }}">
                                                 {!! empty($p->rupiah) ? 'Harga ?' : 'Harga <i class="fas fa-check"></i>' !!}
                                             </span>
                                         @endif
-
-
                                     </td>
                                     <td style="text-align: center">
                                         @if (!empty($approve))
