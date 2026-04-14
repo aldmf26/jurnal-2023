@@ -79,15 +79,21 @@
                         </div>
                     </div>
                     <div class="row mb-4 mt-4">
-                        <div class="col-lg-8 table-responsive">
+                        <div class="col-lg-10 table-responsive">
                             <table class="table table-bordered">
                                 <thead>
                                     <tr>
                                         <th class="dhead">Kategori</th>
                                         <th class="dhead">Grade</th>
-                                        <th class="dhead text-end" width="12%">Putih / Beras Gr</th>
+                                        <th class="dhead text-end" width="12%">Putih Gr</th>
                                         @if ($posisi_id == 1)
-                                            <th class="dhead text-end" width="12%">Putih / Beras Rp/gr</th>
+                                            <th class="dhead text-end" width="12%">Putih Rp/gr</th>
+                                        @else
+                                        @endif
+                                        <th class="dhead text-end">Comp</th>
+                                        <th class="dhead text-end" width="12%">Beras Gr</th>
+                                        @if ($posisi_id == 1)
+                                            <th class="dhead text-end" width="12%">Beras Rp/gr</th>
                                         @else
                                         @endif
                                         <th class="dhead text-end">Comp</th>
@@ -108,6 +114,7 @@
                                     @php
                                         $prevKelompok = null;
                                         $sub_gr = 0;
+                                        $sub_gr_beras = 0;
                                         $sub_gr_kuning = 0;
                                         $sub_total_rp = 0;
 
@@ -123,7 +130,8 @@
                                     @foreach ($grade as $key => $g)
                                         @php
                                             $persen = DB::selectOne(
-                                                "SELECT a.gr, a.hrga, a.gr_kuning, a.hrga_kuning  FROM tb_cong as a where a.no_nota = '$c->no_nota' and a.id_grade = '$g->id_grade_cong' and a.ket = '$c->ket'",
+                                                "SELECT a.gr, a.hrga, a.gr_kuning, a.hrga_kuning , a.gr_beras, a.hrga_beras
+                                                FROM tb_cong as a where a.no_nota = '$c->no_nota' and a.id_grade = '$g->id_grade_cong' and a.ket = '$c->ket'",
                                             );
                                             $letter = chr(97 + $key);
 
@@ -131,6 +139,12 @@
                                                 ->where('id_grade', $g->id_grade_cong)
                                                 ->where('no_nota', '!=', $no_nota)
                                                 ->where('hrga', '!=', 0)
+                                                ->orderBy('no_nota', 'desc')
+                                                ->first();
+                                            $hrga_dlu_beras = DB::table('tb_cong')
+                                                ->where('id_grade', $g->id_grade_cong)
+                                                ->where('no_nota', '!=', $no_nota)
+                                                ->where('hrga_beras', '!=', 0)
                                                 ->orderBy('no_nota', 'desc')
                                                 ->first();
 
@@ -239,7 +253,81 @@
                                             <td
                                                 class="text-end {{ !empty($persen->gr) && $g->putih == 'Y' ? 'bg-gr_isi' : '' }}">
                                                 @if ($g->putih == 'Y')
-                                                    {{ empty($persen->gr) ? 0 : number_format(($persen->gr / ($c->gr + $c->gr_kuning)) * 100, 0) }}
+                                                    {{ empty($persen->gr) ? 0 : number_format(($persen->gr / ($c->gr + $c->gr_kuning + $c->gr_beras)) * 100, 0) }}
+                                                    %
+                                                @else
+                                                @endif
+
+                                            </td>
+                                            <td
+                                                class="text-end {{ !empty($persen->gr_beras) && $g->beras == 'Y' ? 'bg-gr_isi' : '' }}">
+                                                @if ($g->putih == 'Y')
+                                                    <input type="text"
+                                                        class="form-control inputan text-end gr{{ $no }} gr{{ $no }}{{ $letter }}"
+                                                        count="{{ $no }}"
+                                                        name="gr_beras{{ $no }}[]"
+                                                        hruf="{{ $letter }}"
+                                                        value="{{ empty($persen->gr_beras) ? '0' : $persen->gr_beras }}">
+                                                @else
+                                                    <input type="hidden"
+                                                        class="form-control inputan text-end gr_beras{{ $no }} gr_beras{{ $no }}{{ $letter }}"
+                                                        count="{{ $no }}"
+                                                        name="gr_beras{{ $no }}[]"
+                                                        hruf="{{ $letter }}"
+                                                        value="{{ empty($persen->gr_beras) ? '0' : $persen->gr_beras }}">
+                                                @endif
+
+                                            </td>
+
+                                            @if ($posisi_id == 1)
+                                                <td
+                                                    class="text-end {{ !empty($persen->gr_beras) && $g->beras == 'Y' ? 'bg-gr_isi' : '' }}">
+                                                    @if ($g->putih == 'Y')
+                                                        <input type="text"
+                                                            class="form-control text-end inputan harga_beras harga_beras{{ $no }}{{ $letter }}"
+                                                            count="{{ $no }}" hruf="{{ $letter }}"
+                                                            value="{{ empty($persen->hrga_beras) || $persen->hrga_beras == 0 ? $hrga_dlu_beras->hrga_beras ?? 0 : $persen->hrga_beras }}"
+                                                            name="harga_beras{{ $no }}[]">
+                                                    @else
+                                                        <input type="hidden"
+                                                            class="form-control text-end inputan harga_beras harga_beras{{ $no }}{{ $letter }}"
+                                                            count="{{ $no }}" hruf="{{ $letter }}"
+                                                            value="{{ empty($persen->hrga) || $persen->hrga == 0 ? $hrga_dlu->hrga ?? 0 : $persen->hrga }}"
+                                                            name="harga_beras{{ $no }}[]">
+                                                    @endif
+
+                                                    @php
+                                                        $gram = empty($persen->gr) ? '0' : $persen->gr;
+                                                        $hgra =
+                                                            empty($persen->hrga) || $persen->hrga == 0
+                                                                ? '0'
+                                                                : $persen->hrga;
+                                                    @endphp
+                                                    <input type="hidden"
+                                                        class="ttl_hrga_beras{{ $no }} ttl_hrga_beras{{ $no }}{{ $letter }}"
+                                                        value="{{ $gram * $hgra }}">
+                                                </td>
+                                            @else
+                                                <input type="hidden"
+                                                    class="form-control text-end inputan harga_beras harga_beras{{ $no }}{{ $letter }}"
+                                                    count="{{ $no }}" hruf="{{ $letter }}"
+                                                    value="{{ empty($persen->hrga) || $persen->hrga == 0 ? $hrga_dlu->hrga ?? 0 : $persen->hrga }}"
+                                                    name="harga_beras{{ $no }}[]">
+                                                @php
+                                                    $gram = empty($persen->gr) ? '0' : $persen->gr;
+                                                    $hgra =
+                                                        empty($persen->hrga) || $persen->hrga == 0
+                                                            ? '0'
+                                                            : $persen->hrga;
+                                                @endphp
+                                                <input type="hidden"
+                                                    class="ttl_hrga_beras{{ $no }} ttl_hrga_beras{{ $no }}{{ $letter }}"
+                                                    value="{{ $gram * $hgra }}">
+                                            @endif
+                                            <td
+                                                class="text-end {{ !empty($persen->gr_beras) && $g->beras == 'Y' ? 'bg-gr_isi' : '' }}">
+                                                @if ($g->beras == 'Y')
+                                                    {{ empty($persen->gr_beras) ? 0 : number_format(($persen->gr_beras / ($c->gr + $c->gr_kuning + $c->gr_beras)) * 100, 0) }}
                                                     %
                                                 @else
                                                 @endif
@@ -320,7 +408,7 @@
                                             <td
                                                 class="text-end {{ !empty($persen->gr_kuning) && $g->kuning == 'Y' ? 'bg-gr_isi' : '' }}">
                                                 @if ($g->kuning == 'Y')
-                                                    {{ empty($persen->gr_kuning) ? 0 : number_format(($persen->gr_kuning / ($c->gr + $c->gr_kuning)) * 100, 0) }}
+                                                    {{ empty($persen->gr_kuning) ? 0 : number_format(($persen->gr_kuning / ($c->gr + $c->gr_kuning + $c->gr_beras)) * 100, 0) }}
                                                     %
                                                 @else
                                                 @endif
@@ -334,18 +422,26 @@
                                                 empty($persen->hrga) || $persen->hrga == 0
                                                     ? $hrga_dlu->hrga ?? 0
                                                     : $persen->hrga;
+                                            $gram_beras = $persen->gr_beras ?? 0;
+                                            $hgra_beras =
+                                                empty($persen->hrga_beras) || $persen->hrga_beras == 0
+                                                    ? $hrga_dlu->hrga_beras ?? 0
+                                                    : $persen->hrga_beras;
                                             $gram_kuning = $persen->gr_kuning ?? 0;
                                             $hgra_kuning =
                                                 empty($persen->hrga_kuning) || $persen->hrga_kuning == 0
                                                     ? $hrga_dlu_kuning->hrga_kuning ?? 0
                                                     : $persen->hrga_kuning;
 
-                                            $gr += $gram + $gram_kuning;
-                                            $total_rp += $gram * $hgra + $gram_kuning * $hgra_kuning;
+                                            $gr += $gram + $gram_kuning + $gram_beras;
+                                            $total_rp +=
+                                                $gram * $hgra + $gram_kuning * $hgra_kuning + $gram_beras * $hgra_beras;
 
                                             $sub_gr += $gram;
+                                            $sub_gr_beras += $gram_beras;
                                             $sub_gr_kuning += $gram_kuning;
-                                            $sub_total_rp += $gram * $hgra + $gram_kuning * $hgra_kuning;
+                                            $sub_total_rp +=
+                                                $gram * $hgra + $gram_kuning * $hgra_kuning + $gram_beras * $hgra_beras;
                                         @endphp
                                     @endforeach
                                     {{-- @if ($prevKelompok !== null)
@@ -454,7 +550,7 @@
                                     <td>
                                         <input type="text"
                                             class="form-control gradndtotal_gram{{ $no }}" readonly
-                                            value="{{ $c->gr_kuning + $c->gr }}">
+                                            value="{{ $c->gr_kuning + $c->gr + $c->gr_beras }}">
                                     </td>
                                 </tr>
                                 <tr>

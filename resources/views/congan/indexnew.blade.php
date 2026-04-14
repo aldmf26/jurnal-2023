@@ -154,7 +154,8 @@
                             <tr>
                                 <th class="dhead">Kategori</th>
                                 <th class="dhead">Grade</th>
-                                <th class="dhead text-end" width="15%">Putih / Beras Gr</th>
+                                <th class="dhead text-end" width="15%">Putih Gr</th>
+                                <th class="dhead text-end" width="15%">Beras Gr</th>
                                 <th class="dhead text-end" width="15%">Kuning Gr</th>
                                 {{-- <th class="dhead text-end" width="15%">Harga</th> --}}
                                 {{-- <th class="dhead text-end">Putih Comp</th>
@@ -182,6 +183,16 @@
                                         @else
                                             <input type="hidden" class="form-control inputan gr gr1" count="1"
                                                 value="0" name="gr1[]">
+                                        @endif
+
+                                    </td>
+                                    <td class="text-end">
+                                        @if ($g->beras == 'Y')
+                                            <input type="text" class="form-control inputan gr_beras gr_beras1"
+                                                count="1" value="0" name="gr_beras1[]">
+                                        @else
+                                            <input type="hidden" class="form-control inputan gr_beras gr_beras1"
+                                                count="1" value="0" name="gr_beras1[]">
                                         @endif
 
                                     </td>
@@ -218,6 +229,15 @@
                                     <h6>Total Gram Putih &nbsp;</h6>
                                 </td>
                                 <td><input type="text" class="form-control total_gram1" readonly value="0">
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h6>Total Gram Beras &nbsp;</h6>
+                                </td>
+                                <td><input type="text" class="form-control total_gram_beras1" readonly
+                                        value="0">
                                 </td>
 
                             </tr>
@@ -329,6 +349,16 @@
                     }, 0);
 
                     $('.total_gram' + count).val(total);
+                });
+                $(document).on("keyup", ".gr_beras", function() {
+                    var count = $(this).attr('count');
+
+                    var total = $('.gr_beras' + count).toArray().reduce(function(acc, input) {
+                        var value = parseFloat($(input).val()) || 0;
+                        return acc + value;
+                    }, 0);
+
+                    $('.total_gram_beras' + count).val(total);
                 });
                 $(document).on("keyup", ".gr_kuning", function() {
                     var count = $(this).attr('count');
