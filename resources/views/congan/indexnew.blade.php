@@ -149,75 +149,79 @@
                             }
                         }
                     </style>
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th class="dhead">Kategori</th>
-                                <th class="dhead">Grade</th>
-                                <th class="dhead text-end" width="15%">Putih Gr</th>
-                                <th class="dhead text-end" width="15%">Beras Gr</th>
-                                <th class="dhead text-end" width="15%">Kuning Gr</th>
-                                {{-- <th class="dhead text-end" width="15%">Harga</th> --}}
-                                {{-- <th class="dhead text-end">Putih Comp</th>
-                                <th class="dhead text-end">Kuning Comp</th> --}}
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @php
-                                $prevKategori = null;
-                            @endphp
-                            @foreach ($grade as $key => $g)
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
                                 <tr>
-                                    <td>
-                                        @if ($g->nm_kategori !== $prevKategori)
-                                            {{ $g->nm_kategori }}
-                                            @php $prevKategori = $g->nm_kategori; @endphp
-                                        @endif
-                                    </td>
-                                    <input type="hidden" name="id_grade1[]" value="{{ $g->id_grade_cong }}">
-                                    <td>{{ $g->nm_grade }}</td>
-                                    <td class="text-end">
-                                        @if ($g->putih == 'Y')
-                                            <input type="text" class="form-control inputan gr gr1" count="1"
-                                                value="0" name="gr1[]">
-                                        @else
-                                            <input type="hidden" class="form-control inputan gr gr1" count="1"
-                                                value="0" name="gr1[]">
-                                        @endif
+                                    <th class="dhead">Kategori</th>
+                                    <th class="dhead">Grade</th>
+                                    <th class="dhead text-end" width="15%">Putih Gr</th>
+                                    <th class="dhead text-end" width="15%">Beras Gr</th>
+                                    <th class="dhead text-end" width="15%">Kuning Gr</th>
+                                    {{-- <th class="dhead text-end" width="15%">Harga</th> --}}
+                                    {{-- <th class="dhead text-end">Putih Comp</th>
+                                <th class="dhead text-end">Kuning Comp</th> --}}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @php
+                                    $prevKategori = null;
+                                @endphp
+                                @foreach ($grade as $key => $g)
+                                    <tr>
+                                        <td>
+                                            @if ($g->nm_kategori !== $prevKategori)
+                                                {{ $g->nm_kategori }}
+                                                @php $prevKategori = $g->nm_kategori; @endphp
+                                            @endif
+                                        </td>
+                                        <input type="hidden" name="id_grade1[]" value="{{ $g->id_grade_cong }}">
+                                        <td>{{ $g->nm_grade }}</td>
+                                        <td class="text-end">
+                                            @if ($g->putih == 'Y')
+                                                <input type="text" class="form-control inputan gr gr1" count="1"
+                                                    value="0" name="gr1[]">
+                                            @else
+                                                <input type="hidden" class="form-control inputan gr gr1"
+                                                    count="1" value="0" name="gr1[]">
+                                            @endif
 
-                                    </td>
-                                    <td class="text-end">
-                                        @if ($g->beras == 'Y')
-                                            <input type="text" class="form-control inputan gr_beras gr_beras1"
-                                                count="1" value="0" name="gr_beras1[]">
-                                        @else
-                                            <input type="hidden" class="form-control inputan gr_beras gr_beras1"
-                                                count="1" value="0" name="gr_beras1[]">
-                                        @endif
+                                        </td>
+                                        <td class="text-end">
+                                            @if ($g->beras == 'Y')
+                                                <input type="text" class="form-control inputan gr_beras gr_beras1"
+                                                    count="1" value="0" name="gr_beras1[]">
+                                            @else
+                                                <input type="hidden" class="form-control inputan gr_beras gr_beras1"
+                                                    count="1" value="0" name="gr_beras1[]">
+                                            @endif
 
-                                    </td>
-                                    <td class="text-end">
-                                        @if ($g->kuning == 'Y')
-                                            <input type="text" class="form-control inputan gr_kuning gr_kuning1"
-                                                count="1" value="0" name="gr_kuning1[]">
-                                        @else
-                                            <input type="hidden" class="form-control inputan gr_kuning gr_kuning1"
-                                                count="1" value="0" name="gr_kuning1[]">
-                                        @endif
+                                        </td>
+                                        <td class="text-end">
+                                            @if ($g->kuning == 'Y')
+                                                <input type="text"
+                                                    class="form-control inputan gr_kuning gr_kuning1" count="1"
+                                                    value="0" name="gr_kuning1[]">
+                                            @else
+                                                <input type="hidden"
+                                                    class="form-control inputan gr_kuning gr_kuning1" count="1"
+                                                    value="0" name="gr_kuning1[]">
+                                            @endif
 
-                                    </td>
-                                    {{-- <td class="text-end">
+                                        </td>
+                                        {{-- <td class="text-end">
                                         0
                                     </td>
                                     <td class="text-end">
                                         0
                                     </td> --}}
 
-                                </tr>
-                            @endforeach
-                        </tbody>
+                                    </tr>
+                                @endforeach
+                            </tbody>
 
-                    </table>
+                        </table>
+                    </div>
                 </div>
                 <br>
                 <br>
