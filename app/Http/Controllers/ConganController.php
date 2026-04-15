@@ -784,9 +784,9 @@ class ConganController extends Controller
                 $pemilik = $currentSheet->getCell('C2')->getValue();
                 $ket = $currentSheet->getCell('D2')->getValue();
                 $persen_air = $currentSheet->getCell('E2')->getValue();
-                $harga_beli = $currentSheet->getCell('L5')->getValue();
+                $harga_beli = $currentSheet->getCell('N5')->getValue();
                 $no_nota = $currentSheet->getCell('A2')->getValue();
-                $hrga_fix = $currentSheet->getCell('L8')->getValue();
+                $hrga_fix = $currentSheet->getCell('N8')->getValue();
 
                 $data = [
                     'selesai' => $hrga_fix
