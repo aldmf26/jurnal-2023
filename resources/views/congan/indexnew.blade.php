@@ -155,8 +155,8 @@
                                 <tr>
                                     <th class="dhead">Kategori</th>
                                     <th class="dhead">Grade</th>
-                                    <th class="dhead text-end" width="15%">Putih Gr</th>
-                                    <th class="dhead text-end" width="15%">Beras Gr</th>
+                                    <th class="dhead text-end" width="15%">Putih/Beras Gr</th>
+                                    {{-- <th class="dhead text-end" width="15%"></th> --}}
                                     <th class="dhead text-end" width="15%">Kuning Gr</th>
                                     {{-- <th class="dhead text-end" width="15%">Harga</th> --}}
                                     {{-- <th class="dhead text-end">Putih Comp</th>
@@ -187,7 +187,7 @@
                                             @endif
 
                                         </td>
-                                        <td class="text-end">
+                                        {{-- <td class="text-end">
                                             @if ($g->beras == 'Y')
                                                 <input type="text" class="form-control inputan gr_beras gr_beras1"
                                                     count="1" value="0" name="gr_beras1[]">
@@ -196,7 +196,7 @@
                                                     count="1" value="0" name="gr_beras1[]">
                                             @endif
 
-                                        </td>
+                                        </td> --}}
                                         <td class="text-end">
                                             @if ($g->kuning == 'Y')
                                                 <input type="text"
@@ -236,7 +236,7 @@
                                 </td>
 
                             </tr>
-                            <tr>
+                            {{-- <tr>
                                 <td>
                                     <h6>Total Gram Beras &nbsp;</h6>
                                 </td>
@@ -244,7 +244,7 @@
                                         value="0">
                                 </td>
 
-                            </tr>
+                            </tr> --}}
                             <tr>
                                 <td>
                                     <h6>Total Gram Kuning &nbsp;</h6>

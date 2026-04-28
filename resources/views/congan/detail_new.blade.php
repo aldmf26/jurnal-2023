@@ -85,18 +85,18 @@
                                     <tr>
                                         <th class="dhead">Kategori</th>
                                         <th class="dhead">Grade</th>
-                                        <th class="dhead text-end" width="12%">Putih Gr</th>
+                                        <th class="dhead text-end" width="12%">Putih/Beras Gr</th>
                                         @if ($posisi_id == 1)
-                                            <th class="dhead text-end" width="12%">Putih Rp/gr</th>
+                                            <th class="dhead text-end" width="12%">Putih/Beras Rp/gr</th>
                                         @else
                                         @endif
                                         <th class="dhead text-end">Comp</th>
-                                        <th class="dhead text-end" width="12%">Beras Gr</th>
+                                        {{-- <th class="dhead text-end" width="12%">Beras Gr</th>
                                         @if ($posisi_id == 1)
                                             <th class="dhead text-end" width="12%">Beras Rp/gr</th>
                                         @else
                                         @endif
-                                        <th class="dhead text-end">Comp</th>
+                                        <th class="dhead text-end">Comp</th> --}}
                                         <th class="dhead text-end" width="12%">Kuning Gr</th>
                                         @if ($posisi_id == 1)
                                             <th class="dhead text-end" width="12%">Kuning Rp/gr</th>
@@ -114,7 +114,7 @@
                                     @php
                                         $prevKelompok = null;
                                         $sub_gr = 0;
-                                        $sub_gr_beras = 0;
+                                        // $sub_gr_beras = 0;
                                         $sub_gr_kuning = 0;
                                         $sub_total_rp = 0;
 
@@ -141,12 +141,12 @@
                                                 ->where('hrga', '!=', 0)
                                                 ->orderBy('no_nota', 'desc')
                                                 ->first();
-                                            $hrga_dlu_beras = DB::table('tb_cong')
-                                                ->where('id_grade', $g->id_grade_cong)
-                                                ->where('no_nota', '!=', $no_nota)
-                                                ->where('hrga_beras', '!=', 0)
-                                                ->orderBy('no_nota', 'desc')
-                                                ->first();
+                                            // $hrga_dlu_beras = DB::table('tb_cong')
+                                            //     ->where('id_grade', $g->id_grade_cong)
+                                            //     ->where('no_nota', '!=', $no_nota)
+                                            //     ->where('hrga_beras', '!=', 0)
+                                            //     ->orderBy('no_nota', 'desc')
+                                            //     ->first();
 
                                             $hrga_dlu_kuning = DB::table('tb_cong')
                                                 ->where('id_grade', $g->id_grade_cong)
@@ -259,7 +259,7 @@
                                                 @endif
 
                                             </td>
-                                            <td
+                                            {{-- <td
                                                 class="text-end {{ !empty($persen->gr_beras) && $g->beras == 'Y' ? 'bg-gr_isi' : '' }}">
                                                 @if ($g->putih == 'Y')
                                                     <input type="text"
@@ -277,9 +277,9 @@
                                                         value="{{ empty($persen->gr_beras) ? '0' : $persen->gr_beras }}">
                                                 @endif
 
-                                            </td>
+                                            </td> --}}
 
-                                            @if ($posisi_id == 1)
+                                            {{-- @if ($posisi_id == 1)
                                                 <td
                                                     class="text-end {{ !empty($persen->gr_beras) && $g->beras == 'Y' ? 'bg-gr_isi' : '' }}">
                                                     @if ($g->putih == 'Y')
@@ -332,7 +332,7 @@
                                                 @else
                                                 @endif
 
-                                            </td>
+                                            </td> --}}
                                             <td
                                                 class="text-end {{ !empty($persen->gr_kuning) && $g->kuning == 'Y' ? 'bg-gr_isi' : '' }}">
                                                 @if ($g->kuning == 'Y')
@@ -422,26 +422,24 @@
                                                 empty($persen->hrga) || $persen->hrga == 0
                                                     ? $hrga_dlu->hrga ?? 0
                                                     : $persen->hrga;
-                                            $gram_beras = $persen->gr_beras ?? 0;
-                                            $hgra_beras =
-                                                empty($persen->hrga_beras) || $persen->hrga_beras == 0
-                                                    ? $hrga_dlu->hrga_beras ?? 0
-                                                    : $persen->hrga_beras;
+                                            // $gram_beras = $persen->gr_beras ?? 0;
+                                            // $hgra_beras =
+                                            //     empty($persen->hrga_beras) || $persen->hrga_beras == 0
+                                            //         ? $hrga_dlu->hrga_beras ?? 0
+                                            //         : $persen->hrga_beras;
                                             $gram_kuning = $persen->gr_kuning ?? 0;
                                             $hgra_kuning =
                                                 empty($persen->hrga_kuning) || $persen->hrga_kuning == 0
                                                     ? $hrga_dlu_kuning->hrga_kuning ?? 0
                                                     : $persen->hrga_kuning;
 
-                                            $gr += $gram + $gram_kuning + $gram_beras;
-                                            $total_rp +=
-                                                $gram * $hgra + $gram_kuning * $hgra_kuning + $gram_beras * $hgra_beras;
+                                            $gr += $gram + $gram_kuning;
+                                            $total_rp += $gram * $hgra + $gram_kuning * $hgra_kuning;
 
                                             $sub_gr += $gram;
-                                            $sub_gr_beras += $gram_beras;
+                                            // $sub_gr_beras += $gram_beras;
                                             $sub_gr_kuning += $gram_kuning;
-                                            $sub_total_rp +=
-                                                $gram * $hgra + $gram_kuning * $hgra_kuning + $gram_beras * $hgra_beras;
+                                            $sub_total_rp += $gram * $hgra + $gram_kuning * $hgra_kuning;
                                         @endphp
                                     @endforeach
                                     {{-- @if ($prevKelompok !== null)
@@ -550,7 +548,7 @@
                                     <td>
                                         <input type="text"
                                             class="form-control gradndtotal_gram{{ $no }}" readonly
-                                            value="{{ $c->gr_kuning + $c->gr + $c->gr_beras }}">
+                                            value="{{ $c->gr_kuning + $c->gr }}">
                                     </td>
                                 </tr>
                                 <tr>

@@ -147,18 +147,18 @@ class ConganController extends Controller
             $count = $r->count;
             $ttl_gr = 0;
             $ttl_gr_kuning = 0;
-            $ttl_gr_beras = 0;
+            // $ttl_gr_beras = 0;
 
             $id_grade = $r->{"id_grade" . $count[$y]};
             $gr = $r->{"gr" . $count[$y]};
-            $gr_beras = $r->{"gr_beras" . $count[$y]};
+            // $gr_beras = $r->{"gr_beras" . $count[$y]};
             $gr_kuning = $r->{"gr_kuning" . $count[$y]};
             $harga = $r->{"harga" . $count[$y]};
 
             for ($x = 0; $x < count($id_grade); $x++) {
                 $ttl_gr += $gr[$x];
                 $ttl_gr_kuning += $gr_kuning[$x];
-                $ttl_gr_beras += $gr_beras[$x];
+                // $ttl_gr_beras += $gr_beras[$x];
             }
 
             $data = [
@@ -169,7 +169,7 @@ class ConganController extends Controller
                 'hrga_beli' => $r->hrga_beli[$y],
                 'no_nota' => $urutan,
                 'gr' => $ttl_gr,
-                'gr_beras' => $ttl_gr_beras,
+                // 'gr_beras' => $ttl_gr_beras,
                 'gr_kuning' => $ttl_gr_kuning
 
             ];
@@ -193,7 +193,7 @@ class ConganController extends Controller
                         'tgl' => $r->tgl,
                         'id_grade' => $id_grade[$x],
                         'gr' => $gr[$x],
-                        'gr_beras' => $gr_beras[$x],
+                        'gr_beras' => 0,
                         'gr_kuning' =>  $gr_kuning[$x],
                         'hrga' => 0,
                         'hrga_kuning' =>  0,
@@ -230,22 +230,22 @@ class ConganController extends Controller
                 $count = $r->count;
                 $ttl_gr = 0;
                 $ttl_gr_kuning = 0;
-                $ttl_gr_beras = 0;
+                // $ttl_gr_beras = 0;
 
                 $id_grade = $r->{"id_grade" . $count[$y]};
                 $gr = $r->{"gr" . $count[$y]};
-                $gr_beras = $r->{"gr_beras" . $count[$y]};
+                // $gr_beras = $r->{"gr_beras" . $count[$y]};
                 $gr_kuning = $r->{"gr_kuning" . $count[$y]};
 
 
                 $harga = $r->{"harga" . $count[$y]};
-                $harga_beras = $r->{"harga_beras" . $count[$y]};
+                // $harga_beras = $r->{"harga_beras" . $count[$y]};
                 $harga_kuning = $r->{"harga_kuning" . $count[$y]};
                 $nm_grade = $r->{"nm_grade" . $count[$y]};
                 for ($x = 0; $x < count($id_grade); $x++) {
                     $ttl_gr += $gr[$x];
                     $ttl_gr_kuning += $gr_kuning[$x];
-                    $ttl_gr_beras += $gr_beras[$x];
+                    // $ttl_gr_beras += $gr_beras[$x];
                 }
                 $congan_selesai = DB::table('invoice_congan')->where('id_invoice_congan', $r->id_invoice_congan[$y])->first();
 
@@ -261,7 +261,7 @@ class ConganController extends Controller
                     'hrga_beli' => $r->hrga_beli[$y],
                     'no_nota' => $urutan,
                     'gr' => $ttl_gr,
-                    'gr_beras' => $ttl_gr_beras,
+                    'gr_beras' => 0,
                     'gr_kuning' => $ttl_gr_kuning,
                     'selesai' => $selesai,
 
@@ -283,8 +283,8 @@ class ConganController extends Controller
                         'id_grade' => $id_grade[$x],
                         'gr' => $gr[$x],
                         'hrga' => $selesai == 'Y' ? $harga[$x] : 0,
-                        'gr_beras' => $gr_beras[$x],
-                        'hrga_beras' => $selesai == 'Y' ? $harga_beras[$x] : 0,
+                        'gr_beras' => 0,
+                        'hrga_beras' =>  0,
                         'gr_kuning' => $gr_kuning[$x],
                         'hrga_kuning' => $selesai == 'Y' ? $harga_kuning[$x] : 0,
                         'urutan' => $urutan,
@@ -633,7 +633,7 @@ class ConganController extends Controller
         $invoice = DB::table('invoice_congan')->where('no_nota', $r->no_nota)->first();
 
         $sheet1->getStyle("A1:E2")->applyFromArray($style_atas);
-        $sheet1->getStyle("A4:L4")->applyFromArray($style_atas);
+        $sheet1->getStyle("A4:I4")->applyFromArray($style_atas);
 
         $sheet1->setCellValue('A1', 'No Nota');
         $sheet1->setCellValue('A2', $r->no_nota);
@@ -655,15 +655,15 @@ class ConganController extends Controller
         $sheet1->setCellValue('A4', 'Kategori');
         $sheet1->setCellValue('B4', 'ID Grade');
         $sheet1->setCellValue('C4', 'Grade');
-        $sheet1->setCellValue('D4', 'Putih  Gr');
-        $sheet1->setCellValue('E4', 'Putih  Rp/gr');
+        $sheet1->setCellValue('D4', 'Putih/Beras  Gr');
+        $sheet1->setCellValue('E4', 'Putih/Beras  Rp/gr');
         $sheet1->setCellValue('F4', 'Comp');
-        $sheet1->setCellValue('G4', 'Beras  Gr');
-        $sheet1->setCellValue('H4', 'Beras  Rp/gr');
+        // $sheet1->setCellValue('G4', 'Beras  Gr');
+        // $sheet1->setCellValue('H4', 'Beras  Rp/gr');
+        // $sheet1->setCellValue('I4', 'Comp');
+        $sheet1->setCellValue('G4', 'Kuning Gr');
+        $sheet1->setCellValue('H4', 'Kuning Rp/gr');
         $sheet1->setCellValue('I4', 'Comp');
-        $sheet1->setCellValue('J4', 'Kuning Gr');
-        $sheet1->setCellValue('K4', 'Kuning Rp/gr');
-        $sheet1->setCellValue('L4', 'Comp');
 
 
 
@@ -687,19 +687,19 @@ class ConganController extends Controller
                 ->where('hrga', '!=', 0)
                 ->orderBy('no_nota', 'desc')
                 ->first();
-            $hrga_dlu_beras = DB::table('tb_cong')
-                ->where('id_grade', $c->id_grade_cong)
-                ->where('no_nota', '!=', $r->no_nota)
-                ->where('hrga_beras', '!=', 0)
-                ->orderBy('no_nota', 'desc')
-                ->first();
+            // $hrga_dlu_beras = DB::table('tb_cong')
+            //     ->where('id_grade', $c->id_grade_cong)
+            //     ->where('no_nota', '!=', $r->no_nota)
+            //     ->where('hrga_beras', '!=', 0)
+            //     ->orderBy('no_nota', 'desc')
+            //     ->first();
             $hrga_dlu_kuning = DB::table('tb_cong')
                 ->where('id_grade', $c->id_grade_cong)
                 ->where('no_nota', '!=', $r->no_nota)
                 ->where('hrga_kuning', '!=', 0)
                 ->orderBy('no_nota', 'desc')
                 ->first();
-            $ttl_gr += ($persen->gr ?? 0) + ($persen->gr_kuning ?? 0) + ($persen->gr_beras ?? 0);
+            $ttl_gr += ($persen->gr ?? 0) + ($persen->gr_kuning ?? 0);
             $hgra =
                 empty($persen->hrga) || $persen->hrga == 0
                 ? $hrga_dlu->hrga ?? 0
@@ -712,35 +712,35 @@ class ConganController extends Controller
                 empty($persen->hrga_kuning) || $persen->hrga_kuning == 0
                 ? $hrga_dlu->hrga_kuning ?? 0
                 : $persen->hrga_kuning;
-            $total_rp += ($persen->gr ?? 0) * $hgra + ($persen->gr_kuning ?? 0) * $hgra_kuning + ($persen->gr_beras ?? 0) * $hgra_beras;
+            $total_rp += ($persen->gr ?? 0) * $hgra + ($persen->gr_kuning ?? 0) * $hgra_kuning;
             $sheet1->setCellValue('A' . $kolom, $c->nm_kategori);
             $sheet1->setCellValue('B' . $kolom, $c->id_grade_cong);
             $sheet1->setCellValue('C' . $kolom, $c->nm_grade);
             $sheet1->setCellValue('D' . $kolom, $persen->gr ?? 0);
             $sheet1->setCellValue('E' . $kolom, empty($persen->hrga) || $persen->hrga == 0 ? $hrga_dlu->hrga ?? 0 : $persen->hrga);
             $sheet1->setCellValue('F' . $kolom, empty($persen->gr) ? 0 : ($persen->gr / ($invoice->gr + $invoice->gr_kuning)) * 100);
-            $sheet1->setCellValue('G' . $kolom, $persen->gr_beras ?? 0);
-            $sheet1->setCellValue('H' . $kolom, empty($persen->hrga_beras) || $persen->hrga_beras == 0 ? $hrga_dlu_beras->hrga_beras ?? 0 : $persen->hrga_beras);
-            $sheet1->setCellValue('I' . $kolom, empty($persen->gr_beras) ? 0 : ($persen->gr_beras / ($invoice->gr + $invoice->gr_beras)) * 100);
-            $sheet1->setCellValue('J' . $kolom, $persen->gr_kuning ?? 0);
-            $sheet1->setCellValue('K' . $kolom, empty($persen->hrga_kuning) || $persen->hrga_kuning == 0 ? $hrga_dlu_kuning->hrga_kuning ?? 0 : $persen->hrga_kuning);
-            $sheet1->setCellValue('L' . $kolom, empty($persen->gr_kuning) ? 0 : ($persen->gr_kuning / ($invoice->gr + $invoice->gr_kuning)) * 100);
+            // $sheet1->setCellValue('G' . $kolom, $persen->gr_beras ?? 0);
+            // $sheet1->setCellValue('H' . $kolom, empty($persen->hrga_beras) || $persen->hrga_beras == 0 ? $hrga_dlu_beras->hrga_beras ?? 0 : $persen->hrga_beras);
+            // $sheet1->setCellValue('I' . $kolom, empty($persen->gr_beras) ? 0 : ($persen->gr_beras / ($invoice->gr + $invoice->gr_beras)) * 100);
+            $sheet1->setCellValue('G' . $kolom, $persen->gr_kuning ?? 0);
+            $sheet1->setCellValue('H' . $kolom, empty($persen->hrga_kuning) || $persen->hrga_kuning == 0 ? $hrga_dlu_kuning->hrga_kuning ?? 0 : $persen->hrga_kuning);
+            $sheet1->setCellValue('I' . $kolom, empty($persen->gr_kuning) ? 0 : ($persen->gr_kuning / ($invoice->gr + $invoice->gr_kuning)) * 100);
 
             $kolom++;
         }
-        $sheet1->getStyle('A5:L' . $kolom - 1)->applyFromArray($style);
+        $sheet1->getStyle('A5:I' . $kolom - 1)->applyFromArray($style);
 
-        $sheet1->setCellValue('N4', 'Total Gram');
-        $sheet1->setCellValue('N5', 'Harga Beli');
-        $sheet1->setCellValue('N6', 'Harga' . 100 - $invoice->persen_air . '%');
-        $sheet1->setCellValue('N7', 'Harga' . 100 . '%');
-        $sheet1->setCellValue('N8', 'Harga FIx');
+        $sheet1->setCellValue('K4', 'Total Gram');
+        $sheet1->setCellValue('K5', 'Harga Beli');
+        $sheet1->setCellValue('K6', 'Harga' . 100 - $invoice->persen_air . '%');
+        $sheet1->setCellValue('K7', 'Harga' . 100 . '%');
+        $sheet1->setCellValue('K8', 'Harga FIx');
 
-        $sheet1->setCellValue('O4', $ttl_gr);
-        $sheet1->setCellValue('O5', $invoice->hrga_beli);
-        $sheet1->setCellValue('O6', round(($total_rp / $ttl_gr) * ((100 - $invoice->persen_air) / 100), 0));
-        $sheet1->setCellValue('O7', round($total_rp / $ttl_gr, 0));
-        $sheet1->setCellValue('O8', $invoice->selesai);
+        $sheet1->setCellValue('L4', $ttl_gr);
+        $sheet1->setCellValue('L5', $invoice->hrga_beli);
+        $sheet1->setCellValue('L6', round(($total_rp / $ttl_gr) * ((100 - $invoice->persen_air) / 100), 0));
+        $sheet1->setCellValue('L7', round($total_rp / $ttl_gr, 0));
+        $sheet1->setCellValue('L8', $invoice->selesai);
 
 
         $namafile = "Data Congan.xlsx";
@@ -784,9 +784,9 @@ class ConganController extends Controller
                 $pemilik = $currentSheet->getCell('C2')->getValue();
                 $ket = $currentSheet->getCell('D2')->getValue();
                 $persen_air = $currentSheet->getCell('E2')->getValue();
-                $harga_beli = $currentSheet->getCell('O5')->getValue();
+                $harga_beli = $currentSheet->getCell('L5')->getValue();
                 $no_nota = $currentSheet->getCell('A2')->getValue();
-                $hrga_fix = $currentSheet->getCell('O8')->getValue();
+                $hrga_fix = $currentSheet->getCell('L8')->getValue();
 
                 $data = [
                     'selesai' => $hrga_fix
@@ -795,7 +795,7 @@ class ConganController extends Controller
 
 
                 $gr = 0;
-                $gr_beras = 0;
+                // $gr_beras = 0;
                 $gr_kuning = 0;
                 $congan_selesai = DB::table('invoice_congan')->where('no_nota', $no_nota)->first();
                 foreach ($currentSheet->getRowIterator() as $rowIndex => $row) {
@@ -815,10 +815,10 @@ class ConganController extends Controller
                         'id_grade' => $rowData[1],
                         'gr' => $rowData[3],
                         'hrga' => $congan_selesai->selesai == 'Y' ? $rowData[4] : 0,
-                        'gr_beras' => $rowData[6],
-                        'hrga_beras' => $congan_selesai->selesai == 'Y' ? $rowData[7] : 0,
-                        'gr_kuning' => $rowData[9],
-                        'hrga_kuning' => $congan_selesai->selesai == 'Y' ? $rowData[10] : 0,
+                        'gr_beras' => 0,
+                        'hrga_beras' => 0,
+                        'gr_kuning' => $rowData[6],
+                        'hrga_kuning' => $congan_selesai->selesai == 'Y' ? $rowData[7] : 0,
                         'urutan' => $no_nota,
                         'no_nota' => $no_nota,
                         'ket' => $ket,
@@ -827,8 +827,8 @@ class ConganController extends Controller
                     DB::table('tb_cong')->insert($data);
 
                     $gr += $rowData[3];
-                    $gr_beras += $rowData[6];
-                    $gr_kuning += $rowData[9];
+                    // $gr_beras += $rowData[6];
+                    $gr_kuning += $rowData[6];
                 }
                 $data = [
                     'tgl' => $tgl,
@@ -838,7 +838,7 @@ class ConganController extends Controller
                     'hrga_beli' => $harga_beli,
                     'no_nota' => $no_nota,
                     'gr' => $gr,
-                    'gr_beras' => $gr_beras,
+                    'gr_beras' => 0,
                     'gr_kuning' => $gr_kuning,
                     'selesai' => $hrga_fix
                 ];
