@@ -764,8 +764,8 @@ class ConganController extends Controller
         $lastkolom = $kolom + 1;
         $kolom = $lastkolom + 1;
         $prevKategori = null;
-        $ttl_gr = 0;
-        $total_rp = 0;
+        $ttl_gr2 = 0;
+        $total_rp2 = 0;
         foreach ($grade2 as $c) {
 
             $persen = DB::selectOne(
@@ -790,7 +790,7 @@ class ConganController extends Controller
                 ->where('hrga_kuning', '!=', 0)
                 ->orderBy('no_nota', 'desc')
                 ->first();
-            $ttl_gr += ($persen->gr ?? 0) + ($persen->gr_kuning ?? 0);
+            $ttl_gr2 += ($persen->gr ?? 0) + ($persen->gr_kuning ?? 0);
             $hgra =
                 empty($persen->hrga) || $persen->hrga == 0
                 ? $hrga_dlu->hrga ?? 0
@@ -803,7 +803,7 @@ class ConganController extends Controller
                 empty($persen->hrga_kuning) || $persen->hrga_kuning == 0
                 ? $hrga_dlu->hrga_kuning ?? 0
                 : $persen->hrga_kuning;
-            $total_rp += ($persen->gr ?? 0) * $hgra + ($persen->gr_kuning ?? 0) * $hgra_kuning;
+            $total_rp2 += ($persen->gr ?? 0) * $hgra + ($persen->gr_kuning ?? 0) * $hgra_kuning;
 
             $sheet1->setCellValue('A' . $kolom, $c->nm_kategori);
             $sheet1->setCellValue('B' . $kolom, $c->id_grade_cong);
@@ -833,8 +833,8 @@ class ConganController extends Controller
 
         $sheet1->setCellValue('L4', $ttl_gr);
         $sheet1->setCellValue('L5', $invoice->hrga_beli);
-        $sheet1->setCellValue('L6', $ttl_gr > 0 ? round(($total_rp / $ttl_gr) * ((100 - $invoice->persen_air) / 100), 0) : 0);
-        $sheet1->setCellValue('L7', $ttl_gr > 0 ? round($total_rp / $ttl_gr, 0) : 0);
+        $sheet1->setCellValue('L6', $ttl_gr > 0 ? round((($total_rp + $total_rp2) / ($ttl_gr + $ttl_gr2)) * ((100 - $invoice->persen_air) / 100), 0) : 0);
+        $sheet1->setCellValue('L7', $ttl_gr > 0 ? round(($total_rp + $total_rp2) / ($ttl_gr + $ttl_gr2), 0) : 0);
         $sheet1->setCellValue('L8', $invoice->selesai);
 
 
