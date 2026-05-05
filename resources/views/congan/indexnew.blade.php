@@ -156,7 +156,7 @@
                         }
                     </style>
                     <div class="table-responsive">
-                        <table class="table table-bordered" style="font-size: 10px">
+                        <table class="table table-bordered" style="font-size: 12px">
                             <thead>
                                 <tr>
                                     <th class="dhead">Kategori</th>
