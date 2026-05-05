@@ -804,6 +804,7 @@ class ConganController extends Controller
                 ? $hrga_dlu->hrga_kuning ?? 0
                 : $persen->hrga_kuning;
             $total_rp += ($persen->gr ?? 0) * $hgra + ($persen->gr_kuning ?? 0) * $hgra_kuning;
+
             $sheet1->setCellValue('A' . $kolom, $c->nm_kategori);
             $sheet1->setCellValue('B' . $kolom, $c->id_grade_cong);
             $sheet1->setCellValue('C' . $kolom, $c->nm_grade);
