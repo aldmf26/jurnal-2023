@@ -710,7 +710,8 @@
                                         <h6>Harga(100%) </h6>
                                     </td>
                                     <td><input type="text" class="form-control hrga_persen{{ $no }}"
-                                            value="Rp. {{ number_format($total_rp / $gr, 0) }}" readonly></td>
+                                            value="Rp. {{ $gr > 0 ? number_format($total_rp / $gr, 0) : 0 }}"
+                                            readonly></td>
                                     <input type="hidden" name="count[]" value="{{ $no }}">
                                 </tr>
                             </table>
