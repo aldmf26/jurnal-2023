@@ -139,7 +139,8 @@
                         @media (min-width: 768px) {
                             .inputan {
                                 width: auto !important;
-                                /* atau misalnya 150px */
+                                height: 30px;
+                                /* Atur sesuai keinginan, misal 30px */
                             }
                         }
 
