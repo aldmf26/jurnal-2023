@@ -7,20 +7,13 @@
             <div class="col-lg-6">
                 <x-theme.button modal="Y" idModal="tambah" teks="Tambah Data" icon="fa-plus" addClass="float-end" />
                 <a href="{{ route('congan.export', ['tgl1' => $tgl1, 'tgl2' => $tgl2]) }}"
-                    class="btn  btn-success float-end me-2 icon icon-left"><i class="fas fa-file-excel"></i> Export</a>
+                    class="btn btn-success float-end me-2 icon icon-left"><i class="fas fa-file-excel"></i> Export</a>
                 <x-theme.btn_filter title="Filter Pembelian Bk" />
             </div>
         </div>
     </x-slot>
     <x-slot name="cardBody">
-        {{-- @include('pembelian_bk.nav') --}}
-
         @csrf
-        {{-- @if (!empty($approve))
-                <button class="float-end btn btn-primary btn-sm"><i class="fas fa-check"></i> Approve</button>
-                <br>
-                <br>
-            @endif --}}
         <section class="row">
             <div class="col-lg-8"></div>
             <div class="col-lg-4 mb-2">
@@ -28,7 +21,6 @@
                     <td>Pencarian :</td>
                     <td><input type="text" id="pencarian" class="form-control float-end"></td>
                 </table>
-
             </div>
 
             <table class="table table-hover table-bordered" id="tableSearch">
@@ -67,11 +59,8 @@
                             <td>{{ number_format($c->hrga_beli, 0) }}</td>
                             <td>{{ empty($totalGr) ? 0 : number_format(($c->ttl / $totalGr) * ((100 - $c->persen_air) / 100)) }}
                             </td>
-                            <td>{{ empty($totalGr) ? 0 : number_format($c->ttl / $totalGr) }}
-                            </td>
+                            <td>{{ empty($totalGr) ? 0 : number_format($c->ttl / $totalGr) }}</td>
                             <td>{{ number_format($totalGr, 0) }}</td>
-
-                            {{-- ⭐ PERBAIKAN: Tidak ada query di dalam loop --}}
                             @foreach ($grade as $g)
                                 @php
                                     $gradeGr = $gradeData[$notaKetKey][$g->id_grade_cong] ?? 0;
@@ -79,7 +68,6 @@
                                 @endphp
                                 <td>{{ $persen == 0 ? '0' : number_format($persen, 2) }}</td>
                             @endforeach
-
                             <td>{{ 100 - $c->persen_air }}</td>
                             <td style="white-space: nowrap">
                                 @if (empty($c->no_invoice_bk))
@@ -102,6 +90,46 @@
         <style>
             .modal-lg-mix {
                 max-width: 1300px;
+            }
+
+            /* Scope hanya ke tabel grade di dalam modal */
+            .modal .table-grade td,
+            .modal .table-grade th {
+                padding: 4px 8px !important;
+                vertical-align: middle !important;
+                font-size: 13px !important;
+            }
+
+            .inputan {
+                height: 28px !important;
+                padding: 2px 6px !important;
+                font-size: 13px !important;
+                text-align: right;
+
+            }
+
+            @media (max-width: 767.98px) {
+
+                .modal .table-grade td,
+                .modal .table-grade th {
+                    padding: 3px 5px !important;
+                    font-size: 12px !important;
+                }
+
+                .inputan {
+                    width: 70px !important;
+                    height: 20px !important;
+                    font-size: 10px !important;
+                }
+
+                .td-empty {
+                    padding: 2px !important;
+                    line-height: 1 !important;
+                }
+
+                .label_hilang {
+                    display: none;
+                }
             }
         </style>
 
@@ -126,61 +154,20 @@
                         <input type="text" class="form-control" value="0" name="persen_air[]" required>
                     </div>
                 </div>
+
                 <div class="row mt-4">
-                    <style>
-                        @media only screen and (max-width: 767px) {
-
-                            .label_hilang {
-                                display: none
-                            }
-                        }
-                    </style>
-                    <style>
-                        @media (min-width: 768px) {
-                            .inputan {
-                                width: 80px !important;
-                                height: 24px !important;
-                                padding: 2px 4px !important;
-                                font-size: 12px !important;
-                                text-align: right;
-                            }
-                        }
-
-                        @media (max-width: 767.98px) {
-                            .inputan {
-                                width: 70px !important;
-                                height: 26px !important;
-                                padding: 2px 4px !important;
-                                font-size: 12px !important;
-                            }
-
-                            /* Kecilkan padding cell tabel di mobile */
-                            .table td,
-                            .table th {
-                                padding: 4px 6px !important;
-                                font-size: 12px !important;
-                                vertical-align: middle !important;
-                            }
-                        }
-                    </style>
                     <div class="table-responsive">
-                        <table class="table table-bordered table-sm">
+                        <table class="table table-bordered table-sm table-grade">
                             <thead>
                                 <tr>
                                     <th class="dhead">Kategori</th>
                                     <th class="dhead">Grade</th>
                                     <th class="dhead text-end" width="15%">Putih/Beras Gr</th>
-                                    {{-- <th class="dhead text-end" width="15%"></th> --}}
                                     <th class="dhead text-end" width="15%">Kuning Gr</th>
-                                    {{-- <th class="dhead text-end" width="15%">Harga</th> --}}
-                                    {{-- <th class="dhead text-end">Putih Comp</th>
-                                <th class="dhead text-end">Kuning Comp</th> --}}
                                 </tr>
                             </thead>
                             <tbody>
-                                @php
-                                    $prevKategori = null;
-                                @endphp
+                                @php $prevKategori = null; @endphp
                                 @foreach ($grade as $key => $g)
                                     <tr>
                                         <td>
@@ -191,72 +178,42 @@
                                         </td>
                                         <input type="hidden" name="id_grade1[]" value="{{ $g->id_grade_cong }}">
                                         <td>{{ $g->nm_grade }}</td>
-                                        <td class="text-end">
+                                        <td class="text-end {{ $g->putih != 'Y' ? 'td-empty' : '' }}">
                                             @if ($g->putih == 'Y')
                                                 <input type="text"
                                                     class="form-control form-control-sm inputan gr gr1" count="1"
                                                     value="0" name="gr1[]">
                                             @else
-                                                <input type="hidden"
-                                                    class="form-control form-control-sm inputan gr gr1" count="1"
-                                                    value="0" name="gr1[]">
+                                                <input type="hidden" value="0" name="gr1[]">
                                             @endif
-
                                         </td>
-                                        {{-- <td class="text-end">
-                                            @if ($g->beras == 'Y')
-                                                <input type="text" class="form-control form-control-sm inputan gr_beras gr_beras1"
-                                                    count="1" value="0" name="gr_beras1[]">
-                                            @else
-                                                <input type="hidden" class="form-control form-control-sm inputan gr_beras gr_beras1"
-                                                    count="1" value="0" name="gr_beras1[]">
-                                            @endif
-
-                                        </td> --}}
-                                        <td class="text-end">
+                                        <td class="text-end {{ $g->kuning != 'Y' ? 'td-empty' : '' }}">
                                             @if ($g->kuning == 'Y')
                                                 <input type="text"
                                                     class="form-control form-control-sm inputan gr_kuning gr_kuning1"
                                                     count="1" value="0" name="gr_kuning1[]">
                                             @else
-                                                <input type="hidden"
-                                                    class="form-control form-control-sm inputan gr_kuning gr_kuning1"
-                                                    count="1" value="0" name="gr_kuning1[]">
+                                                <input type="hidden" value="0" name="gr_kuning1[]">
                                             @endif
-
                                         </td>
-                                        {{-- <td class="text-end">
-                                        0
-                                    </td>
-                                    <td class="text-end">
-                                        0
-                                    </td> --}}
-
                                     </tr>
                                 @endforeach
                             </tbody>
-
                         </table>
                     </div>
+
                     <div class="table-responsive">
-                        <table class="table table-bordered table-sm">
+                        <table class="table table-bordered table-sm table-grade">
                             <thead>
                                 <tr>
                                     <th class="dhead">Kategori</th>
                                     <th class="dhead">Grade</th>
                                     <th class="dhead text-end" width="15%">D Gr</th>
-                                    {{-- <th class="dhead text-end" width="15%"></th> --}}
                                     <th class="dhead text-end" width="15%">VPTH Gr</th>
-                                    {{-- <th class="dhead text-end" width="15%">Harga</th> --}}
-                                    {{-- <th class="dhead text-end">Putih Comp</th>
-                                <th class="dhead text-end">Kuning Comp</th> --}}
                                 </tr>
                             </thead>
                             <tbody>
-                                @php
-                                    $prevKategori = null;
-
-                                @endphp
+                                @php $prevKategori = null; @endphp
                                 @foreach ($grade2 as $key => $g)
                                     <tr>
                                         <td>
@@ -267,39 +224,31 @@
                                         </td>
                                         <input type="hidden" name="id_grade1[]" value="{{ $g->id_grade_cong }}">
                                         <td>{{ $g->nm_grade }}</td>
-                                        <td class="text-end">
+                                        <td class="text-end {{ $g->putih != 'Y' ? 'td-empty' : '' }}">
                                             @if ($g->putih == 'Y')
                                                 <input type="text"
                                                     class="form-control form-control-sm inputan gr gr1" count="1"
                                                     value="0" name="gr1[]">
                                             @else
-                                                <input type="hidden"
-                                                    class="form-control form-control-sm inputan gr gr1" count="1"
-                                                    value="0" name="gr1[]">
+                                                <input type="hidden" value="0" name="gr1[]">
                                             @endif
-
                                         </td>
-                                        <td class="text-end">
+                                        <td class="text-end {{ $g->kuning != 'Y' ? 'td-empty' : '' }}">
                                             @if ($g->kuning == 'Y')
                                                 <input type="text"
                                                     class="form-control form-control-sm inputan gr_kuning gr_kuning1"
                                                     count="1" value="0" name="gr_kuning1[]">
                                             @else
-                                                <input type="hidden"
-                                                    class="form-control form-control-sm inputan gr_kuning gr_kuning1"
-                                                    count="1" value="0" name="gr_kuning1[]">
+                                                <input type="hidden" value="0" name="gr_kuning1[]">
                                             @endif
-
                                         </td>
-
                                     </tr>
                                 @endforeach
                             </tbody>
-
                         </table>
                     </div>
                 </div>
-                <br>
+
                 <br>
                 <div class="row">
                     <div class="col-lg-2">
@@ -309,66 +258,43 @@
                                     <h6>Total Gram Putih &nbsp;</h6>
                                 </td>
                                 <td><input type="text" class="form-control form-control-sm total_gram1" readonly
-                                        value="0">
-                                </td>
-
+                                        value="0"></td>
                             </tr>
-                            {{-- <tr>
-                                <td>
-                                    <h6>Total Gram Beras &nbsp;</h6>
-                                </td>
-                                <td><input type="text" class="form-control total_gram_beras1" readonly
-                                        value="0">
-                                </td>
-
-                            </tr> --}}
                             <tr>
                                 <td>
                                     <h6>Total Gram Kuning &nbsp;</h6>
                                 </td>
-                                <td><input type="text" class="form-control total_gram_kuning1" readonly
-                                        value="0">
-                                </td>
-
+                                <td><input type="text" class="form-control form-control-sm total_gram_kuning1"
+                                        readonly value="0"></td>
                             </tr>
                             <tr>
                                 <td>
                                     <h6>Harga Beli &nbsp;</h6>
                                 </td>
-                                <td><input type="text" class="form-control hrga_beli" name="hrga_beli[]"
-                                        value="0">
-                                </td>
+                                <td><input type="text" class="form-control form-control-sm hrga_beli"
+                                        name="hrga_beli[]" value="0"></td>
                             </tr>
                             <tr>
                                 <td>
                                     <h6>Harga(100%) &nbsp;</h6>
                                 </td>
-                                <td><input type="text" class="form-control" readonly value="0"></td>
+                                <td><input type="text" class="form-control form-control-sm" readonly
+                                        value="0"></td>
                             </tr>
                             <tr>
                                 <td>
                                     <h6>Harga(%) &nbsp;</h6>
                                 </td>
-                                <td><input type="text" class="form-control" readonly></td>
+                                <td><input type="text" class="form-control form-control-sm" readonly></td>
                                 <input type="hidden" name="count[]" value="1">
                             </tr>
                         </table>
-
                     </div>
                 </div>
-                <div class="load_row">
 
-                </div>
-
-                {{-- <div class="row">
-                    <div class="col-lg-12">
-                        <button type="button" class="btn btn-success float-end tambah_row">Tambah Baris</button>
-                    </div>
-                </div> --}}
-
+                <div class="load_row"></div>
             </x-theme.modal>
         </form>
-
 
         <form action="{{ route('congan.delete_nota') }}" method="get">
             <div class="modal fade" id="delete" tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -378,7 +304,7 @@
                         <div class="modal-body">
                             <div class="row">
                                 <h5 class="text-danger ms-4 mt-4"><i class="fas fa-trash"></i> Hapus Data</h5>
-                                <p class=" ms-4 mt-4">Apa anda yakin ingin menghapus ?</p>
+                                <p class="ms-4 mt-4">Apa anda yakin ingin menghapus ?</p>
                                 <input type="hidden" class="id_invoice_congan" name="id_invoice_congan">
                             </div>
                         </div>
@@ -391,13 +317,6 @@
                 </div>
             </div>
         </form>
-
-
-
-
-
-
-
 
     </x-slot>
 
@@ -414,7 +333,7 @@
                     "paging": false,
                     "responsive": true
                 });
-                pencarian('pencarian', 'tableSearch')
+                pencarian('pencarian', 'tableSearch');
 
                 $(document).on('click', '.delete_nota', function() {
                     var id_invoice_congan = $(this).attr('id_invoice_congan');
@@ -423,35 +342,30 @@
 
                 $(document).on("keyup", ".gr", function() {
                     var count = $(this).attr('count');
-
                     var total = $('.gr' + count).toArray().reduce(function(acc, input) {
                         var value = parseFloat($(input).val()) || 0;
                         return acc + value;
                     }, 0);
-
                     $('.total_gram' + count).val(total);
                 });
+
                 $(document).on("keyup", ".gr_beras", function() {
                     var count = $(this).attr('count');
-
                     var total = $('.gr_beras' + count).toArray().reduce(function(acc, input) {
                         var value = parseFloat($(input).val()) || 0;
                         return acc + value;
                     }, 0);
-
                     $('.total_gram_beras' + count).val(total);
                 });
+
                 $(document).on("keyup", ".gr_kuning", function() {
                     var count = $(this).attr('count');
-
                     var total = $('.gr_kuning' + count).toArray().reduce(function(acc, input) {
                         var value = parseFloat($(input).val()) || 0;
                         return acc + value;
                     }, 0);
-
                     $('.total_gram_kuning' + count).val(total);
                 });
-
 
                 var count = 3;
                 $(document).on("click", ".tambah_row", function() {
@@ -470,7 +384,6 @@
                     var delete_row = $(this).attr("count");
                     $(".baris" + delete_row).remove();
                 });
-
             });
         </script>
     @endsection
