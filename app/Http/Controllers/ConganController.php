@@ -53,14 +53,14 @@ class ConganController extends Controller
         $grade = DB::table('grade_congan')
             ->leftJoin('kategori', 'kategori.id', '=', 'grade_congan.kategori_id')
             ->where('aktif', 'Y')
-            ->where('kategori.id', '!=', '14')
+            ->where('grade_congan.kategori_id', '!=', '14')
             ->orderBy('kategori.id', 'ASC')
             ->orderBy('grade_congan.urutan', 'ASC')
             ->get();
         $grade2 = DB::table('grade_congan')
             ->leftJoin('kategori', 'kategori.id', '=', 'grade_congan.kategori_id')
             ->where('aktif', 'Y')
-            ->where('kategori.id', '14')
+            ->where('grade_congan.kategori_id', '14')
             ->orderBy('kategori.id', 'ASC')
             ->orderBy('grade_congan.urutan', 'ASC')
             ->get();
