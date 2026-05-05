@@ -1009,4 +1009,19 @@ class ConganController extends Controller
             ->route('congan.detail_nota', ['no_nota' => $r->no_nota])
             ->with('sukses', 'Data berhasil diimport');
     }
+
+    public function updateDirect(Request $request)
+    {
+        // Validasi keamanan tingkat tinggi (Server Side)
+        // if (auth()->user()->grade_congan !== 'admin') {
+        //     return response()->json(['error' => 'Gak boleh edit!'], 403);
+        // }
+
+        // Update langsung ke table menggunakan DB Query Builder
+        DB::table('grade_congan') // Ganti dengan nama tabel asli
+            ->where('id_grade_cong', $request->id)
+            ->update(['nm_grade' => $request->nama]);
+
+        return response()->json(['success' => true]);
+    }
 }

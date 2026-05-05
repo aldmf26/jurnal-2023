@@ -172,11 +172,15 @@
                                             <input type="hidden" name="id_grade{{ $no }}[]"
                                                 value="{{ $g->id_grade_cong }}">
                                             <td>
-                                                <input type="hidden"
-                                                    class="form-control inputan2 nm_grade nm_grade{{ $g->id_grade_cong }}"
+                                                <!-- Tambahkan span untuk teks yang terlihat -->
+                                                <span class="text-data">{{ $g->nm_grade }}</span>
+
+                                                <!-- Input awalnya disembunyikan pakai style="display:none" -->
+                                                <input type="text"
+                                                    class="form-control input-edit nm_grade{{ $g->id_grade_cong }}"
                                                     id_grade="{{ $g->id_grade_cong }}"
-                                                    name="nm_grade{{ $no }}[]" value="{{ $g->nm_grade }}">
-                                                {{ $g->nm_grade }}
+                                                    name="nm_grade{{ $no }}[]" value="{{ $g->nm_grade }}"
+                                                    style="display:none;">
                                             </td>
 
                                             {{-- Putih Gr --}}
@@ -758,6 +762,57 @@
                                 close: true,
                                 avatar: "https://cdn-icons-png.flaticon.com/512/190/190411.png"
                             }).showToast();
+                        }
+                    });
+                });
+
+                $(document).ready(function() {
+                    // 1. Double click untuk munculkan input
+                    $(document).on('dblclick', '.text-data', function() {
+                        let parent = $(this).closest('td');
+                        $(this).hide();
+                        parent.find('.input-edit').show().focus();
+                    });
+
+                    // 2. Blur (saat klik di luar input) untuk simpan data
+                    $(document).on('blur', '.input-edit', function() {
+                        let input = $(this);
+                        let id = input.attr('id_grade'); // Ambil ID dari attribute id_grade
+                        let val = input.val();
+                        let parent = input.closest('td');
+                        let textSpan = parent.find('.text-data');
+
+                        // Jalankan AJAX untuk update ke Controller
+                        $.ajax({
+                            url: "{{ route('congan.update-kategori-direct') }}",
+                            type: "POST",
+                            data: {
+                                _token: "{{ csrf_token() }}", // CSRF Token Laravel
+                                id: id,
+                                nama: val
+                            },
+                            success: function(response) {
+                                // Jika sukses, update teks di span dan kembalikan tampilan
+                                textSpan.text(val).show();
+                                input.hide();
+
+                                // Opsional: Kasih efek warna hijau sebentar biar user tahu sukses
+                                textSpan.css('color', 'green');
+                                setTimeout(() => textSpan.css('color', ''), 2000);
+                            },
+                            error: function(xhr) {
+                                // Jika error (misal: 403 dari controller), balikkan ke teks lama
+                                alert(xhr.responseJSON.error || "Gagal update data");
+                                textSpan.show();
+                                input.hide();
+                            }
+                        });
+                    });
+
+                    // 3. Tekan Enter untuk simpan
+                    $(document).on('keypress', '.input-edit', function(e) {
+                        if (e.which == 13) {
+                            $(this).blur();
                         }
                     });
                 });

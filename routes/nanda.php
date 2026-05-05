@@ -436,6 +436,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/delete_nota', 'delete_nota')->name('delete_nota');
             Route::get('/export_congan', 'export_congan')->name('export_congan');
             Route::post('/import_congan', 'import_congan')->name('import_congan');
+            Route::post('/update-kategori-direct', 'updateDirect')->name('update-kategori-direct');
         });
     Route::controller(HalawalGudangController::class)
         ->prefix('halawal')
