@@ -363,8 +363,8 @@
                                 </thead>
                                 <tbody>
                                     @php
-                                        $total_rp = 0;
-                                        $gr = 0;
+                                        $total_rp2 = 0;
+                                        $gr2 = 0;
                                         $prevKategori = null;
                                         $prevKelompok = null;
                                         $sub_gr = 0;
@@ -574,8 +574,8 @@
                                                 empty($persen->hrga_kuning) || $persen->hrga_kuning == 0
                                                     ? $hrga_dlu_kuning->hrga_kuning ?? 0
                                                     : $persen->hrga_kuning;
-                                            $gr += $gram + $gram_kuning;
-                                            $total_rp += $gram * $hgra + $gram_kuning * $hgra_kuning;
+                                            $gr2 += $gram + $gram_kuning;
+                                            $total_rp2 += $gram * $hgra + $gram_kuning * $hgra_kuning;
                                             $sub_gr += $gram;
                                             $sub_gr_kuning += $gram_kuning;
                                             $sub_total_rp += $gram * $hgra + $gram_kuning * $hgra_kuning;
@@ -629,7 +629,7 @@
                                     <td>
                                         <input type="text" class="form-control hrga_seratus{{ $no }}"
                                             readonly
-                                            value="Rp. {{ $gr > 0 ? number_format(($total_rp / $gr) * ((100 - $c->persen_air) / 100), 0) : 0 }}">
+                                            value="Rp. {{ $gr > 0 ? number_format((($total_rp + $total_rp2) / ($gr + $gr2)) * ((100 - $c->persen_air) / 100), 0) : 0 }}">
                                     </td>
                                 </tr>
                                 <tr>
@@ -639,7 +639,7 @@
                                     <td>
                                         <input type="text"
                                             class="form-control form-control-sm hrga_persen{{ $no }}"
-                                            value="Rp. {{ $gr > 0 ? number_format($total_rp / $gr, 0) : 0 }}"
+                                            value="Rp. {{ $gr > 0 ? number_format(($total_rp + $total_rp2) / ($gr + $gr2), 0) : 0 }}"
                                             readonly>
                                     </td>
                                     <input type="hidden" name="count[]" value="{{ $no }}">
