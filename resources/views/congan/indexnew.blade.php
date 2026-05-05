@@ -149,14 +149,22 @@
                         @media (max-width: 767.98px) {
                             .inputan {
                                 width: 70px !important;
-                                height: 24px !important;
+                                height: 26px !important;
                                 padding: 2px 4px !important;
                                 font-size: 12px !important;
+                            }
+
+                            /* Kecilkan padding cell tabel di mobile */
+                            .table td,
+                            .table th {
+                                padding: 4px 6px !important;
+                                font-size: 12px !important;
+                                vertical-align: middle !important;
                             }
                         }
                     </style>
                     <div class="table-responsive">
-                        <table class="table table-bordered" style="font-size: 12px">
+                        <table class="table table-bordered table-sm">
                             <thead>
                                 <tr>
                                     <th class="dhead">Kategori</th>
@@ -231,7 +239,7 @@
                         </table>
                     </div>
                     <div class="table-responsive">
-                        <table class="table table-bordered">
+                        <table class="table table-bordered table-sm">
                             <thead>
                                 <tr>
                                     <th class="dhead">Kategori</th>
