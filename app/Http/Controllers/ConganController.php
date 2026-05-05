@@ -133,12 +133,12 @@ class ConganController extends Controller
             'grade' => DB::table('grade_congan')
                 ->leftJoin('kategori', 'kategori.id', '=', 'grade_congan.kategori_id')
                 ->where('aktif', 'Y')->orderBy('kategori.kelompok', 'ASC')
-                ->where('kategori.id', '!=', '14')
+                ->where('grade_congan.kategori_id', '!=', '14')
                 ->orderBy('kategori.urutan', 'ASC')->orderBy('kategori.id', 'ASC')->orderBy('grade_congan.urutan', 'ASC')->get(),
             'grade2' => DB::table('grade_congan')
                 ->leftJoin('kategori', 'kategori.id', '=', 'grade_congan.kategori_id')
                 ->where('aktif', 'Y')
-                ->where('kategori.id', '14')
+                ->where('grade_congan.kategori_id', '14')
                 ->orderBy('kategori.kelompok', 'ASC')->orderBy('kategori.urutan', 'ASC')->orderBy('kategori.id', 'ASC')->orderBy('grade_congan.urutan', 'ASC')->get(),
             'congan' => DB::select("SELECT a.*
             FROM invoice_congan as a
@@ -683,12 +683,12 @@ class ConganController extends Controller
         $grade = DB::table('grade_congan')
             ->leftJoin('kategori', 'kategori.id', '=', 'grade_congan.kategori_id')
             ->where('aktif', 'Y')
-            ->where('kategori.id', '!=', '14')
+            ->where('grade_congan.kategori_id', '!=', '14')
             ->orderBy('kategori.kelompok', 'ASC')->orderBy('kategori.urutan', 'ASC')->orderBy('kategori.id', 'ASC')->orderBy('grade_congan.urutan', 'ASC')->get();
         $grade2 = DB::table('grade_congan')
             ->leftJoin('kategori', 'kategori.id', '=', 'grade_congan.kategori_id')
             ->where('aktif', 'Y')
-            ->where('kategori.id', '14')
+            ->where('grade_congan.kategori_id',  '14')
             ->orderBy('kategori.kelompok', 'ASC')->orderBy('kategori.urutan', 'ASC')->orderBy('kategori.id', 'ASC')->orderBy('grade_congan.urutan', 'ASC')->get();
 
         $kolom = 5;
