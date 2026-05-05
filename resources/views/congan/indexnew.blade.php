@@ -138,15 +138,20 @@
                     <style>
                         @media (min-width: 768px) {
                             .inputan {
-                                width: auto !important;
-                                height: 30px;
-                                /* Atur sesuai keinginan, misal 30px */
+                                width: 80px !important;
+                                height: 24px !important;
+                                padding: 2px 4px !important;
+                                font-size: 12px !important;
+                                text-align: right;
                             }
                         }
 
                         @media (max-width: 767.98px) {
                             .inputan {
-                                width: 90px !important;
+                                width: 70px !important;
+                                height: 24px !important;
+                                padding: 2px 4px !important;
+                                font-size: 12px !important;
                             }
                         }
                     </style>
@@ -180,20 +185,22 @@
                                         <td>{{ $g->nm_grade }}</td>
                                         <td class="text-end">
                                             @if ($g->putih == 'Y')
-                                                <input type="text" class="form-control inputan gr gr1" count="1"
+                                                <input type="text"
+                                                    class="form-control form-control-sm inputan gr gr1" count="1"
                                                     value="0" name="gr1[]">
                                             @else
-                                                <input type="hidden" class="form-control inputan gr gr1"
-                                                    count="1" value="0" name="gr1[]">
+                                                <input type="hidden"
+                                                    class="form-control form-control-sm inputan gr gr1" count="1"
+                                                    value="0" name="gr1[]">
                                             @endif
 
                                         </td>
                                         {{-- <td class="text-end">
                                             @if ($g->beras == 'Y')
-                                                <input type="text" class="form-control inputan gr_beras gr_beras1"
+                                                <input type="text" class="form-control form-control-sm inputan gr_beras gr_beras1"
                                                     count="1" value="0" name="gr_beras1[]">
                                             @else
-                                                <input type="hidden" class="form-control inputan gr_beras gr_beras1"
+                                                <input type="hidden" class="form-control form-control-sm inputan gr_beras gr_beras1"
                                                     count="1" value="0" name="gr_beras1[]">
                                             @endif
 
@@ -201,12 +208,12 @@
                                         <td class="text-end">
                                             @if ($g->kuning == 'Y')
                                                 <input type="text"
-                                                    class="form-control inputan gr_kuning gr_kuning1" count="1"
-                                                    value="0" name="gr_kuning1[]">
+                                                    class="form-control form-control-sm inputan gr_kuning gr_kuning1"
+                                                    count="1" value="0" name="gr_kuning1[]">
                                             @else
                                                 <input type="hidden"
-                                                    class="form-control inputan gr_kuning gr_kuning1" count="1"
-                                                    value="0" name="gr_kuning1[]">
+                                                    class="form-control form-control-sm inputan gr_kuning gr_kuning1"
+                                                    count="1" value="0" name="gr_kuning1[]">
                                             @endif
 
                                         </td>
@@ -254,23 +261,25 @@
                                         <td>{{ $g->nm_grade }}</td>
                                         <td class="text-end">
                                             @if ($g->putih == 'Y')
-                                                <input type="text" class="form-control inputan gr gr1"
-                                                    count="1" value="0" name="gr1[]">
+                                                <input type="text"
+                                                    class="form-control form-control-sm inputan gr gr1" count="1"
+                                                    value="0" name="gr1[]">
                                             @else
-                                                <input type="hidden" class="form-control inputan gr gr1"
-                                                    count="1" value="0" name="gr1[]">
+                                                <input type="hidden"
+                                                    class="form-control form-control-sm inputan gr gr1" count="1"
+                                                    value="0" name="gr1[]">
                                             @endif
 
                                         </td>
                                         <td class="text-end">
                                             @if ($g->kuning == 'Y')
                                                 <input type="text"
-                                                    class="form-control inputan gr_kuning gr_kuning1" count="1"
-                                                    value="0" name="gr_kuning1[]">
+                                                    class="form-control form-control-sm inputan gr_kuning gr_kuning1"
+                                                    count="1" value="0" name="gr_kuning1[]">
                                             @else
                                                 <input type="hidden"
-                                                    class="form-control inputan gr_kuning gr_kuning1" count="1"
-                                                    value="0" name="gr_kuning1[]">
+                                                    class="form-control form-control-sm inputan gr_kuning gr_kuning1"
+                                                    count="1" value="0" name="gr_kuning1[]">
                                             @endif
 
                                         </td>
@@ -291,7 +300,8 @@
                                 <td>
                                     <h6>Total Gram Putih &nbsp;</h6>
                                 </td>
-                                <td><input type="text" class="form-control total_gram1" readonly value="0">
+                                <td><input type="text" class="form-control form-control-sm total_gram1" readonly
+                                        value="0">
                                 </td>
 
                             </tr>
