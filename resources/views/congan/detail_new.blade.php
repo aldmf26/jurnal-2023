@@ -702,7 +702,7 @@
                                     <td>
                                         <input type="text" class="form-control hrga_seratus{{ $no }}"
                                             readonly
-                                            value="Rp. {{ number_format(($total_rp / $gr) * ((100 - $c->persen_air) / 100), 0) }}">
+                                            value="Rp. {{ $gr > 0 ? number_format(($total_rp / $gr) * ((100 - $c->persen_air) / 100), 0) : 0 }}">
                                     </td>
                                 </tr>
                                 <tr>
