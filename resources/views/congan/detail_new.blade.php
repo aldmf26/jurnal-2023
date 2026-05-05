@@ -627,10 +627,9 @@
                                         <h6>Harga({{ 100 - $c->persen_air }}%) &nbsp;</h6>
                                     </td>
                                     <td>
-                                        <input type="text"
-                                            class="form-control form-control-sm hrga_seratus{{ $no }}"
+                                        <input type="text" class="form-control hrga_seratus{{ $no }}"
                                             readonly
-                                            value="Rp. {{ $gr > 0 ? number_format(($total_rp / $gr) * ((100 - $c->persen_air) / 100), 0) : 0 }}">
+                                            value="Rp. {{ number_format(($total_rp / $gr) * ((100 - $c->persen_air) / 100), 0) }}">
                                     </td>
                                 </tr>
                                 <tr>
