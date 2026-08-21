@@ -536,7 +536,11 @@ class ConganController extends Controller
         $congan = DB::select("SELECT a.*, b.ttl
         FROM invoice_congan as a
         left JOIN (
-        SELECT b.no_nota, b.ket, sum(b.gr * b.hrga) as ttl
+        SELECT b.no_nota, b.ket,
+            SUM(
+                (COALESCE(b.gr, 0) * COALESCE(b.hrga, 0)) +
+                (COALESCE(b.gr_kuning, 0) * COALESCE(b.hrga_kuning, 0))
+            ) as ttl
             FROM tb_cong as b 
             GROUP by b.no_nota, b.ket
         ) as b on b.no_nota = a.no_nota and b.ket = a.ket
@@ -552,15 +556,18 @@ class ConganController extends Controller
             $sheet1->setCellValue('C' . $kolom, $c->tgl);
             $sheet1->setCellValue('D' . $kolom, $c->pemilik);
             $sheet1->setCellValue('E' . $kolom, $c->hrga_beli);
-            $sheet1->setCellValue('F' . $kolom, ($c->ttl / $c->gr) * ((100 - $c->persen_air) / 100));
-            $sheet1->setCellValue('G' . $kolom, $c->ttl / $c->gr);
-            $sheet1->setCellValue('H' . $kolom, $c->gr);
+            $totalGram = $c->gr + $c->gr_kuning;
+            $hargaSeratusPersen = $totalGram == 0 ? 0 : $c->ttl / $totalGram;
+
+            $sheet1->setCellValue('F' . $kolom, $hargaSeratusPersen);
+            $sheet1->setCellValue('G' . $kolom, $hargaSeratusPersen * ((100 - $c->persen_air) / 100));
+            $sheet1->setCellValue('H' . $kolom, $totalGram);
             $column_bawah = 'I';
             foreach ($grade as $g) {
                 $header = $column_bawah . $kolom;
-                $persen = DB::selectOne("SELECT a.gr  FROM tb_cong as a where a.no_nota = '$c->no_nota' and a.id_grade = '$g->id_grade_cong' and a.ket = '$c->ket'");
+                $persen = DB::selectOne("SELECT (COALESCE(a.gr, 0) + COALESCE(a.gr_kuning, 0)) as gr FROM tb_cong as a where a.no_nota = '$c->no_nota' and a.id_grade = '$g->id_grade_cong' and a.ket = '$c->ket'");
 
-                $sheet1->setCellValue($header, empty($persen->gr) ? '0' : round(($persen->gr / $c->gr) * 100, 2));
+                $sheet1->setCellValue($header, empty($persen->gr) || $totalGram == 0 ? '0' : round(($persen->gr / $totalGram) * 100, 2));
                 $column_bawah++;
             }
             $airColumn_bawah = $column_bawah . $kolom;
@@ -831,10 +838,12 @@ class ConganController extends Controller
         $sheet1->setCellValue('K7', 'Harga' . 100 . '%');
         $sheet1->setCellValue('K8', 'Harga FIx');
 
-        $sheet1->setCellValue('L4', $ttl_gr + $ttl_gr2);
+        $totalGram = $ttl_gr + $ttl_gr2;
+
+        $sheet1->setCellValue('L4', $totalGram);
         $sheet1->setCellValue('L5', $invoice->hrga_beli);
-        $sheet1->setCellValue('L6', $ttl_gr > 0 ? round((($total_rp + $total_rp2) / ($ttl_gr + $ttl_gr2)) * ((100 - $invoice->persen_air) / 100), 0) : 0);
-        $sheet1->setCellValue('L7', $ttl_gr > 0 ? round(($total_rp + $total_rp2) / ($ttl_gr + $ttl_gr2), 0) : 0);
+        $sheet1->setCellValue('L6', $totalGram > 0 ? round((($total_rp + $total_rp2) / $totalGram) * ((100 - $invoice->persen_air) / 100), 0) : 0);
+        $sheet1->setCellValue('L7', $totalGram > 0 ? round(($total_rp + $total_rp2) / $totalGram, 0) : 0);
         $sheet1->setCellValue('L8', $invoice->selesai);
 
 
