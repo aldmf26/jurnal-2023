@@ -16,7 +16,9 @@ class GradeController extends Controller
     {
         $data = [
             'title' => 'Data Grade',
-            'grade' => DB::table('grade_congan')->leftJoin('kategori', 'kategori.id', '=', 'grade_congan.kategori_id')->orderBy('grade_congan.aktif', 'DESC')->orderBy('kategori.id', 'ASC')->orderBy('grade_congan.urutan', 'ASC')
+            'grade' => DB::table('grade_congan')->leftJoin('kategori', 'kategori.id', '=', 'grade_congan.kategori_id')
+                ->where('grade_congan.aktif', 'Y')
+                ->orderBy('grade_congan.aktif', 'DESC')->orderBy('kategori.id', 'ASC')->orderBy('grade_congan.urutan', 'ASC')
                 ->select('grade_congan.*', 'kategori.nm_kategori')
                 ->get(),
             'kategori' => DB::table('kategori')->get()
