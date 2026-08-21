@@ -831,7 +831,7 @@ class ConganController extends Controller
         $sheet1->setCellValue('K7', 'Harga' . 100 . '%');
         $sheet1->setCellValue('K8', 'Harga FIx');
 
-        $sheet1->setCellValue('L4', $ttl_gr);
+        $sheet1->setCellValue('L4', $ttl_gr + $ttl_gr2);
         $sheet1->setCellValue('L5', $invoice->hrga_beli);
         $sheet1->setCellValue('L6', $ttl_gr > 0 ? round((($total_rp + $total_rp2) / ($ttl_gr + $ttl_gr2)) * ((100 - $invoice->persen_air) / 100), 0) : 0);
         $sheet1->setCellValue('L7', $ttl_gr > 0 ? round(($total_rp + $total_rp2) / ($ttl_gr + $ttl_gr2), 0) : 0);
