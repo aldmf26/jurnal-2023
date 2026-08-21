@@ -107,7 +107,7 @@
                             <table class="table table-bordered table-sm table-grade">
                                 <thead>
                                     <tr>
-                                        <th class="dhead">Kategori</th>
+                                        {{-- <th class="dhead">Kategori</th> --}}
                                         <th class="dhead">Grade</th>
                                         <th class="dhead text-end" width="12%">Putih/Beras Gr</th>
                                         @if ($posisi_id == 1)
@@ -163,12 +163,12 @@
                                         @endphp
 
                                         <tr>
-                                            <td>
+                                            {{-- <td>
                                                 @if ($g->nm_kategori !== $prevKategori)
                                                     {{ $g->nm_kategori }}
                                                     @php $prevKategori = $g->nm_kategori; @endphp
                                                 @endif
-                                            </td>
+                                            </td> --}}
                                             <input type="hidden" name="id_grade{{ $no }}[]"
                                                 value="{{ $g->id_grade_cong }}">
                                             <td>
@@ -348,7 +348,7 @@
                             </table>
 
                             {{-- Tabel 2: Grade D/VPTH --}}
-                            <table class="table table-bordered table-sm table-grade">
+                            {{-- <table class="table table-bordered table-sm table-grade">
                                 <thead>
                                     <tr>
                                         <th class="dhead">Kategori</th>
@@ -424,7 +424,7 @@
                                                 {{ $g->nm_grade }}
                                             </td>
 
-                                            {{-- D Gr --}}
+                                           
                                             <td
                                                 class="text-end {{ !empty($persen->gr) && $g->putih == 'Y' ? 'bg-gr_isi' : ($g->putih != 'Y' ? 'td-empty' : '') }}">
                                                 @if ($g->putih == 'Y')
@@ -441,7 +441,7 @@
                                                 @endif
                                             </td>
 
-                                            {{-- D Rp/gr --}}
+                                           
                                             @if ($posisi_id == 1)
                                                 <td
                                                     class="text-end {{ !empty($persen->gr) && $g->putih == 'Y' ? 'bg-gr_isi' : ($g->putih != 'Y' ? 'td-empty' : '') }}">
@@ -485,7 +485,7 @@
                                                     value="{{ $gram * $hgra }}">
                                             @endif
 
-                                            {{-- Comp D --}}
+                                            
                                             <td
                                                 class="text-end {{ !empty($persen->gr) && $g->putih == 'Y' ? 'bg-gr_isi' : ($g->putih != 'Y' ? 'td-empty' : '') }}">
                                                 @if ($g->putih == 'Y')
@@ -493,7 +493,7 @@
                                                 @endif
                                             </td>
 
-                                            {{-- VPTH Gr --}}
+                                            
                                             <td
                                                 class="text-end {{ !empty($persen->gr_kuning) && $g->kuning == 'Y' ? 'bg-gr_isi' : ($g->kuning != 'Y' ? 'td-empty' : '') }}">
                                                 @if ($g->kuning == 'Y')
@@ -511,7 +511,7 @@
                                                 @endif
                                             </td>
 
-                                            {{-- VPTH Rp/gr --}}
+                                            
                                             @if ($posisi_id == 1)
                                                 <td
                                                     class="text-end {{ !empty($persen->gr_kuning) && $g->kuning == 'Y' ? 'bg-gr_isi' : ($g->kuning != 'Y' ? 'td-empty' : '') }}">
@@ -558,7 +558,7 @@
                                                     value="{{ $gram_kuning * $hgra_kuning }}">
                                             @endif
 
-                                            {{-- Comp VPTH --}}
+                                           
                                             <td
                                                 class="text-end {{ !empty($persen->gr_kuning) && $g->kuning == 'Y' ? 'bg-gr_isi' : ($g->kuning != 'Y' ? 'td-empty' : '') }}">
                                                 @if ($g->kuning == 'Y')
@@ -586,7 +586,7 @@
                                         @endphp
                                     @endforeach
                                 </tbody>
-                            </table>
+                            </table> --}}
 
                         </div>
                     </div>
