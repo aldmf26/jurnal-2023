@@ -43,7 +43,7 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th class="text-center">Kategori</th>
+                                    {{-- <th class="text-center">Kategori</th> --}}
                                     <th class="text-center">Grade</th>
                                     <th class="text-center">Urutan</th>
                                     <th class="text-center">Aktif</th>
@@ -62,9 +62,9 @@
                                 @foreach ($grade as $g)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>
+                                        {{-- <td>
                                             {{ $g->nm_kategori }}
-                                        </td>
+                                        </td> --}}
                                         <td>{{ $g->nm_grade }}</td>
                                         <td class="text-center">{{ $g->urutan }}</td>
                                         <td class="text-center">
