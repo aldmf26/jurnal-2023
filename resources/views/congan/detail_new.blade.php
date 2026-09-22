@@ -125,6 +125,8 @@
                                     @php
                                         $total_rp = 0;
                                         $gr = 0;
+                                        $gr2 = 0;
+                                        $total_rp2 = 0;
                                         $prevKategori = null;
                                         $prevKelompok = null;
                                         $sub_gr = 0;

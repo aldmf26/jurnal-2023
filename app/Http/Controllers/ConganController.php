@@ -235,9 +235,16 @@ class ConganController extends Controller
             DB::beginTransaction();
 
             $urutan = $r->no_nota;
+            if (empty($urutan)) {
+                throw new \Exception('no_nota kosong.');
+            }
+            if (empty($r->pemilik) || empty($r->count) || empty($r->id_invoice_congan)) {
+                throw new \Exception('Data form tidak lengkap.');
+            }
 
-            // Simpan data lama sebelum dihapus
-
+            // Selesai dikirim sekali per-nota via tombol Harga fix/unfix.
+            // Jika tombol Simpan biasa dipakai, $r->selesai kosong -> pertahankan status lama per-invoice.
+            $selesai_global = $r->input('selesai'); // 'Y' | 'T' | null
 
             // Hapus data lama
             DB::table('tb_cong')->where('no_nota', $urutan)->delete();
@@ -264,8 +271,11 @@ class ConganController extends Controller
                     // $ttl_gr_beras += $gr_beras[$x];
                 }
                 $congan_selesai = DB::table('invoice_congan')->where('id_invoice_congan', $r->id_invoice_congan[$y])->first();
+                if (empty($congan_selesai)) {
+                    throw new \Exception('invoice_congan tidak ditemukan: ' . $r->id_invoice_congan[$y]);
+                }
 
-                $selesai = empty($r->selesai) ? $congan_selesai->selesai : $r->selesai;
+                $selesai = $selesai_global ?? $congan_selesai->selesai;
 
 
 
@@ -316,7 +326,9 @@ class ConganController extends Controller
             return redirect()->route('congan.index')->with('sukses', 'Data berhasil disimpan');
         } catch (Throwable $e) {
             DB::rollBack();
-            return redirect()->route('congan.index')->with('error', 'Gagal menyimpan data. Data lama telah dikembalikan.');
+            report($e);
+            $msg = config('app.debug') ? 'Gagal menyimpan data: ' . $e->getMessage() : 'Gagal menyimpan data. Data lama telah dikembalikan.';
+            return redirect()->route('congan.index')->with('error', $msg);
         }
     }
 
