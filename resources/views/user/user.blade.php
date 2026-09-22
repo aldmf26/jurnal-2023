@@ -74,7 +74,7 @@
 
         <form action="{{ route('user.update') }}" method="post">
             @csrf
-            <x-theme.modal idModal="edit-modal" title="tambah user" btnSave="Y" size="modal-lg">
+            <x-theme.modal idModal="edit-modal" title="edit user" btnSave="Y" size="modal-lg">
                 <div id="editBody"></div>
             </x-theme.modal>
         </form>

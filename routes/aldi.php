@@ -155,7 +155,7 @@ Route::middleware('auth')->group(function () {
         ->group(function () {
             Route::get('/', 'index')->name('index');
             Route::post('/', 'create')->name('create');
-            Route::get('/edit', 'edit')->name('edit');
+            Route::get('/edit/{id}', 'edit')->name('edit');
             Route::post('/edit', 'update')->name('update');
             Route::get('/delete', 'delete')->name('delete');
         });
