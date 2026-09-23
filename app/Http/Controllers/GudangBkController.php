@@ -56,13 +56,15 @@ class GudangBkController extends Controller
         } else {
             $nmgudang = $r->nm_gudang;
         }
-        $gudang = GudangBkModel::getPembelianBk($nmgudang);
+        $total = GudangBkModel::totalGudangBk($nmgudang);
 
         $listBulan = DB::table('bulan')->get();
         $id_user = auth()->user()->id;
         $data =  [
             'title' => 'Gudang BK',
-            'gudang' => $gudang,
+            'totalPcs' => $total->pcs ?? 0,
+            'totalGr' => $total->gr ?? 0,
+            'totalRp' => $total->ttl_rp ?? 0,
             'listbulan' => $listBulan,
             'tgl1' => $tgl1,
             'tgl2' => $tgl2,
@@ -70,6 +72,35 @@ class GudangBkController extends Controller
             'nm_gudang' => $nmgudang
         ];
         return view('gudang_bk.index', $data);
+    }
+
+    function datatable(Request $r)
+    {
+        $nmgudang = $r->get('nm_gudang', 'bk');
+        $draw = (int) $r->get('draw', 1);
+        $start = (int) $r->get('start', 0);
+        $length = (int) $r->get('length', 25);
+        $length = $length > 0 && $length <= 100 ? $length : 25;
+        $search = $r->input('search.value', '');
+        $orderIdx = (int) $r->input('order.0.column', 1);
+        $orderDir = $r->input('order.0.dir', 'asc');
+
+        $columns = $r->input('columns', []);
+        $orderCol = 'id_buku_campur';
+        if (isset($columns[$orderIdx]['data']) && is_string($columns[$orderIdx]['data'])) {
+            $orderCol = $columns[$orderIdx]['data'];
+        }
+
+        [$data, $recordsTotal, $recordsFiltered] = GudangBkModel::datatableGudangBk(
+            $nmgudang, $start, $length, $search, $orderCol, $orderDir
+        );
+
+        return response()->json([
+            'draw' => $draw,
+            'recordsTotal' => $recordsTotal,
+            'recordsFiltered' => $recordsFiltered,
+            'data' => $data,
+        ]);
     }
 
     public function export_buku_campur_bk(Request $r)

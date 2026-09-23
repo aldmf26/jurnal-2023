@@ -386,6 +386,7 @@ Route::middleware('auth')->group(function () {
         ->name('gudangBk.')
         ->group(function () {
             Route::get('/', 'index')->name('index');
+            Route::get('/datatable', 'datatable')->name('datatable');
             Route::get('/wip', 'wip')->name('wip');
             Route::get('/gudangProduksiGabung', 'gudangProduksiGabung')->name('gudangProduksiGabung');
             Route::post('/export_buku_campur_bk', 'export_buku_campur_bk')->name('export_buku_campur_bk');

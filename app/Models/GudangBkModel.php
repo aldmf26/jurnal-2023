@@ -13,15 +13,15 @@ class GudangBkModel extends Model
 
     public static function getPembelianBk($nmgudang)
     {
-        $result = DB::select("SELECT 
+        $result = DB::select("SELECT
         a.id_buku_campur, a.approve,
-        if(a.approve = 'T',c.tgl,d.tgl) as tgl, 
+        if(a.approve = 'T',c.tgl,d.tgl) as tgl,
         a.no_lot,  a.gudang, a.gabung,
-        if(a.approve = 'T',b.nm_grade,d.nm_grade) as nm_grade, 
-        if(a.approve = 'T',c.no_campur,d.buku) as buku, 
-        
-        if(a.approve = 'T',a.pcs,d.pcs) as pcs, 
-        if(a.approve = 'T',a.gr,d.gr) as gr, 
+        if(a.approve = 'T',b.nm_grade,d.nm_grade) as nm_grade,
+        if(a.approve = 'T',c.no_campur,d.buku) as buku,
+
+        if(a.approve = 'T',a.pcs,d.pcs) as pcs,
+        if(a.approve = 'T',a.gr,d.gr) as gr,
         if(a.approve = 'T',a.rupiah,if(d.rupiah is null , a.rupiah,d.rupiah)) as rupiah,
         if(a.approve = 'T',a.ket,d.ket) as ket,
         if(a.approve = 'T',a.ket2,d.ket2) as ket2,
@@ -37,6 +37,93 @@ class GudangBkModel extends Model
         ", [$nmgudang]);
 
         return $result;
+    }
+
+    private static function baseGudangBkQuery($nmgudang)
+    {
+        return DB::table('buku_campur as a')
+            ->leftJoin('grade as b', 'b.id_grade', '=', 'a.id_grade')
+            ->leftJoin('grading as c', 'c.no_nota', '=', 'a.no_nota')
+            ->leftJoin('buku_campur_approve as d', 'd.id_buku_campur', '=', 'a.id_buku_campur')
+            ->where('a.gabung', 'T')
+            ->where(function ($q) use ($nmgudang) {
+                $q->where(function ($q2) use ($nmgudang) {
+                    $q2->where('a.approve', 'T')
+                        ->where('a.gudang', $nmgudang)
+                        ->whereNotNull('a.rupiah');
+                })->orWhere(function ($q2) use ($nmgudang) {
+                    $q2->where('a.approve', '<>', 'T')
+                        ->where('d.gudang', $nmgudang)
+                        ->where(function ($q3) {
+                            $q3->whereNotNull('d.rupiah')
+                                ->orWhereNotNull('a.rupiah');
+                        });
+                });
+            })
+            ->selectRaw("a.id_buku_campur, a.approve,
+                IF(a.approve = 'T', c.tgl, d.tgl) as tgl,
+                a.no_lot, a.gudang, a.gabung,
+                IF(a.approve = 'T', b.nm_grade, d.nm_grade) as nm_grade,
+                IF(a.approve = 'T', c.no_campur, d.buku) as buku,
+                IF(a.approve = 'T', a.pcs, d.pcs) as pcs,
+                IF(a.approve = 'T', a.gr, d.gr) as gr,
+                IF(a.approve = 'T', a.rupiah, IF(d.rupiah IS NULL, a.rupiah, d.rupiah)) as rupiah,
+                IF(a.approve = 'T', a.ket, d.ket) as ket,
+                IF(a.approve = 'T', a.ket2, d.ket2) as ket2,
+                IF(a.approve = 'T', a.lok_tgl, d.lok_tgl) as lok_tgl,
+                IF(a.approve = 'T', a.no_produksi, d.no_produksi) as no_produksi,
+                d.pcs_diambil, d.gr_diambil");
+    }
+
+    public static function countGudangBk($nmgudang)
+    {
+        return (clone self::baseGudangBkQuery($nmgudang))->count();
+    }
+
+    public static function totalGudangBk($nmgudang)
+    {
+        $row = (clone self::baseGudangBkQuery($nmgudang))
+            ->selectRaw("SUM(IF(a.approve = 'T', a.pcs, d.pcs)) as pcs,
+                SUM(IF(a.approve = 'T', a.gr, d.gr)) as gr,
+                SUM(IF(a.approve = 'T', a.rupiah, IF(d.rupiah IS NULL, a.rupiah, d.rupiah)) * IF(a.approve = 'T', a.gr, d.gr)) as ttl_rp")
+            ->first();
+        return $row;
+    }
+
+    public static function datatableGudangBk($nmgudang, $start, $length, $search, $orderCol, $orderDir)
+    {
+        $allowedOrder = [
+            'id_buku_campur', 'buku', 'tgl', 'nm_grade',
+            'pcs', 'gr', 'rupiah', 'no_lot', 'ket', 'ket2', 'lok_tgl',
+        ];
+        if (!in_array($orderCol, $allowedOrder)) {
+            $orderCol = 'id_buku_campur';
+        }
+        $orderDir = strtolower($orderDir) === 'desc' ? 'desc' : 'asc';
+
+        $base = self::baseGudangBkQuery($nmgudang);
+        $recordsTotal = (clone $base)->count();
+
+        if ($search !== '' && $search !== null) {
+            $base->where(function ($q) use ($search) {
+                $q->where('d.buku', 'like', "%{$search}%")
+                    ->orWhere('d.nm_grade', 'like', "%{$search}%")
+                    ->orWhere('a.no_lot', 'like', "%{$search}%")
+                    ->orWhere('d.ket', 'like', "%{$search}%")
+                    ->orWhere('d.ket2', 'like', "%{$search}%")
+                    ->orWhere('d.lok_tgl', 'like', "%{$search}%")
+                    ->orWhere('d.tgl', 'like', "%{$search}%")
+                    ->orWhere('a.id_buku_campur', 'like', "%{$search}%");
+            });
+        }
+        $recordsFiltered = (clone $base)->count();
+
+        $data = $base->orderBy($orderCol, $orderDir)
+            ->offset($start)
+            ->limit($length)
+            ->get();
+
+        return [$data, $recordsTotal, $recordsFiltered];
     }
     public static function export_getPembelianBk($gudang)
     {
