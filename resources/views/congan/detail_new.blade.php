@@ -210,13 +210,13 @@
                                                         <input type="text"
                                                             class="form-control form-control-sm text-end inputan harga harga{{ $no }}{{ $letter }}"
                                                             count="{{ $no }}" hruf="{{ $letter }}"
-                                                            value="{{ empty($persen->hrga) || $persen->hrga == 0 ? $hrga_dlu->hrga ?? 0 : $persen->hrga }}"
+                                                            value="{{ $c->selesai == 'Y' && isset($persen->hrga) ? $persen->hrga : $hrga_dlu->hrga ?? 0 }}"
                                                             name="harga{{ $no }}[]">
                                                     @else
                                                         <input type="hidden" name="harga{{ $no }}[]"
                                                             class="harga harga{{ $no }}{{ $letter }}"
                                                             count="{{ $no }}" hruf="{{ $letter }}"
-                                                            value="{{ empty($persen->hrga) || $persen->hrga == 0 ? $hrga_dlu->hrga ?? 0 : $persen->hrga }}">
+                                                            value="{{ $c->selesai == 'Y' && isset($persen->hrga) ? $persen->hrga : $hrga_dlu->hrga ?? 0 }}">
                                                     @endif
                                                     @php
                                                         $gram = empty($persen->gr) ? '0' : $persen->gr;
@@ -233,7 +233,7 @@
                                                 <input type="hidden" name="harga{{ $no }}[]"
                                                     class="harga harga{{ $no }}{{ $letter }}"
                                                     count="{{ $no }}" hruf="{{ $letter }}"
-                                                    value="{{ empty($persen->hrga) || $persen->hrga == 0 ? $hrga_dlu->hrga ?? 0 : $persen->hrga }}">
+                                                    value="{{ $c->selesai == 'Y' && isset($persen->hrga) ? $persen->hrga : $hrga_dlu->hrga ?? 0 }}">
                                                 @php
                                                     $gram = empty($persen->gr) ? '0' : $persen->gr;
                                                     $hgra =
@@ -280,14 +280,14 @@
                                                         <input type="text"
                                                             class="form-control form-control-sm text-end inputan harga_kuning harga_kuning{{ $no }}{{ $letter }}"
                                                             count="{{ $no }}" hruf="{{ $letter }}"
-                                                            value="{{ empty($persen->hrga_kuning) || $persen->hrga_kuning == 0 ? $hrga_dlu_kuning->hrga_kuning ?? 0 : $persen->hrga_kuning }}"
+                                                            value="{{ $c->selesai == 'Y' && isset($persen->hrga_kuning) ? $persen->hrga_kuning : $hrga_dlu_kuning->hrga_kuning ?? 0 }}"
                                                             name="harga_kuning{{ $no }}[]">
                                                     @else
                                                         <input type="hidden"
                                                             name="harga_kuning{{ $no }}[]"
                                                             class="harga_kuning harga_kuning{{ $no }}{{ $letter }}"
                                                             count="{{ $no }}" hruf="{{ $letter }}"
-                                                            value="{{ empty($persen->hrga_kuning) || $persen->hrga_kuning == 0 ? $hrga_dlu_kuning->hrga_kuning ?? 0 : $persen->hrga_kuning }}">
+                                                            value="{{ $c->selesai == 'Y' && isset($persen->hrga_kuning) ? $persen->hrga_kuning : $hrga_dlu_kuning->hrga_kuning ?? 0 }}">
                                                     @endif
                                                     @php
                                                         $gram_kuning = empty($persen->gr_kuning)
@@ -306,7 +306,7 @@
                                                 <input type="hidden" name="harga_kuning{{ $no }}[]"
                                                     class="harga_kuning harga_kuning{{ $no }}{{ $letter }}"
                                                     count="{{ $no }}" hruf="{{ $letter }}"
-                                                    value="{{ empty($persen->hrga_kuning) || $persen->hrga_kuning == 0 ? $hrga_dlu_kuning->hrga_kuning ?? 0 : $persen->hrga_kuning }}">
+                                                    value="{{ $c->selesai == 'Y' && isset($persen->hrga_kuning) ? $persen->hrga_kuning : $hrga_dlu_kuning->hrga_kuning ?? 0 }}">
                                                 @php
                                                     $gram_kuning = empty($persen->gr_kuning) ? '0' : $persen->gr_kuning;
                                                     $hgra_kuning =
@@ -331,14 +331,14 @@
                                         @php
                                             $gram = $persen->gr ?? 0;
                                             $hgra =
-                                                empty($persen->hrga) || $persen->hrga == 0
-                                                    ? $hrga_dlu->hrga ?? 0
-                                                    : $persen->hrga;
+                                                $c->selesai == 'Y' && isset($persen->hrga)
+                                                    ? $persen->hrga
+                                                    : $hrga_dlu->hrga ?? 0;
                                             $gram_kuning = $persen->gr_kuning ?? 0;
                                             $hgra_kuning =
-                                                empty($persen->hrga_kuning) || $persen->hrga_kuning == 0
-                                                    ? $hrga_dlu_kuning->hrga_kuning ?? 0
-                                                    : $persen->hrga_kuning;
+                                                $c->selesai == 'Y' && isset($persen->hrga_kuning)
+                                                    ? $persen->hrga_kuning
+                                                    : $hrga_dlu_kuning->hrga_kuning ?? 0;
                                             $gr += $gram + $gram_kuning;
                                             $total_rp += $gram * $hgra + $gram_kuning * $hgra_kuning;
                                             $sub_gr += $gram;
@@ -451,13 +451,13 @@
                                                         <input type="text"
                                                             class="form-control form-control-sm text-end inputan harga harga{{ $no }}{{ $letter }}"
                                                             count="{{ $no }}" hruf="{{ $letter }}"
-                                                            value="{{ empty($persen->hrga) || $persen->hrga == 0 ? $hrga_dlu->hrga ?? 0 : $persen->hrga }}"
+                                                            value="{{ $c->selesai == 'Y' && isset($persen->hrga) ? $persen->hrga : $hrga_dlu->hrga ?? 0 }}"
                                                             name="harga{{ $no }}[]">
                                                     @else
                                                         <input type="hidden" name="harga{{ $no }}[]"
                                                             class="harga harga{{ $no }}{{ $letter }}"
                                                             count="{{ $no }}" hruf="{{ $letter }}"
-                                                            value="{{ empty($persen->hrga) || $persen->hrga == 0 ? $hrga_dlu->hrga ?? 0 : $persen->hrga }}">
+                                                            value="{{ $c->selesai == 'Y' && isset($persen->hrga) ? $persen->hrga : $hrga_dlu->hrga ?? 0 }}">
                                                     @endif
                                                     @php
                                                         $gram = empty($persen->gr) ? '0' : $persen->gr;
@@ -474,7 +474,7 @@
                                                 <input type="hidden" name="harga{{ $no }}[]"
                                                     class="harga harga{{ $no }}{{ $letter }}"
                                                     count="{{ $no }}" hruf="{{ $letter }}"
-                                                    value="{{ empty($persen->hrga) || $persen->hrga == 0 ? $hrga_dlu->hrga ?? 0 : $persen->hrga }}">
+                                                    value="{{ $c->selesai == 'Y' && isset($persen->hrga) ? $persen->hrga : $hrga_dlu->hrga ?? 0 }}">
                                                 @php
                                                     $gram = empty($persen->gr) ? '0' : $persen->gr;
                                                     $hgra =
@@ -521,14 +521,14 @@
                                                         <input type="text"
                                                             class="form-control form-control-sm text-end inputan harga_kuning harga_kuning{{ $no }}{{ $letter }}"
                                                             count="{{ $no }}" hruf="{{ $letter }}"
-                                                            value="{{ empty($persen->hrga_kuning) || $persen->hrga_kuning == 0 ? $hrga_dlu_kuning->hrga_kuning ?? 0 : $persen->hrga_kuning }}"
+                                                            value="{{ $c->selesai == 'Y' && isset($persen->hrga_kuning) ? $persen->hrga_kuning : $hrga_dlu_kuning->hrga_kuning ?? 0 }}"
                                                             name="harga_kuning{{ $no }}[]">
                                                     @else
                                                         <input type="hidden"
                                                             name="harga_kuning{{ $no }}[]"
                                                             class="harga_kuning harga_kuning{{ $no }}{{ $letter }}"
                                                             count="{{ $no }}" hruf="{{ $letter }}"
-                                                            value="{{ empty($persen->hrga_kuning) || $persen->hrga_kuning == 0 ? $hrga_dlu_kuning->hrga_kuning ?? 0 : $persen->hrga_kuning }}">
+                                                            value="{{ $c->selesai == 'Y' && isset($persen->hrga_kuning) ? $persen->hrga_kuning : $hrga_dlu_kuning->hrga_kuning ?? 0 }}">
                                                     @endif
                                                     @php
                                                         $gram_kuning = empty($persen->gr_kuning)
@@ -547,7 +547,7 @@
                                                 <input type="hidden" name="harga_kuning{{ $no }}[]"
                                                     class="harga_kuning harga_kuning{{ $no }}{{ $letter }}"
                                                     count="{{ $no }}" hruf="{{ $letter }}"
-                                                    value="{{ empty($persen->hrga_kuning) || $persen->hrga_kuning == 0 ? $hrga_dlu_kuning->hrga_kuning ?? 0 : $persen->hrga_kuning }}">
+                                                    value="{{ $c->selesai == 'Y' && isset($persen->hrga_kuning) ? $persen->hrga_kuning : $hrga_dlu_kuning->hrga_kuning ?? 0 }}">
                                                 @php
                                                     $gram_kuning = empty($persen->gr_kuning) ? '0' : $persen->gr_kuning;
                                                     $hgra_kuning =
@@ -572,14 +572,14 @@
                                         @php
                                             $gram = $persen->gr ?? 0;
                                             $hgra =
-                                                empty($persen->hrga) || $persen->hrga == 0
-                                                    ? $hrga_dlu->hrga ?? 0
-                                                    : $persen->hrga;
+                                                $c->selesai == 'Y' && isset($persen->hrga)
+                                                    ? $persen->hrga
+                                                    : $hrga_dlu->hrga ?? 0;
                                             $gram_kuning = $persen->gr_kuning ?? 0;
                                             $hgra_kuning =
-                                                empty($persen->hrga_kuning) || $persen->hrga_kuning == 0
-                                                    ? $hrga_dlu_kuning->hrga_kuning ?? 0
-                                                    : $persen->hrga_kuning;
+                                                $c->selesai == 'Y' && isset($persen->hrga_kuning)
+                                                    ? $persen->hrga_kuning
+                                                    : $hrga_dlu_kuning->hrga_kuning ?? 0;
                                             $gr2 += $gram + $gram_kuning;
                                             $total_rp2 += $gram * $hgra + $gram_kuning * $hgra_kuning;
                                             $sub_gr += $gram;
